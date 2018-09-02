@@ -1,4 +1,9 @@
 /* Navbar container */
+html, body {
+  height:100%;
+  margin:0;
+}
+
 .navbar {
   background-color: white;
   overflow: hidden;
@@ -105,6 +110,7 @@ form {
 label {
   text-align: left;
 }
+
 input {
   margin: 10px;
 }
