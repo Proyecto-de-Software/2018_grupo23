@@ -3,6 +3,9 @@
   background-color: white;
   overflow: hidden;
   border-bottom: 1px solid black;
+  position: fixed;
+  width: 100%;
+  left: 0;
 }
 
 /* Links inside the navbar */
@@ -96,10 +99,12 @@ form {
     width: 600px;
     margin: 0px auto;
     padding: 150px;
-    border: 1px solid red;
     text-align: center;
 }
 
 label {
   text-align: left;
+}
+input {
+  margin: 10px;
 }
