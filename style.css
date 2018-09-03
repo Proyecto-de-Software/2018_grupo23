@@ -8,19 +8,45 @@ html, body {
   background-color: white;
   overflow: hidden;
   border-bottom: 1px solid black;
-  display: block;
+  display: inline-flex;
   width: 100%;
   left: 0;
+  position: relative;
 }
 
 /* Links inside the navbar */
 .navbar a {
-  float: left;
   color: black;
   text-align: center;
-  padding: 14px 16px;
+  padding: 1% 1%;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 18px;
+  margin: 0%;
+  
+}
+
+.navbar .search_div {
+  position: absolute;
+  left: 65%;
+  right: 0px;
+  margin-top: 0.555%;
+  vertical-align: middle;
+}
+
+.search_div input{
+  width: 55%;
+  margin-top: 5px;
+  height: 30px;
+  box-sizing: border-box;
+  margin-right: 1px;
+}
+
+.search_div button{
+  margin-top: 5px;
+  height: 30px;
+  padding: 2px;
+  margin-left: 0px;
+  margin-right: 10%;
 }
 
 .header{
@@ -83,24 +109,26 @@ html, body {
 }
 
 .footer {
-  background-color: white;
-  border-top: 1px solid black;
+  position: absolute;
   bottom: 0;
   left: 0;
-  position: fixed;
-  height: 7%;
+  height: 40px;
   width: 100%;
+  background-color: white;
+  border-top: 1px solid black;
 }
 
 .footer_text {
-  position: fixed;
+  position: absolute;
+  margin-bottom: 1%;
   bottom: 0;
   width: 100%;
   left: 10px;
 }
 
 .footer_version {
-  position: fixed;
+  position: absolute;
+  margin-bottom: 1%;
   bottom: 0;
   width: 100%;
   right: 10px;
