@@ -1,9 +1,14 @@
 /* Navbar container */
+html, body {
+  height:100%;
+  margin:0;
+}
+
 .navbar {
   background-color: white;
   overflow: hidden;
   border-bottom: 1px solid black;
-  position: fixed;
+  display: block;
   width: 100%;
   left: 0;
 }
@@ -16,6 +21,12 @@
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+}
+
+.header{
+  position: relative;
+  width: 100%;
+  left: 0;
 }
 
 /* The dropdown container */
@@ -72,6 +83,7 @@
 }
 
 .footer {
+  background-color: white;
   border-top: 1px solid black;
   bottom: 0;
   left: 0;
@@ -108,3 +120,39 @@ label {
 input {
   margin: 10px;
 }
+
+.row {
+  width: 85%;
+  display: flex;
+  margin-top: 3%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.row .column{
+  width: 33%;
+  padding: 5%;
+  padding-top: 0px;
+}
+.row .column h1{
+  font-family: "Arial Black", Gadget, sans-serif;
+}
+.row .column p{
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.row .column button{
+  background-color: white;
+  border: 1px solid black;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  padding: 3%;
+  padding-left: 5%;
+  padding-right: 5%;
+
+  
+}
+.column-left{ float: left;}
+.column-right{ float: right;}
+.column-center{ display: inline-block;}
