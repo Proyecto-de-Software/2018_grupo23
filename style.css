@@ -12,12 +12,14 @@ body {
   background-color: white;
   overflow: hidden;
   border-bottom: 1px solid black;
-  display: inline-flex;
-  width: 100%;
+
+
   left: 0;
 }
 
 .navbar a {
+  display: block;
+  float: left;
   color: black;
   text-align: center;
   padding: 1% 1%;
@@ -27,14 +29,16 @@ body {
 }
 
 .navbar p {
+  display: block;
+  float: left;
   padding: 1% 1%;
   font-size: 18px;
-  width: 40%;
   margin: 0%;
 }
 
 .navbar .user-name{
   width: auto;
+  float: right;
 }
 
 .navbar .search_div {
@@ -46,20 +50,24 @@ body {
 }
 
 .navbar input{
+  display: block;
+  float: right;
   width: 30%;
-  margin-top: 5px;
-  height: 30px;
+  margin: 0.7% 0.7%;
   box-sizing: border-box;
-  margin-left: 10%;
+  font-size: 18px;
   margin-right: 1px;
 }
 
 .navbar .b-search{
-  margin-top: 5px;
-  height: 30px;
-  padding: 2px;
-  margin-left: 5px;
-  margin-right: 10%;
+  display: block;
+  float: right;
+  margin: 0.7% 0.7%;
+  font-size: 18px;
+}
+
+.navbar .a-login{
+  float: right;
 }
 
 .header{
@@ -69,16 +77,14 @@ body {
 }
 
 .dropdown {
+  display: block;
   float: left;
   padding: 1% 1%;
 }
 
 .dropdown .dropbtn {
   font-size: 18px;
-<<<<<<< HEAD
-=======
   text-align: center;
->>>>>>> bcf8f66cd8661b6a187793dcabf3a32120c0f2aa
   border: none;
   outline: none;
   color: black;
@@ -185,15 +191,31 @@ input {
 
 
 .span { width: 20%; }
-
-
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 1150px) {
+  .navbar.logued input {width: 20%;}
+}
+@media only screen and (max-width: 937px) {
+  .navbar.logued input{ clear: left;}
+  .navbar.logued .b-search{ clear: left;}
+  .navbar.logued input {width: 80%;}
+  .navbar.logued .b-search {
+    width: 20%
+    margin-right : 15%
+  }
+}
+@media only screen and (max-width: 720px) {
 	.col {  margin: 1% 0 1% 0%; }
 	.span { width: 100%; }
   .navbar p { display: none;}
   .navbar a { width: 15%;}
-  .navbar .b-search { margin: 0 5% 0 0;}
-  .navbar input {margin: 0 1px 0 5%;}
+  .navbar.logued { width: 100%; }
+  .navbar.logued a, .dropdown, .dropbtn { width: 100%;}
+  .navbar.logued .dropdown-content {
+    position: unset;
+    box-shadow: unset;
+  }
+  .navbar.logued input {width: 60%;}
+  .navbar.logued .b-search {margin-right: 5%;}
 }
 
 .row .column h1{
