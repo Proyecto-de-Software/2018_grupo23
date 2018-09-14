@@ -151,11 +151,9 @@ body {
 }
 
 form {
-  clear: both;
-  height: 100%;
-  width: 80%;
-  padding: 0px;
-  margin: auto;
+  width: 600px;
+  margin: 0px auto;
+  padding: 150px;
   text-align: center;
 }
 
