@@ -1,16 +1,19 @@
 <?php
 
   class Maincontroller{
-      private static $instance;
-      private static $twig;
+      protected static $instance;
+      protected static $twig;
+
+      private function __construct(){}
+
+      final protected function __clone(){}
 
       public static function getInstance(){
-
-          if(!isset(self::$instance)){
-              self::$instance=new self();
-              self::$twig = new TwigRenderer();
-          }
-          return self::$instance;
+        if (!static::$instance instanceof static) {
+          static::$instance = new static();
+          static::$twig = new TwigRenderer();
+        }
+        return static::$instance;
       }
 
       public function redirectHome(){
@@ -23,6 +26,24 @@
 
       public function viewHome(){
           $this::$twig->show("home.html");
+      }
+
+      public function postElementsCheck($elements){
+        $i = 0;
+        $i_max = count($elements);
+        $ok = ($i < $i_max);
+        while($ok && $i < $i_max){
+          $key = $elements[$i++];
+          $ok = (isset($_POST[$key]) && !empty($_POST[$key]));
+        }
+        //para debugear
+        /*
+          if(!$ok){
+          echo($elements[--$i]);
+          die();
+        }
+        */
+        return $ok;
       }
   }
 ?>
