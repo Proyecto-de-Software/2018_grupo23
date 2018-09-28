@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Hospital Dr. Alejandro Korn {% endblock %}</title><!-- Bloque para el titulo de la pagina -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Bloque para el CSS de cada template -->
+    {% block my_css %}{% endblock %}
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar">
+          <a>Logo</a>
+          <p>Hospital Dr. Alejandro Korn</p>
+          {% if loged_user %}
+          <a class="a-login" href="./?action=logout">Logout</a>
+          {% else %}
+          <a class="a-login" href="./?action=view_login">Login</a>
+          {% endif %}
+          <button class="b-search" type="button">Buscar</button>
+          <input type="text" name="dato" placeholder="Buscar...">
+      </div>
+    </header>
+    <!-- Bloque del contendio del html -->
+    {% block content %}{% endblock %}
+    <footer class="footer">
+        <p class="footer_text">Proyecto de Software 2018 - Hospital Dr. Alejandro Korn</p>
+        <p class="footer_version">v 0.1.0</p>
+    </footer>
+  </body>
+
+  <!-- Bloque de js -->
+  {% block my_js %}{% endblock %}

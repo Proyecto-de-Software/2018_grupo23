@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="utf-8">
-        <title>Hospital Dr. Alejandro Korn</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <header>
-          <div class="navbar">
-              <a>Logo</a>
-              <p>Hospital Dr. Alejandro Korn</p>
-              {% if loged_user %}
-              <a class="a-login" href="./?action=logout">Logout</a>
-              {% else %}
-              <a class="a-login" href="./?action=view_login">Login</a>
-              {% endif %}
-              <button class="b-search" type="button">Buscar</button>
-              <input type="text" name="dato" placeholder="Buscar...">
-          </div>
-        </header>
+{% extends 'template.html' %} {% block title %}Home{% endblock %}
+{% block content %}
         <div class = "row group">
             <div class = "column span">
                 <h1>Heading</h1>
@@ -37,13 +17,4 @@
                 <button type="button">Ver detalles > ></button>
             </div>
         </div>
-
-
-        <footer class="footer">
-            <p class="footer_text">Proyecto de Software 2018 - Hospital Dr. Alejandro Korn</p>
-            <p class="footer_version">v 0.1.0</p>
-        </footer>
-
-    </body>
-
-</html>
+{% endblock %}
