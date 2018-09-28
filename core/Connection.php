@@ -3,7 +3,7 @@
 abstract class Connection {
 
   private $username = "root";
-  private $password = "alumno";
+  private $password = "";
 	private $host ="127.0.0.1";
   private $db = "trabajo-proyecto-2018";
   protected $conn;

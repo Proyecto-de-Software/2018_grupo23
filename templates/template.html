@@ -5,6 +5,7 @@
     <title>{% block title %}Hospital Dr. Alejandro Korn {% endblock %}</title><!-- Bloque para el titulo de la pagina -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="style.css">
+  
 
     <!-- Bloque para el CSS de cada template -->
     {% block my_css %}{% endblock %}
@@ -16,6 +17,7 @@
           <a>Logo</a>
           <p>Hospital Dr. Alejandro Korn</p>
           {% if loged_user %}
+          <a class="a-login" href="./?action=view_add_patient">Agregar paciente</a>
           <a class="a-login" href="./?action=logout">Logout</a>
           {% else %}
           <a class="a-login" href="./?action=view_login">Login</a>

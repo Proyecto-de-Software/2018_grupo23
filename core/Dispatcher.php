@@ -4,6 +4,7 @@
 require_once('controller/AppController.php');
 require_once('controller/MainController.php');
 require_once('controller/UserController.php');
+require_once('controller/PatientController.php');
 
 class Dispatcher{
   static function home(){
@@ -11,15 +12,23 @@ class Dispatcher{
   }
 
   static function view_login(){
-    UserControler::getInstance()->viewLogin();
+    UserController::getInstance()->viewLogin();
   }
 
   static function login(){
-    UserControler::getInstance()->login();
+    UserController::getInstance()->login();
   }
 
   static function logout(){
-    UserControler::getInstance()->logout();
+    UserController::getInstance()->logout();
+  }
+
+  static function view_add_patient(){
+    PatientController::getInstance()->viewAddPatient();
+  }
+
+  static function add_patient(){
+    PatientController::getInstance()->addPatient();
   }
 }
 
