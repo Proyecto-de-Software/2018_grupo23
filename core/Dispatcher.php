@@ -17,6 +17,10 @@ class Dispatcher{
   static function login(){
     UserControler::getInstance()->login();
   }
+
+  static function logout(){
+    UserControler::getInstance()->logout();
+  }
 }
 
 

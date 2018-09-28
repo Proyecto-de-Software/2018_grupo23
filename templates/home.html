@@ -11,7 +11,11 @@
           <div class="navbar">
               <a>Logo</a>
               <p>Hospital Dr. Alejandro Korn</p>
+              {% if loged_user %}
+              <a class="a-login" href="./?action=logout">Logout</a>
+              {% else %}
               <a class="a-login" href="./?action=view_login">Login</a>
+              {% endif %}
               <button class="b-search" type="button">Buscar</button>
               <input type="text" name="dato" placeholder="Buscar...">
           </div>

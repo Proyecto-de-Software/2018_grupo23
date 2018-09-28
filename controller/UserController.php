@@ -10,29 +10,38 @@ class UserControler extends MainController{
   protected static $twig;
 
   function viewLogin($error = NULL){
-    //TODO agregar checkeo de que ya esta logeado
-    $param = array();
-    if(is_null($error)){
-      $param['error'] = $error;
-    }
-    $this::$twig->show('login.html',$param);
+    $_GET['action']='';
+    if(is_null(AppController::getInstance()->getUser())){ //chequeo que no este logeado
+      $param = array();
+      if(!is_null($error)){
+        $param['error'] = $error;
+      }
+      $this::$twig->show('login.html',$param);
+    }else{$this->redirectHome();}
   }
 
-  function login(){
-    //TODO agregar checkeo de que ya esta logeado
-    if($this->postElementsCheck( array('user_name','password') ) ){ //check de los parametros pasados por post
-      $user_repo = new UserRepository();
-      $user = $user_repo->loginUsuario($_POST['user_name'],$_POST['password']);
-      if(!empty($user)){
-        $_SESSION["id"]=$user[0]["id"];
-        $_SESSION["username"]=$user[0]["username"];
-        $this->redirectHome();
-        return;
-
+  public function login(){
+    if(is_null(AppController::getInstance()->getUser())){ //chequeo que no este logeado
+      if($this->postElementsCheck( array('user_name','password') ) ){ //check de los parametros pasados por post
+        $user_repo = new UserRepository();
+        $user = $user_repo->loginUsuario($_POST['user_name'],$_POST['password'])[0];
+        if(!empty($user)){ //si el usuario existe lo logeo
+          AppController::getInstance()->startUserSession($user);
+          $this->redirectHome();
+          $_GET['action']=''; //limpio el action
+          return;
+        }else{$this->viewLogin("Email o Contraseña incorrecta");}
       }else{$this->viewLogin("Email o Contraseña incorrecta");}
-    }else{$this->viewLogin("Email o Contraseña incorrecta");}
+    }else{$this->redirectHome();}
+  }
+
+  public function logout() {
+    if(!is_null(AppController::getInstance()->getUser())){
+      AppController::getInstance()->endUserSession();
+    }
+    $this->redirectHome();
+    $_GET['action']='';
   }
 }
-
 
 ?>

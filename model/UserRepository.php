@@ -3,6 +3,10 @@ require_once('core/Connection.php');
   /**
    * Repositorio de usuario
    */
+   /*
+   $query->debugDumpParams(); // para debugear las consultas!
+   die();
+   */
   class UserRepository extends Connection{
 
     function __construct(){
@@ -18,12 +22,23 @@ require_once('core/Connection.php');
       $query->bindParam(":user_name",$user_name);
       $query->bindParam(":pass",$pass);
       $query->execute();
-      /*
-      $query->debugDumpParams(); // para debugear las consultas!
-      die();
-      */
       return $query->fetchall();
     }
+
+    public function getUsuario($id){
+      $query = $this->conn->prepare("SELECT * FROM usuario u WHERE u.id = :id");
+      $query->bindParam(":id",$id);
+      $query->execute();
+      return $query->fetchall();
+    }
+
+    public function getRolAndPermisosFromUsuario($id){
+      $query = $this->conn->prepare("SELECT rol.nombre as rol, permiso.nombre as permiso FROM usuario u INNER JOIN usuario_tiene_rol ur ON u.id = :id AND ur.usuario_id = u.id INNER JOIN rol ON rol.id = ur.rol_id INNER JOIN rol_tiene_permiso rp ON rp.rol_id = rol.id INNER JOIN permiso ON permiso.id = rp.permiso_id");
+      $query->bindParam(":id",$id);
+      $query->execute();
+      return $query->fetchall(PDO::FETCH_ASSOC); //evita que devuelva la respuesta duplicada
+    }
+
     /* End of read  functions */
 
     /* Update functions */
