@@ -5,7 +5,7 @@ require_once('model/UserRepository.php');
 /**
  * Controlador del usuario
  */
-class UserControler extends MainController{
+class UserController extends MainController{
   protected static $instance;
   protected static $twig;
 
@@ -24,9 +24,9 @@ class UserControler extends MainController{
     if(is_null(AppController::getInstance()->getUser())){ //chequeo que no este logeado
       if($this->postElementsCheck( array('user_name','password') ) ){ //check de los parametros pasados por post
         $user_repo = new UserRepository();
-        $user = $user_repo->loginUsuario($_POST['user_name'],$_POST['password'])[0];
+        $user = $user_repo->loginUsuario($_POST['user_name'],$_POST['password']);
         if(!empty($user)){ //si el usuario existe lo logeo
-          AppController::getInstance()->startUserSession($user);
+          AppController::getInstance()->startUserSession($user[0]);
           $this->redirectHome();
           $_GET['action']=''; //limpio el action
           return;

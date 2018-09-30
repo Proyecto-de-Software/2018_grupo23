@@ -78,7 +78,7 @@ class AppController{
     }
 
     function __construct(){
-      if(is_null($_SESSION['id'])){ //si no hay ninguna sesion, el objeto user no existe
+      if(!isset($_SESSION['id'])){ //si no hay ninguna sesion, el objeto user no existe
         $this->user = NULL;
       }else{
         $this->user = User::recoverSession();//si habia una session lo recupero

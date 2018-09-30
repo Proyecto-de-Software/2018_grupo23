@@ -5,6 +5,7 @@ require_once('controller/AppController.php');
 require_once('controller/MainController.php');
 require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
+require_once('controller/ConfigController.php');
 
 class Dispatcher{
   static function home(){
@@ -33,6 +34,14 @@ class Dispatcher{
 
   static function view_patient(){
     PatientController::getInstance()->viewPatient();
+  }
+
+  static function view_system_config(){
+    ConfigController::getInstance()->viewSystemConfig();
+  }
+
+  static function save_config(){
+    ConfigController::getInstance()->saveConfig();
   }
 }
 

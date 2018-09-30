@@ -1,0 +1,83 @@
+{% extends 'template.html' %} {% block title %}Configuración{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="title is-centered">Configuración del sistema</h1>
+    
+
+      <div class="card">
+
+
+        <button class="button" onclick="grayer('f_1',false);">Editar</button>
+        <form id="f_1" class="box has-text-centered" action="?action=save_config" method="post">
+            <div class="field">
+                <label class="label" for="titulo">Título:</label>
+                <div class="control">
+                  <input class="input" id="titulo" type="text" name="titulo" value="{{config[0][2]}}">
+                </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="email">Mail de contacto:</label>
+              <div class="control">
+                <input class="input" id="email" type="text" name="email" value="{{config[1][2]}}">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="descripcion">Descripción:</label>
+              <div class="control">
+                <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{config[2][2]}}" placeholder="{{config[2][2]}}"></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Cantidad de elementos por página en los listados</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="cant_elems">
+                      <option selected>{{config[3][2]}}</option>
+                      <option>5</option>
+                      <option>10</option>
+                      <option>15</option>
+                      <option>20</option>
+                      <option>25</option>
+                      <option>30</option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Deshabilitar sitio temporalmente</label>
+              <div class="control">
+                <div class="select">
+                  <select name="estado">
+                    <option>No</option>
+                    <option>Si</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="is-rounded" value="save_config">Guardar cambios</button>
+            <button class="is-rounded" onclick="window.location.href='/';">Cancelar</button>
+          </form>
+  </div>
+        </div>
+    {% block my_js %}
+         <script type="text/javascript">
+           function grayer(formId, yesNo) {
+              var f = document.getElementById(formId), s, opacity;
+              s = f.style;
+              opacity = yesNo? '60' : '100';
+              s.opacity = s.MozOpacity = s.KhtmlOpacity = opacity/100;
+              s.filter = 'alpha(opacity='+opacity+')';
+              for(var i=0; i<f.length; i++) f[i].disabled = yesNo;
+           }
+           window.onload=function(){grayer('f_1',true);}; // disabled by default
+         </script>
+       {% endblock %}
+
+
+{% endblock %}
