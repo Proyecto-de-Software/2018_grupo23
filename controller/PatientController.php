@@ -10,6 +10,7 @@ class PatientController extends MainController{
   protected static $twig;
 
   function viewAddPatient(){
+     //if((!is_null(AppController::getInstance()->getUser())) && chequeodepermiso)
     $partidos=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido'));
     $regiones_s=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria'));
     $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));

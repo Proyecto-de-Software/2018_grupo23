@@ -2,168 +2,168 @@
 
 {% block content %}
 <div class="container is-fluid">
-<form action="?action=add_patient" method="post">
-  <p class="title">
-    Agregar paciente
-  <p>
+  <form action="?action=add_patient" method="post">
+    <p class="title">
+      Agregar paciente
+      <p>
 
-<div class="columns">
-  <div class="column">
+        <div class="columns">
+          <div class="column">
 
-  <div class="field">
-    <label class="label">Apellido</label>
-    <div class="control">
-      <input type="text" class="input is-rounded" name="apellido" required>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Apellido</label>
+              <div class="control">
+                <input type="text" class="input is-rounded" name="apellido" required>
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Fecha de nacimiento</label>
-    <div class="control">
-      <input type="date" class="input is-rounded" name="dob" required>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Fecha de nacimiento</label>
+              <div class="control">
+                <input type="date" class="input is-rounded" name="dob" required>
+              </div>
+            </div>
 
-  <div class="field">
-      <label class="label">Partido</label>
-      <div class="control">
-      <div class="select is-rounded">
-        <select name="partido" required>
-          {% for partido in partidos %}
-            <option>{{partido.nombre}}</option>
-            {% endfor %}
-        </select>
-      </div>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Partido</label>
+              <div class="control">
+                <div class="select is-rounded">
+                  <select name="partido" required>
+                    {% for partido in partidos %}
+                    <option>{{partido.nombre}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
 
-  <div class="field">
-      <label class="label">Localidad</label>
-      <div class="control">
-      <div class="select is-rounded">
-        <select name="localidad" required>
-          <option value=1>Localidad</option>
-        </select>
-      </div>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Localidad</label>
+              <div class="control">
+                <div class="select is-rounded">
+                  <select name="localidad" required>
+                    <option value=1>Localidad</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-  <div class="field">
-      <label class="label">Género</label>
-      <div class="control">
-      <div class="select is-rounded">
-        <select name="genero" required>
-          <option value=1>Masculino</option>
-          <option value=2>Femenino</option>
-          <option value=3>Otro</option>
-        </select>
-      </div>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Género</label>
+              <div class="control">
+                <div class="select is-rounded">
+                  <select name="genero" required>
+                    <option value=1>Masculino</option>
+                    <option value=2>Femenino</option>
+                    <option value=3>Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-  <div class="field">
-      <label class="label">Tipo de documento</label>
-      <div class="control">
-      <div class="select is-rounded">
-        <select name="typedoc" required>
-          {% for tipo in tipo_doc %}
-          <option value="{{tipo.id}}">{{tipo.nombre}}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Tipo de documento</label>
+              <div class="control">
+                <div class="select is-rounded">
+                  <select name="typedoc" required>
+                    {% for tipo in tipo_doc %}
+                    <option value="{{tipo.id}}">{{tipo.nombre}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Número de historia clínica</label>
-    <div class="control">
-      <input type="number" max="999999" class="input is-rounded" name="numhc">
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Número de historia clínica</label>
+              <div class="control">
+                <input type="number" max="999999" class="input is-rounded" name="numhc">
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Tel/Cel</label>
-    <div class="control">
-      <input type="text" class="input is-rounded" name="telefono">
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Tel/Cel</label>
+              <div class="control">
+                <input type="text" class="input is-rounded" name="telefono">
+              </div>
+            </div>
 
-</div>
-<div class="column">
+          </div>
+          <div class="column">
 
-  <div class="field">
-    <label class="label">Nombre</label>
-    <div class="control">
-      <input type="text" class="input is-rounded" name="nombre" required>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Nombre</label>
+              <div class="control">
+                <input type="text" class="input is-rounded" name="nombre" required>
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Lugar de nacimiento</label>
-    <div class="control">
-      <input type="text" class="input is-rounded" name="dobplace">
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Lugar de nacimiento</label>
+              <div class="control">
+                <input type="text" class="input is-rounded" name="dobplace">
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Región sanitaria</label>
-    <div class="control">
-      <input type="text" class="input is-rounded" value="1" name="regions" readonly>
-    </div>
-  </div>
-  <!-- ACA HAY QUE USAR JQUERY PARA CARGAR TANTO LA REGION COMO LA LOCALIDAD EN BASE AL PARTIDO     -->
+            <div class="field">
+              <label class="label">Región sanitaria</label>
+              <div class="control">
+                <input type="text" class="input is-rounded" value="1" name="regions" readonly>
+              </div>
+            </div>
+            <!-- ACA HAY QUE USAR JQUERY PARA CARGAR TANTO LA REGION COMO LA LOCALIDAD EN BASE AL PARTIDO     -->
 
-  <div class="field">
-    <label class="label">Domicilio</label>
-    <div class="control">
-      <input type="text" class="input is-rounded" name="domicilio" required>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Domicilio</label>
+              <div class="control">
+                <input type="text" class="input is-rounded" name="domicilio" required>
+              </div>
+            </div>
 
-  <div class="field">
-      <label class="label">Tiene en su poder su documento</label>
-      <div class="control">
-      <div class="select is-rounded">
-        <select name="doccheck" required>
-          <option value=1>SÍ</option>
-          <option value=0>NO</option>
-        </select>
-      </div>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Tiene en su poder su documento</label>
+              <div class="control">
+                <div class="select is-rounded">
+                  <select name="doccheck" required>
+                    <option value=1>SÍ</option>
+                    <option value=0>NO</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Número de documento</label>
-    <div class="control">
-      <input type="number" class="input is-rounded" name="numdoc" required>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Número de documento</label>
+              <div class="control">
+                <input type="number" class="input is-rounded" name="numdoc" required>
+              </div>
+            </div>
 
-  <div class="field">
-    <label class="label">Número de carpeta</label>
-    <div class="control">
-      <input type="number" max="99999" class="input is-rounded" name="numcarpeta">
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Número de carpeta</label>
+              <div class="control">
+                <input type="number" max="99999" class="input is-rounded" name="numcarpeta">
+              </div>
+            </div>
 
-  <div class="field">
-      <label class="label">Obra social</label>
-      <div class="control">
-      <div class="select is-rounded">
-        <select name="obra_social" required>
-          {% for os in obras_sociales %}
-          <option value="{{os.id}}">{{os.nombre}}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-  </div>
+            <div class="field">
+              <label class="label">Obra social</label>
+              <div class="control">
+                <div class="select is-rounded">
+                  <select name="obra_social" required>
+                    {% for os in obras_sociales %}
+                    <option value="{{os.id}}">{{os.nombre}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
 
-</div>
-</div>
-<div class="box has-text-centered">
-      <a class="button is-link">Agregar</a>
-      <a class="button is-text">Cancelar</a>
-</div>
-</form>
-{% endblock %}
+          </div>
+        </div>
+        <div class="box has-text-centered">
+          <a class="button is-link">Agregar</a>
+          <a class="button is-text">Cancelar</a>
+        </div>
+  </form>
+  {% endblock %}
