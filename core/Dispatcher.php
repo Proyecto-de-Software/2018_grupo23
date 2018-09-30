@@ -30,6 +30,10 @@ class Dispatcher{
   static function add_patient(){
     PatientController::getInstance()->addPatient();
   }
+
+  static function view_patient(){
+    PatientController::getInstance()->viewPatient();
+  }
 }
 
 

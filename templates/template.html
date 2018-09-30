@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>{% block title %}Hospital Dr. Alejandro Korn {% endblock %}</title><!-- Bloque para el titulo de la pagina -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="style.css">
-  
+    <link rel="stylesheet" href="/web/bulma/bulma.min.css">
+
 
     <!-- Bloque para el CSS de cada template -->
     {% block my_css %}{% endblock %}
@@ -13,24 +13,51 @@
 
   <body>
     <header>
-      <div class="navbar">
-          <a>Logo</a>
-          <p>Hospital Dr. Alejandro Korn</p>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="https://bulma.io">
+              <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+            </a> <!-- cambiar por logo del hospital -->
+          <h1 class="title">
+          <div class="navbar-burger burger" data-target="navbarHospital">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div> <!--no entiendo bien cómo funciona esto -->
+        </div>
+        <div id="navbarHospital" class="navbar-menu">
+          <p class="navbar-item">
+            Hospital Dr. Alejandro Korn
+          </p>
+          <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="field has-addons">
+              <div class="control">
+                <input class="input" type="text" placeholder="Buscar">
+              </div>
+              <div class="control">
+                <a class="button is-info">
+                  Buscar
+                </a>
+              </div>
+            </div>
+          </div>
           {% if loged_user %}
-          <a class="a-login" href="./?action=view_add_patient">Agregar paciente</a>
-          <a class="a-login" href="./?action=logout">Logout</a>
+          <a class="navbar-item" href="./?action=view_add_patient">Agregar paciente</a>
+          <a class="navbar-item" href="./?action=logout">Logout</a>
           {% else %}
-          <a class="a-login" href="./?action=view_login">Login</a>
+          <a class="navbar-item" href="./?action=view_login">Login</a>
           {% endif %}
-          <button class="b-search" type="button">Buscar</button>
-          <input type="text" name="dato" placeholder="Buscar...">
-      </div>
+        </div>
+        </nav>
     </header>
     <!-- Bloque del contendio del html -->
     {% block content %}{% endblock %}
     <footer class="footer">
+      <div class="content has-text-centered"
         <p class="footer_text">Proyecto de Software 2018 - Hospital Dr. Alejandro Korn</p>
         <p class="footer_version">v 0.1.0</p>
+      </div>
     </footer>
   </body>
 
