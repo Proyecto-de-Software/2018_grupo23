@@ -43,6 +43,10 @@ class Dispatcher{
   static function save_config(){
     ConfigController::getInstance()->saveConfig();
   }
+
+  static function view_users_list(){
+    UserController::getInstance()->viewUsersList();
+  }
 }
 
 

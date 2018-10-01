@@ -42,6 +42,10 @@ class UserController extends MainController{
     $this->redirectHome();
     $_GET['action']='';
   }
+
+  public function viewUsersList(){
+      $this::$twig->show('list_users.html');
+  }
 }
 
 ?>

@@ -10,19 +10,17 @@ class ConfigController extends MainController {
   protected static $twig;
 
   public function viewSystemConfig($error = NULL){
-    $_GET['action']='';
-    $param = array();
-    if(!is_null($error)){
-      $param['error']= $error;
+    if(!is_null(AppController::getInstance()->getUser())){
+      $_GET['action']='';
+      $param = array();
+      if(!is_null($error)){
+        $param['error']= $error;
+      }
+      $param['config']= $this->getConfigParameters();
+      $this::$twig->show('config.html', $param);
+    }else{
+      $this->redirectHome();
     }
-    $query= new ConfigRepository();
-    $config= $query->getConfig();
-    $param['config']= array('titulo'=>$config[0][2],
-                            'email'=>$config[1][2],
-                            'descripcion'=>$config[2][2],
-                            'cant_elems'=>$config[3][2],
-                            'estado'=>$config[4][2]);
-    $this::$twig->show('config.html', $param);
   }
 
   public function saveConfig(){
@@ -35,6 +33,16 @@ class ConfigController extends MainController {
     }
   }
 
+  //obtengo todos los parámetros de configuración del sistema
+  public function getConfigParameters(){
+    $query= new ConfigRepository();
+    $config= $query->getParameters();
+    return array('titulo'=>$config[0][2],
+                  'email'=>$config[1][2],
+                  'descripcion'=>$config[2][2],
+                  'cant_elems'=>$config[3][2],
+                  'estado'=>$config[4][2]);
+  }
 }
 
 ?>

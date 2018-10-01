@@ -2,16 +2,8 @@
 
 {% block content %}
 
-<section class="hero is-primary">
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <h1 class="title">Configuración del sistema</h1>
-    </div>
-  </div>
-</section>
-
+{% block titulo_del_hero %}Configuración del sistema{% endblock %}
 <section class="section">
-
 <div class="columns">
   <div class="column is-6 is-offset-3">
         <h2 class="subtitle">{{ error }}</h2>
@@ -20,7 +12,7 @@
             <div class="field">
                 <label class="label" for="titulo">Título:</label>
                 <div class="control">
-                  <input class="input" id="titulo" type="text" name="titulo" value="{{config.titulo}}">
+                  <input class="input" id="titulo" type="text" name="titulo" value="{{config.titulo}}" required>
                 </div>
                 <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
             </div>
@@ -44,12 +36,9 @@
                 <div class="control">
                   <div class="select">
                     <select name="cant_elems">
-                      <option selected>{{config.cant_elems}}</option>
-                      <option>10</option>
-                      <option>15</option>
-                      <option>20</option>
-                      <option>25</option>
-                      <option>30</option>
+                      {% for i in range(5, 30, 5) %}
+                        <option value="{{ i }}"{% if i == config.cant_elems %} selected="selected"{% endif %}>{{ i }}</option>
+                      {% endfor %}
                     </select>
                   </div>
                     <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
@@ -61,8 +50,8 @@
               <div class="control">
                 <div class="select">
                   <select name="estado">
-                    <option>No</option>
-                    <option>Si</option>
+                    <option value="No"{% if config.estado == "No" %} selected="selected"{% endif %}>No</option>
+                    <option value="Si"{% if config.estado == "Si" %} selected="selected"{% endif %}>Si</option>
                   </select>
                 </div>
                 <p class="help">Si se encuentra deshabilitado lo podrá ver solamente el/los administradores del sistema</p>
