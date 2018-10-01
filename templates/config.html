@@ -1,33 +1,41 @@
 {% extends 'template.html' %} {% block title %}Configuración{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="title is-centered">Configuración del sistema</h1>
-    
 
-      <div class="card">
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">Configuración del sistema</h1>
+    </div>
+  </div>
+</section>
 
+<section class="section">
 
-        <button class="button" onclick="grayer('f_1',false);">Editar</button>
-        <form id="f_1" class="box has-text-centered" action="?action=save_config" method="post">
+<div class="columns">
+  <div class="column is-6 is-offset-3">
+        <h2 class="subtitle">{{ error }}</h2>
+        <!-- <button id="edit_btn" class="button" onclick="grayer('f_1',false);">Editar</button> -->
+        <form id="f_1" class="box" action="?action=save_config" method="post">
             <div class="field">
                 <label class="label" for="titulo">Título:</label>
                 <div class="control">
-                  <input class="input" id="titulo" type="text" name="titulo" value="{{config[0][2]}}">
+                  <input class="input" id="titulo" type="text" name="titulo" value="{{config.titulo}}">
                 </div>
+                <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
             </div>
 
             <div class="field">
               <label class="label" for="email">Mail de contacto:</label>
               <div class="control">
-                <input class="input" id="email" type="text" name="email" value="{{config[1][2]}}">
+                <input class="input" id="email" type="text" name="email" value="{{config.email}}" required>
               </div>
             </div>
 
             <div class="field">
               <label class="label" for="descripcion">Descripción:</label>
               <div class="control">
-                <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{config[2][2]}}" placeholder="{{config[2][2]}}"></textarea>
+                <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{config.descripcion}}" placeholder="{{config.descripcion}}" required></textarea>
               </div>
             </div>
 
@@ -36,8 +44,7 @@
                 <div class="control">
                   <div class="select">
                     <select name="cant_elems">
-                      <option selected>{{config[3][2]}}</option>
-                      <option>5</option>
+                      <option selected>{{config.cant_elems}}</option>
                       <option>10</option>
                       <option>15</option>
                       <option>20</option>
@@ -45,6 +52,7 @@
                       <option>30</option>
                     </select>
                   </div>
+                    <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
               </div>
             </div>
 
@@ -57,14 +65,21 @@
                     <option>Si</option>
                   </select>
                 </div>
+                <p class="help">Si se encuentra deshabilitado lo podrá ver solamente el/los administradores del sistema</p>
               </div>
             </div>
 
-            <button type="submit" class="is-rounded" value="save_config">Guardar cambios</button>
-            <button class="is-rounded" onclick="window.location.href='/';">Cancelar</button>
+            <div class="field is-grouped is-grouped-centered">
+              <button type="submit" class="button is-primary" value="save_config">Guardar cambios</button>
+              <button class="button is-light" onclick="window.location.href='/';">Cancelar</button>
+            </div>
+
           </form>
-  </div>
         </div>
+        </div>
+
+     </section>
+
     {% block my_js %}
          <script type="text/javascript">
            function grayer(formId, yesNo) {
@@ -75,7 +90,12 @@
               s.filter = 'alpha(opacity='+opacity+')';
               for(var i=0; i<f.length; i++) f[i].disabled = yesNo;
            }
-           window.onload=function(){grayer('f_1',true);}; // disabled by default
+           // window.onload=function(){grayer('f_1',true);}; // disabled by default
+
+           // function toggleText(button_id)  {
+           //     var text = document.getElementById(button_id).firstChild;
+           //     text.data = text.data == "Editar" ? "Cancelar" : "Editar";
+           // }
          </script>
        {% endblock %}
 
