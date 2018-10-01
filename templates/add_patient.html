@@ -28,10 +28,8 @@
               <label class="label">Partido</label>
               <div class="control">
                 <div class="select is-rounded">
-                  <select name="partido" required>
-                    {% for partido in partidos %}
-                    <option>{{partido.nombre}}</option>
-                    {% endfor %}
+                  <select id="partido" name="partido" required>
+                    <option value=""> Partido </option>
                   </select>
                 </div>
               </div>
@@ -41,7 +39,7 @@
               <label class="label">Localidad</label>
               <div class="control">
                 <div class="select is-rounded">
-                  <select name="localidad" required>
+                  <select name="localidad" id="localidad" required>
                     <option value=1>Localidad</option>
                   </select>
                 </div>
@@ -108,7 +106,7 @@
             <div class="field">
               <label class="label">Región sanitaria</label>
               <div class="control">
-                <input type="text" class="input is-rounded" value="1" name="regions" readonly>
+                <input type="text" class="input is-rounded" id="region_s" name="regions" readonly>
               </div>
             </div>
             <!-- ACA HAY QUE USAR JQUERY PARA CARGAR TANTO LA REGION COMO LA LOCALIDAD EN BASE AL PARTIDO     -->
@@ -166,4 +164,9 @@
           <a class="button is-text">Cancelar</a>
         </div>
   </form>
+  {% endblock %}
+  {% block my_js %}
+  <script type="text/javascript" src="web/assets/js/scripts.js"></script>
+
+
   {% endblock %}
