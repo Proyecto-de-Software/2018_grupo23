@@ -16,7 +16,7 @@ require_once('core/Connection.php');
     /* Create functions */
 
     /* para agregar un usuario (faltan hacer todos los chequeos, está hecha así nomás) */
-    public function addUser($email,$username,$password,$first_name,$last_name){
+    public function newUser($email,$username,$password,$first_name,$last_name){
       $query= $this->conn->prepare("INSERT INTO usuario(email,username,password,created_at,first_name_last_name)
                                            VALUES(:email,:username,:password,:activo,:created_at,:first_name,:last_name)");
       $query->bindParam(":email", $email);

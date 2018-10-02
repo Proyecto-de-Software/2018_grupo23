@@ -48,6 +48,10 @@ class Dispatcher{
     UserController::getInstance()->viewUsersList();
   }
 
+  static function add_user(){
+    UserController::getInstance()->addUser();
+  }
+
   static function view_patients_list(){
     PatientController::getInstance()->viewPatientList();
   }

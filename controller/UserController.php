@@ -54,6 +54,16 @@ class UserController extends MainController{
     }
   }
 
+  public function addUser(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      if($this->postElementsCheck(array('apellido','nombre','email','password','username'))){
+        $user_repo= new UserRepository();
+        $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+      }//falta manejador de error
+    }//falta manejador de error
+    $this->viewUsersList();
+  }
+
 }
 
 ?>

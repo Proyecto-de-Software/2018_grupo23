@@ -10,20 +10,20 @@
 
 <section class="section">
   <div class="container">
-     <a id="showModal" class="button is-primary">Agregar Usuario</a>
+     <a class="button is-primary modal-button" data-target="#modal">Agregar Usuario</a>
  </div>
 </section>
 
 <!--Contenido del modal con el formulario para agregar usuario-->
-<div class="modal">
+<div class="modal" id="modal">
   <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Completar formulario</p>
-        <button class="delete" aria-label="close"></button>
+        <button class="delete modal-button" data-target="#modal" aria-label="close"></button>
       </header>
       <section class="modal-card-body">
-        <form class="form" action="" method="post">
+        <form class="form" action="?action=add_user" method="post">
           <div class="field">
             <label class="label">Apellido</label>
             <div class="control">
@@ -42,11 +42,23 @@
               <input type="email" class="input" name="email" required>
             </div>
           </div>
+          <div class="field">
+            <label class="label">Nombre de usuario</label>
+            <div class="control">
+              <input type="text" class="input" name="username" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <div class="control">
+              <input type="password" class="input" name="password" required>
+            </div>
+          </div>
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button modal-close is-success">Guardar</button>
-        <button class="button modal-close">Cancelar</button>
+        <button type="submit" class="button is-success">Guardar</button>
+        <button class="button modal-button" data-target="#modal">Cancelar</button>
       </footer>
     </div>
 </div>
@@ -55,7 +67,7 @@
 <!-- Datatables -->
 <div class="container is-fluid">
   <div class="box has-text-centered">
-      <table id="tabla_usuarios" class="table" data-page-lenght='2'> <!-- ese 10 a ser cambiado por la var del config -->
+      <table id="tabla_usuarios" class="table" data-page-lenght='10'> <!-- ese 10 a ser cambiado por la var del config -->
         <thead>
           <tr>
             <th>Apellido</th>
@@ -108,15 +120,20 @@
       });
     });
   </script>
-  <!-- funciones para hacer andar el modal con el formulario -->
-  <script type="text/javascript">
-    $("#showModal").click(function() {
-    $(".modal").addClass("is-active");
-    });
-    $(".modal-close").click(function() {
-     $(".modal").removeClass("is-active");
-    });
-  </script>
+<!-- funciones para hacer andar el modal con el formulario -->
+<script type="text/javascript">
+
+  var buttons = Array.from(document.getElementsByClassName('modal-button'));
+  for (var i = 0; i < buttons.length; i++) {
+    var button = buttons[i];
+    var target = document.querySelector(button.dataset.target);
+
+    button.addEventListener("click", function(e) {
+      target.classList.toggle('is-active');
+    }, false);
+  }
+
+</script>
 
 
 {% endblock %}
