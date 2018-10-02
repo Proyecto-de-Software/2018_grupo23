@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{% endblock %}</title><!-- Bloque para el titulo de la pagina -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="web/bulma/bulma.min.css">
+  <!-- Bloque para el CSS de cada template -->
+  {% block my_css %}{% endblock %}
+</head>
+
+<body class="has-navbar-fixed-top">
+  <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+
+      <a class="navbar-item"> <img src="web/src/images/logo.png" width="60" height="30" alt="Logo Hospital"> </a>
+
+      <div class="navbar-burger burger" data-target="nav-acciones">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div id="nav-acciones" class="navbar-menu">
+      <div class="navbar-start">
+        <!-- navbar items izquierda -->
+        <p class="is-hidden-touch navbar-item">Hospital Dr. Alejandro Korn</p>
+        {% if loged_user %}
+        <a class="navbar-item" href="./?action=view_patients_list">Pacientes</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <!-- navbar-link, navbar-dropdown etc. -->
+          <a class="navbar-link">Administracion</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="./?action=">Usuarios</a>
+            <a class="navbar-item" href="./?action=">Roles</a>
+            <a class="navbar-item" href="./?action=">Permisos</a>
+            <hr class="navbar-divider">
+            <a class="navbar-item" href="./?action=view_system_config">Configuracion</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="navbar-end">
+        <!-- navbar items derecha -->
+
+        {% if loged_user %}
+        <a class="navbar-item" href="./?action=logout"><span class="is-hidden-desktop">Logout </span><i class="fas fa-sign-out-alt fa-lg"></i></a>
+        {% else %}
+        <a class="navbar-item" href="./?action=view_login">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  {% if error %}
+  <div id="error_noti" class="container notification is-danger">
+    <button id="close_error" class="delete"></button>
+    {{ error }}
+  </div>
+  {% endif %}
+
+  {% if success %}
+  <div id="success_noti" class="container notification is-primary">
+    <button id="close_success" class="delete"></button>
+    {{ success }}
+  </div>
+  {% endif %}
+
+  <!-- Bloque del contendio del html -->
+  {% block content %}{% endblock %}
+
+  <footer class="footer is-small">
+    <div class="level">
+      <div class="level-left">
+        <p class="level-item"><strong>Proyecto de Software 2018</strong>-Hospital Dr. Alejandro Korn</p>
+      </div>
+      <div class="level-rigth">
+        <p class="level-item">v 0.1.0</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="web/assets/jQuery/jquery-3.3.1.min.js"></script>
+  <script src="web/fontawesome/js/all.min.js"></script>
+  <script type="text/javascript" src="web/assets/js/base_template.js"></script>
+  <!-- Bloque de js -->
+  {% block my_js %}{% endblock %}
+
+</body>
+
+</html>
