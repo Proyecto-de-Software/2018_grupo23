@@ -22,9 +22,15 @@ class PatientController extends MainController{
         $query=new PatientRepository();
         $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
         ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
-        ,$_POST["numhc"],$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"]);
-        $this->redirectHome();
+        ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"]);
+        $this->viewPatientList();
       }
+  }
+
+  function addNN(){
+    $query=new PatientRepository();
+    $query->newPatient('NN','NN',2018-12-31,'NN',1,1,'',1,0,1,1111111,0000,00000000,1);
+    $this->viewPatientList();
   }
 
   function viewPatient(){
@@ -46,9 +52,12 @@ class PatientController extends MainController{
   function viewPatientList(){
     $query=new PatientRepository();
     $patient_list=$query->getAllPatients();
-    $param = array("patient_list"=>$patient_list);
+    $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
+    $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
+    $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list );
     $this::$twig->show('list_patients.html',$param);
 }
+
 }
 
 ?>

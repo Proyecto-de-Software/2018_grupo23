@@ -55,6 +55,10 @@ class Dispatcher{
   static function view_patients_list(){
     PatientController::getInstance()->viewPatientList();
   }
+
+  static function add_nn(){
+    PatientController::getInstance()->addNN();
+  }
 }
 
 

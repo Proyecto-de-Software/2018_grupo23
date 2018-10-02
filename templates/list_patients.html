@@ -4,6 +4,20 @@
   <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css"/>
 {% endblock %}
 {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="level">
+<div class="level-left">
+     <button id="showAddPatient" class="button is-primary">Agregar paciente</button>
+</div>
+     <div class="level-right">
+     <form action="?action=add_nn" method="POST">
+       <button type="submit" class="button is-primary">Agregar NN</button>
+    </form>
+  </div>
+  </div>
+ </div>
+</section>
 <div class="container is-fluid">
 <div class="box has-text-centered">
   <table class="table" id="t_pacientes" data-page-length='10'> <!-- ese 10 a ser cambiado por la var del config -->
@@ -39,8 +53,176 @@
   </table>
 </div>
 </div>
+
+<!---- modals ----------------------------------------------------->
+<div class="modal" id="addPatient">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="container is-fluid">
+      <form action="?action=add_patient" method="POST">
+      <div class="box">
+        <p class="title">
+          <p>
+
+            <div class="columns">
+              <div class="column">
+
+                <div class="field">
+                  <label class="label">Apellido*</label>
+                  <div class="control">
+                    <input type="text" class="input is-boxed" name="apellido" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Fecha de nacimiento*</label>
+                  <div class="control">
+                    <input type="date" class="input is-boxed" name="dob" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Partido</label>
+                  <div class="control">
+                    <div class="select is-boxed">
+                      <select id="partido" name="partido" required>
+                        <option value=""> Partido </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Localidad</label>
+                  <div class="control">
+                    <div class="select is-boxed">
+                      <select name="localidad" id="localidad" required>
+                        <option value=1>Localidad</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Género*</label>
+                  <div class="control">
+                    <div class="select is-boxed">
+                      <select name="genero" required>
+                        <option value=1>Masculino</option>
+                        <option value=2>Femenino</option>
+                        <option value=3>Otro</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tipo de documento*</label>
+                  <div class="control">
+                    <div class="select is-boxed">
+                      <select name="typedoc" required>
+                        {% for tipo in tipo_doc %}
+                        <option value="{{tipo.id}}">{{tipo.nombre}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Tel/Cel</label>
+                  <div class="control">
+                    <input type="number" class="input is-boxed" name="telefono">
+                  </div>
+                </div>
+
+              </div>
+              <div class="column">
+
+                <div class="field">
+                  <label class="label">Nombre*</label>
+                  <div class="control">
+                    <input type="text" class="input is-boxed" name="nombre" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Lugar de nacimiento</label>
+                  <div class="control">
+                    <input type="text" class="input is-boxed" name="dobplace">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Región sanitaria</label>
+                  <div class="control">
+                    <input type="text" class="input is-boxed" id="region_s" name="region" readonly>
+                     <input type="hidden" id="region_id" name="regions">
+                  </div>
+                </div>
+
+
+                <div class="field">
+                  <label class="label">Domicilio*</label>
+                  <div class="control">
+                    <input type="text" class="input is-boxed" name="domicilio" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Tiene en su poder su documento*</label>
+                  <div class="control">
+                    <div class="select is-boxed">
+                      <select name="doccheck" required>
+                        <option value=1>SÍ</option>
+                        <option value=0>NO</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Número de documento*</label>
+                  <div class="control">
+                    <input type="number" class="input is-boxed" name="numdoc" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Número de carpeta</label>
+                  <div class="control">
+                    <input type="number" max="99999" class="input is-boxed" name="numcarpeta">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Obra social</label>
+                  <div class="control">
+                    <div class="select is-boxed">
+                      <select name="obra_social" required>
+                        {% for os in obras_sociales %}
+                        <option value="{{os.id}}">{{os.nombre}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+    </div>
+              <p>* campos obligatorios</p>
+            <div class="box has-text-centered">
+              <button type="submit" class="button is-primary" value="add_patient">Agregar</button>
+              <a class="button is-text" id="cancel">Cancelar</a>
+            </div>
+      </form>
+    </div>
+  </div>
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+<!---- fin modals -------------------------------------------------->
 {% endblock %}
 {% block my_js %}
+  <script type="text/javascript" src="web/assets/js/scripts.js"></script>
   <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
   <script> $(document).ready( function () {
     $('#t_pacientes').DataTable({
@@ -67,4 +249,17 @@
     }
     });
 } );</script>
+  <script>
+    $(document).ready(function(){
+      $('#showAddPatient').on("click",function(){
+        $('#addPatient').fadeIn();
+      });
+      $('.modal-close').on("click",function(){
+        $('#addPatient').fadeOut();
+      });
+      $('#cancel').on("click",function(){
+        $('#addPatient').fadeOut();
+      });
+    });
+  </script>
 {% endblock %}
