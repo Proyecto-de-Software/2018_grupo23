@@ -2,10 +2,10 @@
 
 abstract class Connection {
 
-  private $username = "root";
-  private $password = "";
+  private $username = "grupo23";
+  private $password = "ZjJjODE4MTY5M2U3";
 	private $host ="127.0.0.1";
-  private $db = "trabajo-proyecto-2018";
+  private $db = "grupo23";
   protected $conn;
 
   function __construct(){

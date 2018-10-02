@@ -1,13 +1,11 @@
-{% extends 'template.html' %} {% block title %}Usuarios{% endblock %}
-
-{% block titulo_del_hero %}Usuarios{% endblock %}
+{% extends 'base_template.html' %} {% block title %}Usuarios{% endblock %}
 
 {% block my_css %}
   <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css"/>
 {% endblock %}
 
 {% block content %}
-
+<!--{% block titulo_del_hero %}Usuarios{% endblock %}-->
 <section class="section">
   <div class="container">
      <a class="button is-primary modal-button" data-target="#modal">Agregar Usuario</a>
