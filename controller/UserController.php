@@ -44,8 +44,16 @@ class UserController extends MainController{
   }
 
   public function viewUsersList(){
-      $this::$twig->show('list_users.html');
+    if(!is_null(AppController::getInstance()->getUser())){
+      $user_repo = new UserRepository();
+      $users= $user_repo->getAllUsers();
+      $param= array('users'=>$users);
+      $this::$twig->show('list_users.html', $param);
+    }else{
+      $this->redirectHome();
+    }
   }
+
 }
 
 ?>
