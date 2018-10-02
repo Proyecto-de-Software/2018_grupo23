@@ -17,6 +17,7 @@
               var url="https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/"+partido;
               $.getJSON(url, function(data){
                 $("#region_s").val(data.nombre);
+                $("#region_id").val(data.id);
               });
             }
             else{

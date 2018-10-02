@@ -42,6 +42,12 @@ require_once('core/Connection.php');
       $query->execute();
       return $query->fetchall();
     }
+
+    function getAllPatients(){
+      $query=$this->conn->prepare("SELECT * FROM paciente");
+      $query->execute();
+      return $query->fetchall();
+    }
     /* End of read  functions */
 
     /* Update functions */
