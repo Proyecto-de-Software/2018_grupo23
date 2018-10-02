@@ -43,6 +43,22 @@ class Dispatcher{
   static function save_config(){
     ConfigController::getInstance()->saveConfig();
   }
+
+  static function view_users_list(){
+    UserController::getInstance()->viewUsersList();
+  }
+
+  static function add_user(){
+    UserController::getInstance()->addUser();
+  }
+
+  static function view_patients_list(){
+    PatientController::getInstance()->viewPatientList();
+  }
+
+  static function add_nn(){
+    PatientController::getInstance()->addNN();
+  }
 }
 
 

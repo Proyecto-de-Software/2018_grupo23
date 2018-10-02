@@ -37,12 +37,12 @@
           $ok = (isset($_POST[$key]) && !empty($_POST[$key]));
         }
         //para debugear
-        /*
+
           if(!$ok){
           echo($elements[--$i]);
           die();
         }
-        */
+        
         return $ok;
       }
   }

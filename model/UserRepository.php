@@ -14,6 +14,21 @@ require_once('core/Connection.php');
     }
 
     /* Create functions */
+
+    /* para agregar un usuario (faltan hacer todos los chequeos, está hecha así nomás) */
+    public function newUser($email,$username,$password,$first_name,$last_name){
+      $query= $this->conn->prepare("INSERT INTO usuario(email,username,password,created_at,first_name_last_name)
+                                           VALUES(:email,:username,:password,:activo,:created_at,:first_name,:last_name)");
+      $query->bindParam(":email", $email);
+      $query->bindParam(":username", $user_name);
+      $query->bindParam(":password", $password);
+      $query->bindParam(":activo", 1);
+      $query->bindParam(":created_at", NOW());
+      $query->bindParam(":first_name", $first_name);
+      $query->bindParam(":last_name", $last_name);
+      $query->execute();
+    }
+
     /* End of create functions */
 
     /* READ functions */
@@ -38,6 +53,13 @@ require_once('core/Connection.php');
       $query->execute();
       return $query->fetchall(PDO::FETCH_ASSOC); //evita que devuelva la respuesta duplicada
     }
+
+    public function getAllUsers(){
+        $query = $this->conn->prepare("SELECT first_name,last_name,email FROM usuario");
+        $query->execute();
+        return $query->fetchall();
+    }
+
 
     /* End of read  functions */
 

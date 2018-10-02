@@ -43,7 +43,8 @@
             </div>
           </div>
           {% if loged_user %}
-          <a class="navbar-item" href="./?action=view_add_patient">Agregar paciente</a>
+          <a class="navbar-item" href="./?action=view_system_config">Configuración</a>
+          <a class="navbar-item" href="./?action=view_patients_list">Pacientes</a>
           <a class="navbar-item" href="./?action=logout">Logout</a>
           {% else %}
           <a class="navbar-item" href="./?action=view_login">Login</a>
@@ -51,6 +52,13 @@
         </div>
         </nav>
     </header>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <h1 class="title">{% block titulo_del_hero %}{% endblock %}</h1>
+        </div>
+      </div>
+    </section>
     <!-- Bloque del contendio del html -->
     {% block content %}{% endblock %}
     <footer class="footer">
@@ -59,9 +67,10 @@
         <p class="footer_version">v 0.1.0</p>
       </div>
     </footer>
-  </body>
 
+  </body>
   <!-- Bloque de js -->
-  <script type="text/javascript" src="./web/assets/jQuery">
+  <script type="text/javascript" src="web/assets/jQuery/jquery-3.3.1.min.js"></script>
   {% block my_js %}
   {% endblock %}
+  </html>

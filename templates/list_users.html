@@ -1,0 +1,139 @@
+{% extends 'template.html' %} {% block title %}Usuarios{% endblock %}
+
+{% block titulo_del_hero %}Usuarios{% endblock %}
+
+{% block my_css %}
+  <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css"/>
+{% endblock %}
+
+{% block content %}
+
+<section class="section">
+  <div class="container">
+     <a class="button is-primary modal-button" data-target="#modal">Agregar Usuario</a>
+ </div>
+</section>
+
+<!--Contenido del modal con el formulario para agregar usuario-->
+<div class="modal" id="modal">
+  <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Completar formulario</p>
+        <button class="delete modal-button" data-target="#modal" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <form class="form" action="?action=add_user" method="post">
+          <div class="field">
+            <label class="label">Apellido</label>
+            <div class="control">
+              <input type="text" class="input" name="apellido" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control">
+              <input type="text" class="input" name="nombre" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input type="email" class="input" name="email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Nombre de usuario</label>
+            <div class="control">
+              <input type="text" class="input" name="username" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <div class="control">
+              <input type="password" class="input" name="password" required>
+            </div>
+          </div>
+        </form>
+      </section>
+      <footer class="modal-card-foot">
+        <button type="submit" class="button is-success">Guardar</button>
+        <button class="button modal-button" data-target="#modal">Cancelar</button>
+      </footer>
+    </div>
+</div>
+<!-- Hasta acá el modal-->
+
+<!-- Datatables -->
+<div class="container is-fluid">
+  <div class="box has-text-centered">
+      <table id="tabla_usuarios" class="table" data-page-lenght='10'> <!-- ese 10 a ser cambiado por la var del config -->
+        <thead>
+          <tr>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>e-mail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{user.last_name}}</td>
+            <td>{{user.first_name}}</td>
+            <td>{{user.email}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block my_js %}
+<!-- script para cargar las datatables-->
+<script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
+  <!-- funcion para hacer la datatables -->
+  <script>
+    $(document).ready( function () {
+      $('#tabla_usuarios').DataTable({
+         "lengthChange": false,
+          language: {
+            "decimal": "",
+            "emptyTable": "No se encontró información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+      });
+    });
+  </script>
+<!-- funciones para hacer andar el modal con el formulario -->
+<script type="text/javascript">
+
+  var buttons = Array.from(document.getElementsByClassName('modal-button'));
+  for (var i = 0; i < buttons.length; i++) {
+    var button = buttons[i];
+    var target = document.querySelector(button.dataset.target);
+
+    button.addEventListener("click", function(e) {
+      target.classList.toggle('is-active');
+    }, false);
+  }
+
+</script>
+
+
+{% endblock %}

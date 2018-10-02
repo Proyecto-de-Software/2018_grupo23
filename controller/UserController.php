@@ -42,6 +42,28 @@ class UserController extends MainController{
     $this->redirectHome();
     $_GET['action']='';
   }
+
+  public function viewUsersList(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      $user_repo = new UserRepository();
+      $users= $user_repo->getAllUsers();
+      $param= array('users'=>$users);
+      $this::$twig->show('list_users.html', $param);
+    }else{
+      $this->redirectHome();
+    }
+  }
+
+  public function addUser(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      if($this->postElementsCheck(array('apellido','nombre','email','password','username'))){
+        $user_repo= new UserRepository();
+        $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+      }//falta manejador de error
+    }//falta manejador de error
+    $this->viewUsersList();
+  }
+
 }
 
 ?>
