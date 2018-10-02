@@ -35,14 +35,20 @@ class PatientController extends MainController{
 
   function viewPatient(){
     $query=new PatientRepository();
-    $patient=$query->getPatient(14); //cambiar por POST_ID
+    $patient=$query->getPatient($_POST["id"]); //cambiar por POST_ID
     if(!empty($patient)){
+      //agregar partido
       $p_localidad=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/'.$patient[0]["localidad_id"]));
       $p_region_s=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/'.$patient[0]["region_sanitaria_id"]));
       $p_tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'.$patient[0]["tipo_doc_id"]));
       $p_obra_social=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/'.$patient[0]["obra_social_id"]));
       if((!empty($p_localidad)) && (!empty($p_region_s)) && (!empty($p_tipo_doc)) && (!empty($p_obra_social))){
-        //llamar a twig y pasarle todas las variables para mostrar datos del usuario
+        $patient[0]["localidad_id"]=$p_localidad;
+        $patient[0]["region_sanitaria_id"]=$p_region_s;
+        $patient[0]["tipo_doc_id"]=$p_tipo_doc;
+        $patient[0]["obra_social_id"]=$p_obra_social;
+        //agregar partido
+        echo(json_encode($patient));
       }
     }
     else{
