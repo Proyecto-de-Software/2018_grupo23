@@ -16,19 +16,19 @@ public function getParameters(){
     return $query->fetchall();
 }
 
-public function saveConfig($titulo, $email, $descrip, $cant_elems, $estado){
+public function saveConfig($titulo, $email, $descrip, $paginado, $estado){
   $query = $this->conn->prepare("UPDATE configuracion
                                  SET valor = CASE variable
                                                WHEN 'titulo' THEN :titulo
                                                WHEN 'email' THEN :email
                                                WHEN 'descripcion' THEN :descrip
-                                               WHEN 'elementos_por_pagina' THEN :cant_elems
-                                               WHEN 'estado_sitio' THEN :estado
+                                               WHEN 'paginado' THEN :paginado
+                                               WHEN 'estado' THEN :estado
                                              END");
   $query->bindParam(":titulo",$titulo);
   $query->bindParam(":email",$email);
   $query->bindParam(":descrip",$descrip);
-  $query->bindParam(":cant_elems",$cant_elems);
+  $query->bindParam(":paginado",$paginado);
   $query->bindParam(":estado",$estado);
   $query->execute();
   }

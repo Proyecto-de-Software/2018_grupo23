@@ -57,8 +57,15 @@ require_once('core/Connection.php');
       return $query->fetchall(PDO::FETCH_ASSOC); //evita que devuelva la respuesta duplicada
     }
 
-    public function getAllUsers(){
-        $query = $this->conn->prepare("SELECT first_name,last_name,email,username FROM usuario");
+    public function getRolesFromUsuario($id){
+      $query=$this->conn->prepare("SELECT rol.nombre as rol FROM usuario u INNER JOIN usuario_tiene_rol ur ON u.id = :id AND ur.usuario_id = u.id INNER JOIN rol ON rol.id = ur.rol_id");
+      $query->bindParam(":id",$id);
+      $query->execute();
+      return $query->fetchall(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllUsuarios(){
+        $query = $this->conn->prepare("SELECT * FROM usuario");
         $query->execute();
         return $query->fetchall();
     }

@@ -70,7 +70,7 @@
 <!-- Datatables -->
 <div class="container is-fluid">
   <div class="box has-text-centered">
-      <table id="tabla_usuarios" class="table" data-page-lenght='10'> <!-- ese 10 a ser cambiado por la var del config -->
+      <table id="tabla_usuarios" class="table" data-page-lenght='2'> <!-- ese 10 a ser cambiado por la var del config -->
         <thead>
           <tr>
             <th>#</th>
@@ -78,6 +78,10 @@
             <th>Nombre</th>
             <th>e-mail</th>
             <th>Nombre de usuario</th>
+            <th>Rol</th>
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +92,16 @@
             <td>{{ user.first_name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.username }}</td>
+            <td>
+            {% for rol in user.roles %}
+               {{ rol }}
+            {% endfor %}
+            </td>
+            <td><button class="button_v button is-primary">V</button>
+              <input class="user_id" value="{{user.id}}" hidden></input>
+            </td>
+            <td><button class="button_e button is-primary">E</button></td>
+            <td><button class="button_d button is-primary">B</button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -98,7 +112,6 @@
 
 {% block my_js %}
 <!-- script para cargar las datatables-->
-<script type="text/javascript" src="web/assets/js/scripts.js"></script>
 <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
 <!-- funcion para hacer la datatables -->
 <script>

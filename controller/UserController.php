@@ -51,7 +51,16 @@ class UserController extends MainController{
       if(!is_null($error)){
         $param['error']= $error;
       }
-      $users= $user_repo->getAllUsers();
+      $users= $user_repo->getAllUsuarios();
+      foreach ($users as $key=>$user){
+        $roles=$user_repo->getRolesFromUsuario($user['id']);
+        $users[$key]['roles']= (isset($roles[0]) ? $roles[0] : array('NA'));
+      }
+      // echo "<pre>";
+      //
+      // echo  print_r($users);
+      //   echo "<pre>";
+      // die();
       $param['users']= $users;
       $this::$twig->show('list_users.html', $param);
     }else{
