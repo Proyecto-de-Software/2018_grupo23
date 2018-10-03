@@ -7,7 +7,6 @@
 <div class="columns">
   <div class="column is-6 is-offset-3">
         <h2 class="subtitle">{{ error }}</h2>
-        <!-- <button id="edit_btn" class="button" onclick="grayer('f_1',false);">Editar</button> -->
         <form id="f_1" class="box" action="?action=save_config" method="post">
             <div class="field">
                 <label class="label" for="titulo">Título:</label>
@@ -35,9 +34,9 @@
               <label class="label">Cantidad de elementos por página en los listados</label>
                 <div class="control">
                   <div class="select">
-                    <select name="cant_elems">
+                    <select name="paginado">
                       {% for i in range(5, 30, 5) %}
-                        <option value="{{ i }}"{% if i == config.cant_elems %} selected="selected"{% endif %}>{{ i }}</option>
+                        <option value="{{ i }}"{% if i == config.paginado %} selected="selected"{% endif %}>{{ config.paginado }}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -46,15 +45,15 @@
             </div>
 
             <div class="field">
-              <label class="label">Deshabilitar sitio temporalmente</label>
+              <label class="label">Estado del sitio</label>
               <div class="control">
                 <div class="select">
                   <select name="estado">
-                    <option value="No"{% if config.estado == "No" %} selected="selected"{% endif %}>No</option>
-                    <option value="Si"{% if config.estado == "Si" %} selected="selected"{% endif %}>Si</option>
+                    <option value="habilitado"{% if config.estado == "Habilitado" %} selected="selected"{% endif %}>Habilitado</option>
+                    <option value="deshabilitado"{% if config.estado == "Deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
                   </select>
                 </div>
-                <p class="help">Si se encuentra deshabilitado lo podrá ver solamente el/los administradores del sistema</p>
+                <p class="help">Si se encuentra deshabilitado lo podrán ver solamente el/los administradores del sistema</p>
               </div>
             </div>
 

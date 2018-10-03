@@ -24,9 +24,9 @@ class ConfigController extends MainController {
   }
 
   public function saveConfig(){
-    if($this->postElementsCheck(array('titulo', 'email', 'descripcion', 'cant_elems', 'estado'))){
+    if($this->postElementsCheck(array('titulo', 'email', 'descripcion', 'paginado', 'estado'))){
       $query=new ConfigRepository();
-      $query->saveConfig($_POST["titulo"],$_POST["email"],$_POST["descripcion"],$_POST["cant_elems"],$_POST["estado"]);
+      $query->saveConfig($_POST["titulo"],$_POST["email"],$_POST["descripcion"],$_POST["paginado"],$_POST["estado"]);
       $this->redirectHome();
     }else{
       $this->viewSystemConfig('Hubo un error: debe completar todas las opciones');
@@ -40,9 +40,10 @@ class ConfigController extends MainController {
     return array('titulo'=>$config[0][2],
                   'email'=>$config[1][2],
                   'descripcion'=>$config[2][2],
-                  'cant_elems'=>$config[3][2],
+                  'paginado'=>$config[3][2],
                   'estado'=>$config[4][2]);
   }
+
 }
 
 ?>

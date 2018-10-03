@@ -8,77 +8,100 @@
 <!--{% block titulo_del_hero %}Usuarios{% endblock %}-->
 <section class="section">
   <div class="container">
-     <a class="button is-primary modal-button" data-target="#modal">Agregar Usuario</a>
+     <a id="showAddUser" class="button is-primary modal-button">Agregar Usuario</a>
  </div>
 </section>
 
 <!--Contenido del modal con el formulario para agregar usuario-->
-<div class="modal" id="modal">
+<div class="modal" id="addUser">
   <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Completar formulario</p>
-        <button class="delete modal-button" data-target="#modal" aria-label="close"></button>
+        <button class="delete" aria-label="close"></button>
       </header>
       <section class="modal-card-body">
         <form class="form" action="?action=add_user" method="post">
           <div class="field">
-            <label class="label">Apellido</label>
+            <label class="label">Apellido*</label>
             <div class="control">
-              <input type="text" class="input" name="apellido" required>
+              <input type="text" class="input" name="apellido">
             </div>
           </div>
           <div class="field">
-            <label class="label">Nombre</label>
+            <label class="label">Nombre*</label>
             <div class="control">
               <input type="text" class="input" name="nombre" required>
             </div>
           </div>
           <div class="field">
-            <label class="label">Email</label>
+            <label class="label">Email*</label>
             <div class="control">
               <input type="email" class="input" name="email" required>
             </div>
           </div>
           <div class="field">
-            <label class="label">Nombre de usuario</label>
+            <label class="label">Nombre de usuario*</label>
             <div class="control">
               <input type="text" class="input" name="username" required>
             </div>
           </div>
           <div class="field">
-            <label class="label">Contraseña</label>
+            <label class="label">Contraseña*</label>
             <div class="control">
               <input type="password" class="input" name="password" required>
             </div>
           </div>
+          <div class="field">
+            <label class="label">Confirmar contraseña*</label>
+            <div class="control">
+              <input type="password" class="input" name="re_password" required>
+            </div>
+          </div>
+          <button type="submit" class="button is-success" value="add_user">Guardar</button>
+          <button id="cancel" class="button">Cancelar</button>
         </form>
       </section>
-      <footer class="modal-card-foot">
-        <button type="submit" class="button is-success">Guardar</button>
-        <button class="button modal-button" data-target="#modal">Cancelar</button>
-      </footer>
     </div>
+    <button class="modal-close is-large" aria-label="close"></button>
 </div>
 <!-- Hasta acá el modal-->
 
 <!-- Datatables -->
 <div class="container is-fluid">
   <div class="box has-text-centered">
-      <table id="tabla_usuarios" class="table" data-page-lenght='10'> <!-- ese 10 a ser cambiado por la var del config -->
+      <table id="tabla_usuarios" class="table" data-page-lenght='2'> <!-- ese 10 a ser cambiado por la var del config -->
         <thead>
           <tr>
+            <th>#</th>
             <th>Apellido</th>
             <th>Nombre</th>
             <th>e-mail</th>
+            <th>Nombre de usuario</th>
+            <th>Rol</th>
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for user in users %}
           <tr>
-            <td>{{user.last_name}}</td>
-            <td>{{user.first_name}}</td>
-            <td>{{user.email}}</td>
+            <td>{{ loop.index }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+            {% for rol in user.roles %}
+               {{ rol }}
+            {% endfor %}
+            </td>
+            <td><button class="button_v button is-primary">V</button>
+              <input class="user_id" value="{{user.id}}" hidden></input>
+            </td>
+            <td><button class="button_e button is-primary">E</button></td>
+            <td><button class="button_d button is-primary">B</button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -90,48 +113,49 @@
 {% block my_js %}
 <!-- script para cargar las datatables-->
 <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
-  <!-- funcion para hacer la datatables -->
-  <script>
-    $(document).ready( function () {
-      $('#tabla_usuarios').DataTable({
-         "lengthChange": false,
-          language: {
-            "decimal": "",
-            "emptyTable": "No se encontró información",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Mostrar _MENU_ Entradas",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar:",
-            "zeroRecords": "Sin resultados encontrados",
-            "paginate": {
-                "first": "Primero",
-                "last": "Ultimo",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-      });
+<!-- funcion para hacer la datatables -->
+<script>
+  $(document).ready( function () {
+    $('#tabla_usuarios').DataTable({
+       "lengthChange": false,
+        language: {
+          "decimal": "",
+          "emptyTable": "No se encontró información",
+          "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+          "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+          "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+          "infoPostFix": "",
+          "thousands": ",",
+          "lengthMenu": "Mostrar _MENU_ Entradas",
+          "loadingRecords": "Cargando...",
+          "processing": "Procesando...",
+          "search": "Buscar:",
+          "zeroRecords": "Sin resultados encontrados",
+          "paginate": {
+              "first": "Primero",
+              "last": "Ultimo",
+              "next": "Siguiente",
+              "previous": "Anterior"
+          }
+      }
     });
-  </script>
-<!-- funciones para hacer andar el modal con el formulario -->
-<script type="text/javascript">
-
-  var buttons = Array.from(document.getElementsByClassName('modal-button'));
-  for (var i = 0; i < buttons.length; i++) {
-    var button = buttons[i];
-    var target = document.querySelector(button.dataset.target);
-
-    button.addEventListener("click", function(e) {
-      target.classList.toggle('is-active');
-    }, false);
-  }
-
+  });
 </script>
+<!-- funciones para hacer andar el modal con el formulario -->
+<script>
+  $(document).ready(function(){
+    $('#showAddUser').on("click",function(){
+      $('#addUser').fadeIn();
+    });
+    $('.modal-close').on("click",function(){
+      $('#addUser').fadeOut();
+    });
+    $('#cancel').on("click",function(){
+      $('#addUser').fadeOut();
+    });
+  });
+</script>
+
 
 
 {% endblock %}
