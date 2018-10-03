@@ -66,7 +66,7 @@
               $('#addPatient').fadeOut();
             });
 
-            $('#t_pacientes').on("click",".button_v",function(){
+            $('#tabla').on("click",".button_v",function(){
               var id_paciente= $(this).closest('tr').find('.p_id').val();
               $.ajax({
                 method: "POST",

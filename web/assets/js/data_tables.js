@@ -1,5 +1,5 @@
 $(document).ready( function () {
-  $('#t_pacientes').DataTable({
+  $('#tabla').DataTable({
     "lengthChange": false,
     language: {
       "decimal": "",
