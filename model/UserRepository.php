@@ -3,10 +3,10 @@ require_once('core/Connection.php');
   /**
    * Repositorio de usuario
    */
-   /*
-   $query->debugDumpParams(); // para debugear las consultas!
-   die();
-   */
+
+   // $query->debugDumpParams(); // para debugear las consultas!
+   // die();
+
   class UserRepository extends Connection{
 
     function __construct(){
@@ -17,13 +17,16 @@ require_once('core/Connection.php');
 
     /* para agregar un usuario (faltan hacer todos los chequeos, está hecha así nomás) */
     public function newUser($email,$username,$password,$first_name,$last_name){
-      $query= $this->conn->prepare("INSERT INTO usuario(email,username,password,created_at,first_name_last_name)
-                                           VALUES(:email,:username,:password,:activo,:created_at,:first_name,:last_name)");
+      $query= $this->conn->prepare("INSERT INTO usuario(email,username,password,activo,created_at,updated_at,first_name,last_name)
+                                         VALUES(:email,:username,:password,:activo,:created_at,:updated_at,:first_name,:last_name)");
       $query->bindParam(":email", $email);
-      $query->bindParam(":username", $user_name);
+      $query->bindParam(":username", $username);
       $query->bindParam(":password", $password);
-      $query->bindParam(":activo", 1);
-      $query->bindParam(":created_at", NOW());
+      $activo= 1;
+      $query->bindParam(":activo", $activo);
+      $date_now= date('Y-m-d H:i:s');
+      $query->bindParam(":created_at", $date_now);
+      $query->bindParam(":updated_at", $date_now);
       $query->bindParam(":first_name", $first_name);
       $query->bindParam(":last_name", $last_name);
       $query->execute();
@@ -55,9 +58,17 @@ require_once('core/Connection.php');
     }
 
     public function getAllUsers(){
-        $query = $this->conn->prepare("SELECT first_name,last_name,email FROM usuario");
+        $query = $this->conn->prepare("SELECT first_name,last_name,email,username FROM usuario");
         $query->execute();
         return $query->fetchall();
+    }
+
+    public function checkEmail($email){
+      $query= $this->conn->prepare("SELECT * FROM usuario WHERE email=:email");
+      $query->bindParam(":email",$email);
+      $query->execute();
+      $valid=$query->fetchAll();
+      return empty($valid);
     }
 
 
