@@ -1,9 +1,9 @@
-{% extends 'template.html' %} {% block title %}Pacientes{% endblock %}
-{% block titulo_del_hero %}Pacientes{% endblock %}
+{% extends 'base_template.html' %} {% block title %}Pacientes{% endblock %}
 {% block my_css %}
   <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css"/>
 {% endblock %}
 {% block content %}
+<!--{% block titulo_del_hero %}Pacientes{% endblock %}-->
 <section class="section">
   <div class="container">
     <div class="level">
@@ -43,9 +43,11 @@
         <td>{{paciente.tipo_doc_id}}</td>
         <td>{{paciente.numero}}</td>
         <td>{{paciente.nro_historia_clinica}}</td>
-        <td>V</td>
-        <td>E</td>
-        <td>B</td>
+        <td><button class="button_v button is-primary">V</button>
+          <input class="p_id" value="{{paciente.id}}" hidden></input>
+        </td>
+        <td><button class="button_e button is-primary">E</button></td>
+        <td><button class="button_d button is-primary">B</button></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -219,6 +221,144 @@
   <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
+
+<div class="modal" id="viewPatient">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="container is-fluid">
+      <div class="box">
+        <p class="title">
+          <p>
+
+            <div class="columns">
+              <div class="column">
+
+                <div class="field">
+                  <label class="label">Apellido*</label>
+                  <div class="control">
+                    <input id="v_apellido" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Fecha de nacimiento*</label>
+                  <div class="control">
+                    <input id="v_dob" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Partido</label>
+                  <div class="control">
+                    <input id="v_partido" class="is-boxed" value="" readonly></input>
+                    </div>
+                  </div>
+
+                <div class="field">
+                  <label class="label">Localidad</label>
+                  <div class="control">
+                      <input id="v_localidad" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Género*</label>
+                  <div class="control">
+                      <input id="v_genero" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tipo de documento*</label>
+                  <div class="control">
+                      <input id="v_tipodoc" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Tel/Cel</label>
+                  <div class="control">
+                    <input id="v_tel" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+              </div>
+              <div class="column">
+
+                <div class="field">
+                  <label class="label">Nombre*</label>
+                  <div class="control">
+                    <input id="v_nombre" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Lugar de nacimiento</label>
+                  <div class="control">
+                    <input id="v_dobplace" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Región sanitaria</label>
+                  <div class="control">
+                    <input id="v_region" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+
+                <div class="field">
+                  <label class="label">Domicilio*</label>
+                  <div class="control">
+                    <input id="v_domicilio" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Tiene en su poder su documento*</label>
+                  <div class="control">
+                      <input id="v_tienedoc" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Número de documento*</label>
+                  <div class="control">
+                    <input id="v_numdoc" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Número de carpeta</label>
+                  <div class="control">
+                    <input id="v_numcarpeta" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Obra social</label>
+                  <div class="control">
+                      <input id="v_obrasocial" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Número de historia clínica</label>
+                  <div class="control">
+                      <input id="v_hc" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="box has-text-centered">
+              <a class="button is-text" id="close">Cerrar</a>
+            </div>
+    </div>
+
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+
 <!---- fin modals -------------------------------------------------->
 {% endblock %}
 {% block my_js %}
@@ -259,6 +399,88 @@
       });
       $('#cancel').on("click",function(){
         $('#addPatient').fadeOut();
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function(){
+      $('#t_pacientes').on("click",".button_v",function(){
+        var id_paciente= $(this).closest('tr').find('.p_id').val();
+        $.ajax({
+          method: "POST",
+          url: "./?action=view_patient",
+          data: { id: id_paciente}
+        })
+          .done(function(paciente){
+            var p=JSON.parse(paciente);
+            console.log(p);
+            $('#v_nombre').val(p[0].nombre);
+            $('#v_apellido').val(p[0].apellido);
+            $('#v_dob').val(p[0].fecha_nac);
+            $('#v_localidad').val(p[0].localidad_id.nombre);
+            if(p[0].genero_id=="1"){
+              $('#v_genero').val("Masculino");
+            }else if (p[0].genero_id=="2") {
+              $('#v_genero').val("Femenino");
+            }else {
+              $('#v_genero').val("Otro");
+            }
+            $('#v_tipodoc').val(p[0].tipo_doc_id.nombre);
+            $('#v_tel').val(p[0].tel);
+            $('#v_dobplace').val(p[0].lugar_nac);
+            $('#v_region').val(p[0].region_sanitaria_id.nombre);
+            $('#v_domicilio').val(p[0].domicilio);
+            if(p[0].tiene_documento=="1"){
+              $('#v_tienedoc').val("Sí");
+            }else {
+              $('#v_tienedoc').val("No");
+            }
+            $('#v_numdoc').val(p[0].numero);
+            $('#v_numcarpeta').val(p[0].nro_carpeta);
+            $('#v_obrasocial').val(p[0].obra_social_id.nombre);
+            $('#v_hc').val(p[0].nro_historia_clinica);
+
+          });
+          $('#t_pacientes').on("click",".button_v",function(){
+            $('#viewPatient').fadeIn();
+          });
+      });
+
+      $('.modal-close').on("click",function(){
+        $('#viewPatient').fadeOut();
+      });
+      $('#close').on("click",function(){
+        $('#viewPatient').fadeOut();
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function(){
+      $('#t_pacientes').on("click",".button_e",function(){
+        var id_paciente= $(this).closest('tr').find('.p_id').val();
+        $.ajax({
+          method: "POST",
+          url: "./?action=view_patient",
+          data: { id: id_paciente}
+        })
+          .done(function(paciente){
+            console.log(paciente);
+          });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function(){
+      $('#t_pacientes').on("click",".button_d",function(){
+        var id_paciente= $(this).closest('tr').find('.p_id').val();
+        console.log(id_paciente);
+        $.ajax({
+          method: "POST",
+          url: "./?action=view_patient",
+          data: { id: id_paciente}
+        })
+          .done(function(paciente){
+          });
       });
     });
   </script>
