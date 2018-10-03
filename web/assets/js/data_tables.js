@@ -20,6 +20,10 @@ $(document).ready( function () {
           "next": "Siguiente",
           "previous": "Anterior"
     }
-  }
+  },
+  rowReorder: {
+            selector: 'td:nth-child(3)'
+        },
+        responsive: true
   });
 } );

@@ -15,7 +15,7 @@ class PatientController extends MainController{
         $query=new PatientRepository();
         $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
         ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
-        ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"]);
+        ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
         $this->viewPatientList();
       }
   }
@@ -30,7 +30,7 @@ class PatientController extends MainController{
     $query=new PatientRepository();
     $patient=$query->getPatient($_POST["id"]); //cambiar por POST_ID
     if(!empty($patient)){
-      //agregar partido
+      $p_partido=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido/'.$patient[0]["partido_id"]));
       $p_localidad=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/'.$patient[0]["localidad_id"]));
       $p_region_s=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/'.$patient[0]["region_sanitaria_id"]));
       $p_tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'.$patient[0]["tipo_doc_id"]));
@@ -40,7 +40,7 @@ class PatientController extends MainController{
         $patient[0]["region_sanitaria_id"]=$p_region_s;
         $patient[0]["tipo_doc_id"]=$p_tipo_doc;
         $patient[0]["obra_social_id"]=$p_obra_social;
-        //agregar partido
+        $patient[0]["partido_id"]=$p_partido;
         echo(json_encode($patient));
       }
     }

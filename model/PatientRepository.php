@@ -11,11 +11,11 @@ require_once('core/Connection.php');
 
     /* Create functions */
     function newPatient($apellido,$nombre,$dob,$dobplace,$region_sanitaria,$localidad,$domicilio,
-    $genero,$doccheck,$tipo_documento,$numero_documento,$numero_carpeta,$telefono,$obra_social){
+    $genero,$doccheck,$tipo_documento,$numero_documento,$numero_carpeta,$telefono,$obra_social,$partido){
       $query = $this->conn->prepare("INSERT INTO paciente (apellido,nombre,fecha_nac,lugar_nac,localidad_id,region_sanitaria_id,
-      domicilio,genero_id,tiene_documento,tipo_doc_id,numero,tel,nro_carpeta,obra_social_id)
+      domicilio,genero_id,tiene_documento,tipo_doc_id,numero,tel,nro_carpeta,obra_social_id,partido_id)
       VALUES(:apellido,:nombre,:dob,:dobplace,:localidad,:region_sanitaria,:domicilio,:genero,:doccheck,
-      :tipo_documento,:numero_documento,:telefono,:numero_carpeta,:obra_social)");
+      :tipo_documento,:numero_documento,:telefono,:numero_carpeta,:obra_social,:partido)");
       $query->bindParam(":apellido",$apellido);
       $query->bindParam(":nombre",$nombre);
       $query->bindParam(":dob",$dob);
@@ -30,6 +30,7 @@ require_once('core/Connection.php');
       $query->bindParam(":numero_carpeta",$numero_carpeta);
       $query->bindParam(":telefono",$telefono);
       $query->bindParam(":obra_social",$obra_social);
+      $query->bindParam(":partido",$partido);
       $query->execute();
       }
     /* End of create functions */

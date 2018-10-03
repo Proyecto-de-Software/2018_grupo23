@@ -1,23 +1,24 @@
 <div class="modal" id="viewPatient">
   <div class="modal-background"></div>
-  <div class="modal-content">
-    <div class="container is-fluid">
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Paciente</p>
+      <button class="modal-close" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
       <div class="box">
-        <p class="title">
-          <p>
-
             <div class="columns">
               <div class="column">
 
                 <div class="field">
-                  <label class="label">Apellido*</label>
+                  <label class="label">Apellido</label>
                   <div class="control">
                     <input id="v_apellido" class="is-boxed" value="" readonly></input>
                   </div>
                 </div>
 
                 <div class="field">
-                  <label class="label">Fecha de nacimiento*</label>
+                  <label class="label">Fecha de nacimiento</label>
                   <div class="control">
                     <input id="v_dob" class="is-boxed" value="" readonly></input>
                   </div>
@@ -37,13 +38,13 @@
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Género*</label>
+                  <label class="label">Género</label>
                   <div class="control">
                       <input id="v_genero" class="is-boxed" value="" readonly></input>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Tipo de documento*</label>
+                  <label class="label">Tipo de documento</label>
                   <div class="control">
                       <input id="v_tipodoc" class="is-boxed" value="" readonly></input>
                   </div>
@@ -56,11 +57,18 @@
                   </div>
                 </div>
 
+                <div class="field">
+                  <label class="label">Obra social</label>
+                  <div class="control">
+                      <input id="v_obrasocial" class="is-boxed" value="" readonly></input>
+                  </div>
+                </div>
+
               </div>
               <div class="column">
 
                 <div class="field">
-                  <label class="label">Nombre*</label>
+                  <label class="label">Nombre</label>
                   <div class="control">
                     <input id="v_nombre" class="is-boxed" value="" readonly></input>
                   </div>
@@ -82,21 +90,21 @@
 
 
                 <div class="field">
-                  <label class="label">Domicilio*</label>
+                  <label class="label">Domicilio</label>
                   <div class="control">
                     <input id="v_domicilio" class="is-boxed" value="" readonly></input>
                   </div>
                 </div>
 
                 <div class="field">
-                  <label class="label">Tiene en su poder su documento*</label>
+                  <label class="label">Tiene en su poder su documento</label>
                   <div class="control">
                       <input id="v_tienedoc" class="is-boxed" value="" readonly></input>
                   </div>
                 </div>
 
                 <div class="field">
-                  <label class="label">Número de documento*</label>
+                  <label class="label">Número de documento</label>
                   <div class="control">
                     <input id="v_numdoc" class="is-boxed" value="" readonly></input>
                   </div>
@@ -107,30 +115,21 @@
                   <div class="control">
                     <input id="v_numcarpeta" class="is-boxed" value="" readonly></input>
                   </div>
-                </div>
-
-                <div class="field">
-                  <label class="label">Obra social</label>
-                  <div class="control">
-                      <input id="v_obrasocial" class="is-boxed" value="" readonly></input>
-                  </div>
-                </div>
+                </div
 
                 <div class="field">
                   <label class="label">Número de historia clínica</label>
                   <div class="control">
-                      <input id="v_hc" class="is-boxed" value="" readonly></input>
+                      <input id="v_historia" class="is-boxed" value="" readonly></input>
                   </div>
                 </div>
 
               </div>
             </div>
-            <div class="box has-text-centered">
-              <a class="button is-text" id="close">Cerrar</a>
-            </div>
-    </div>
 
-    </div>
-    <button class="modal-close is-large" aria-label="close"></button>
+    </section>
+    <footer class="modal-card-foot">
+        <button class="button is-text" id="close">Cerrar</button>
+    </footer>
   </div>
 </div>
