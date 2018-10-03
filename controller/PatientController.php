@@ -9,13 +9,6 @@ class PatientController extends MainController{
   protected static $instance;
   protected static $twig;
 
-  function viewAddPatient(){
-     //if((!is_null(AppController::getInstance()->getUser())) && chequeodepermiso)
-    $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
-    $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
-    $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales );
-      $this::$twig->show('add_patient.html',$param);
-  }
 
   function addPatient(){
     if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','doccheck','typedoc','numdoc'))){
