@@ -24,11 +24,8 @@ class Dispatcher{
     UserController::getInstance()->logout();
   }
 
-  static function view_add_patient(){
-    PatientController::getInstance()->viewAddPatient();
-  }
 
-  static function add_patient(){
+  static function paciente_new(){
     PatientController::getInstance()->addPatient();
   }
 
@@ -52,7 +49,7 @@ class Dispatcher{
     UserController::getInstance()->addUser();
   }
 
-  static function view_patients_list(){
+  static function paciente_index(){
     PatientController::getInstance()->viewPatientList();
   }
 

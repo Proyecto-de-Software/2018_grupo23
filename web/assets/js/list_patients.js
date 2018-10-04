@@ -66,6 +66,8 @@
               $('#addPatient').fadeOut();
             });
 
+
+
             $('#tabla').on("click",".button_v",function(){
               var id_paciente= $(this).closest('tr').find('.p_id').val();
               $.ajax({
@@ -75,7 +77,6 @@
               })
                 .done(function(paciente){
                   var p=JSON.parse(paciente);
-                  console.log(p);
                   $('#v_nombre').val(p[0].nombre);
                   $('#v_apellido').val(p[0].apellido);
                   $('#v_dob').val(p[0].fecha_nac);
@@ -87,6 +88,7 @@
                   }else {
                     $('#v_genero').val("Otro");
                   }
+                  //tengo que ir a buscar el nombre del genero a la tabla de nuestra db.
                   $('#v_tipodoc').val(p[0].tipo_doc_id.nombre);
                   $('#v_tel').val(p[0].tel);
                   $('#v_dobplace').val(p[0].lugar_nac);
@@ -100,7 +102,8 @@
                   $('#v_numdoc').val(p[0].numero);
                   $('#v_numcarpeta').val(p[0].nro_carpeta);
                   $('#v_obrasocial').val(p[0].obra_social_id.nombre);
-                  $('#v_hc').val(p[0].nro_historia_clinica);
+                  $('#v_historia').val(p[0].id);
+                  $('#v_partido').val(p[0].partido_id.nombre);
                   $('#viewPatient').fadeIn();
                 });
             });

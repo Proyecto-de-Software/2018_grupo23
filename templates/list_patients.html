@@ -18,36 +18,35 @@
   </div>
  </div>
 </section>
+<section class="section">
 <div class="container is-fluid">
 <div class="box has-text-centered">
-  <table class="table" id="tabla" data-page-length='5'> <!-- ese 10 a ser cambiado por la var del config -->
+  <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length='5'> <!-- ese 10 a ser cambiado por la var del config -->
     <thead>
       <tr>
-        <th>#</th>
+        <th>Acciones</th>
         <th>Apellido</th>
         <th>Nombre</th>
-        <th>Tipo documento</th>
+        <th>Tipo</th>
         <th>Numero documento</th>
-        <th>Historia clínica</th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th>Historia clinica</th>
+
       </tr>
     </thead>
     <tbody>
       {% for paciente in patient_list %}
       <tr>
-        <th>{{loop.index}}</th>
-        <td>{{paciente.apellido}}</td>
-        <td>{{paciente.nombre}}</td>
-        <td>{{paciente.tipo_doc_id}}</td>
-        <td>{{paciente.numero}}</td>
-        <td>{{paciente.nro_historia_clinica}}</td>
         <td><button class="button_v button is-primary"><i class="far fa-eye"></i></button>
           <input class="p_id" value="{{paciente.id}}" hidden></input>
+          <button class="button_e button is-primary"><i class="far fa-edit"></i></button>
+          <button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button>
         </td>
-        <td><button class="button_e button is-primary"><i class="far fa-edit"></i></button></td>
-        <td><button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button></td>
+        <td>{{paciente.apellido}}</td>
+        <td>{{paciente.nombre}}</td>
+        <td>{{paciente.tipo_doc}}</td> <!-- arreglar para que se lea el nombre y no el id -->
+        <td>{{paciente.numero}}</td>
+        <td>{{paciente.id}}</td>
+
       </tr>
       {% endfor %}
     </tbody>
@@ -55,6 +54,7 @@
   </table>
 </div>
 </div>
+</section>
 
 <!---- modals ----------------------------------------------------->
 {% include "modal_patients/view_patient.html" %}
