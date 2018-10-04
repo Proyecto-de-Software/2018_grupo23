@@ -16,7 +16,7 @@ require_once('core/Connection.php');
     /* Create functions */
 
     /* para agregar un usuario (faltan hacer todos los chequeos, está hecha así nomás) */
-    public function newUser($email,$username,$password,$first_name,$last_name){
+    public function newUser($email,$username,$password,$first_name,$last_name,$roles){
       $query= $this->conn->prepare("INSERT INTO usuario(email,username,password,activo,created_at,updated_at,first_name,last_name)
                                          VALUES(:email,:username,:password,:activo,:created_at,:updated_at,:first_name,:last_name)");
       $query->bindParam(":email", $email);
@@ -30,6 +30,22 @@ require_once('core/Connection.php');
       $query->bindParam(":first_name", $first_name);
       $query->bindParam(":last_name", $last_name);
       $query->execute();
+      $user_id = $this->conn->lastInsertId();
+      if(!empty($roles)){
+        foreach($roles as $rol){
+          // echo "<pre>";
+          //   echo print_r($roles);
+          // echo "<pre>";
+          // die();
+          $rol_id_query=$this->conn->prepare("SELECT id FROM rol WHERE nombre=:rol");
+          $rol_id_query->bindParam(":rol",$rol);
+          $rol_id= $rol_id_query->execute();
+          $query= $this->conn->prepare("INSERT INTO usuario_tiene_rol(usuario_id,rol_id) VALUES(:user_id,:rol_id)");
+          $query->bindParam(":user_id",$user_id);
+          $query->bindParam(":rol_id",$rol_id);
+          $query->execute();
+        }
+      }
     }
 
     /* End of create functions */
@@ -62,6 +78,12 @@ require_once('core/Connection.php');
       $query->bindParam(":id",$id);
       $query->execute();
       return $query->fetchall(PDO::FETCH_ASSOC);
+    }
+
+    public function getRoles(){
+      $query=$this->conn->prepare("SELECT * FROM rol");
+      $query->execute();
+      return $query->fetchall();
     }
 
     public function getAllUsuarios(){

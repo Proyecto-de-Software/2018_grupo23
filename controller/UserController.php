@@ -62,6 +62,7 @@ class UserController extends MainController{
       //   echo "<pre>";
       // die();
       $param['users']= $users;
+      $param['roles']= $user_repo->getRoles();
       $this::$twig->show('list_users.html', $param);
     }else{
       $this->redirectHome();
@@ -74,7 +75,7 @@ class UserController extends MainController{
         if($_POST["password"] == $_POST["re_password"]){
           $user_repo= new UserRepository();
           if($user_repo->checkEmail($_POST['email'])){
-            $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+            $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
             $this->viewUsersList('Success');
           }else{$this->viewUsersList('Hubo un error: el email ingresado ya existe');}
         }else{$this->viewUsersList('Hubo un error: el password y la confirmación deben coincidir');}

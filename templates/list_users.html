@@ -21,7 +21,7 @@
         <button class="delete" aria-label="close"></button>
       </header>
       <section class="modal-card-body">
-        <form class="form" action="?action=add_user" method="post">
+        <form class="form" action="?action=usuario_new" method="post">
           <div class="field">
             <label class="label">Apellido*</label>
             <div class="control">
@@ -47,6 +47,35 @@
             </div>
           </div>
           <div class="field">
+            <label class="label">Qué roles desea asignarle?</label>
+            {% for rol in roles %}
+              <div class="control">
+                  <div class="checkbox">
+                      <label>{{ rol.nombre }}</label>
+                      <input name="roles[]" class="styled" type="checkbox" value="{{ rol.nombre }}">
+                  </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- <div class="field">
+            <label class="label">Qué roles desea asignarle?</label>
+            <div class="control">
+                <div class="b-checkbox">
+                    <label>Administrador</label>
+                    <input id="checkbox" name="roles[]" class="styled" type="checkbox" value="Administrador">
+                </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                  <div class="b-checkbox">
+                      <label>Equipo de Guardia</label>
+                      <input id="checkbox" name="roles[]" class="styled" type="checkbox" value="Equipo de Guardia">
+                  </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="field">
             <label class="label">Contraseña*</label>
             <div class="control">
               <input type="password" class="input" name="password" required>
@@ -70,7 +99,7 @@
 <!-- Datatables -->
 <div class="container is-fluid">
   <div class="box has-text-centered">
-      <table id="tabla_usuarios" class="table" data-page-lenght='2'> <!-- ese 10 a ser cambiado por la var del config -->
+      <table id="tabla" class="table" data-page-length='20'> <!-- ese 10 a ser cambiado por la var del config -->
         <thead>
           <tr>
             <th>#</th>
@@ -97,65 +126,24 @@
                {{ rol }}
             {% endfor %}
             </td>
-            <td><button class="button_v button is-primary">V</button>
+            <td><button class="button_v button is-primary"><i class="far fa-eye"></i></button>
               <input class="user_id" value="{{user.id}}" hidden></input>
             </td>
-            <td><button class="button_e button is-primary">E</button></td>
-            <td><button class="button_d button is-primary">B</button></td>
+            <td><button class="button_e button is-primary"><i class="far fa-edit"></i></button></td>
+            <td><button class="button_d button is-primary"><i class="far fa-trash-alt"></button></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
   </div>
 </div>
+
 {% endblock %}
 
 {% block my_js %}
-<!-- script para cargar las datatables-->
-<script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
-<!-- funcion para hacer la datatables -->
-<script>
-  $(document).ready( function () {
-    $('#tabla_usuarios').DataTable({
-       "lengthChange": false,
-        language: {
-          "decimal": "",
-          "emptyTable": "No se encontró información",
-          "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-          "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-          "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-          "infoPostFix": "",
-          "thousands": ",",
-          "lengthMenu": "Mostrar _MENU_ Entradas",
-          "loadingRecords": "Cargando...",
-          "processing": "Procesando...",
-          "search": "Buscar:",
-          "zeroRecords": "Sin resultados encontrados",
-          "paginate": {
-              "first": "Primero",
-              "last": "Ultimo",
-              "next": "Siguiente",
-              "previous": "Anterior"
-          }
-      }
-    });
-  });
-</script>
-<!-- funciones para hacer andar el modal con el formulario -->
-<script>
-  $(document).ready(function(){
-    $('#showAddUser').on("click",function(){
-      $('#addUser').fadeIn();
-    });
-    $('.modal-close').on("click",function(){
-      $('#addUser').fadeOut();
-    });
-    $('#cancel').on("click",function(){
-      $('#addUser').fadeOut();
-    });
-  });
-</script>
 
-
+  <script type="text/javascript" src="web/assets/js/list_users.js"></script>
+  <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
+  <script type="text/javascript" src="web/assets/js/data_tables.js"></script>
 
 {% endblock %}
