@@ -26,7 +26,7 @@
     <div id="nav-acciones" class="navbar-menu">
       <div class="navbar-start">
         <!-- navbar items izquierda -->
-        <p class="is-hidden-touch navbar-item">Hospital Dr. Alejandro Korn</p>
+        <p class="is-hidden-touch navbar-item">{{ page_config.titulo }}</p>
         {% if loged_user %}
         <a class="navbar-item" href="./?action=paciente_index">Pacientes</a>
         <div class="navbar-item has-dropdown is-hoverable">
@@ -47,9 +47,10 @@
         <!-- navbar items derecha -->
 
         {% if loged_user %}
-        <a class="navbar-item" href="./?action=logout"><span class="is-hidden-desktop">Logout </span><i class="fas fa-sign-out-alt fa-lg"></i></a>
+        <p class="is-hidden-touch navbar-item">{{ "#{loged_user.first_name} #{loged_user.last_name}" }}</p>
+        <a class="navbar-item" title="Salir" href="./?action=logout"><span class="is-hidden-desktop">Salir </span><i class="fas fa-sign-out-alt fa-lg is-hidden-touch"></i></a>
         {% else %}
-        <a class="navbar-item" href="./?action=view_login">Login</a>
+        <a class="navbar-item" href="./?action=view_login">Ingresar</a>
         {% endif %}
       </div>
     </div>
