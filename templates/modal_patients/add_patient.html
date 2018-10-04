@@ -50,9 +50,9 @@
                 <div class="control">
                   <div class="select is-boxed">
                     <select name="genero" required>
-                      <option value=1>Masculino</option>
-                      <option value=2>Femenino</option>
-                      <option value=3>Otro</option>
+                      {% for gender in genders %}
+                        <option value={{gender.id}}>{{gender.nombre}}</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
@@ -111,15 +111,13 @@
               </div>
 
               <div class="field">
-                <label class="label">Tiene en su poder su documento*</label>
+                <label class="label">Tiene en su poder un documento</label>
                 <div class="control">
-                  <div class="select is-boxed">
-                    <select name="doccheck" required>
-                      <option value=1>SÍ</option>
-                      <option value=0>NO</option>
-                    </select>
+                  <input class="is-checkradio" id="" type="radio" name="doccheck" value=1 checked="checked">
+                  <label for="exampleRadioInline1">Sí</label>
+                  <input class="is-checkradio" id="" type="radio" name="doccheck"value=0>
+                  <label for="exampleRadioInline2">No</label>
                   </div>
-                </div>
               </div>
 
               <div class="field">

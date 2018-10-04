@@ -48,6 +48,12 @@ require_once('core/Connection.php');
       $query->execute();
       return $query->fetchall();
     }
+
+    function getAllGenders(){
+      $query=$this->conn->prepare("SELECT * FROM genero");
+      $query->execute();
+      return $query->fetchall();
+    }
     /* End of read  functions */
 
     /* Update functions */

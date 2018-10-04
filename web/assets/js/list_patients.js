@@ -77,7 +77,6 @@
               })
                 .done(function(paciente){
                   var p=JSON.parse(paciente);
-                  console.log(p);
                   $('#v_nombre').val(p[0].nombre);
                   $('#v_apellido').val(p[0].apellido);
                   $('#v_dob').val(p[0].fecha_nac);
