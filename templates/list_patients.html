@@ -28,18 +28,23 @@
         <!-- ese 10 a ser cambiado por la var del config -->
         <thead>
           <tr>
-            <th>Acciones</th>
             <th>Apellido</th>
             <th>Nombre</th>
             <th>Tipo</th>
             <th>Numero documento</th>
             <th>Historia clinica</th>
+            <th data-priority="-1">Acciones</th>
 
           </tr>
         </thead>
         <tbody>
           {% for paciente in patient_list %}
           <tr>
+            <td>{{paciente.apellido}}</td>
+            <td>{{paciente.nombre}}</td>
+            <td>{{paciente.tipo_doc}}</td> <!-- arreglar para que se lea el nombre y no el id -->
+            <td>{{paciente.numero}}</td>
+            <td>{{paciente.id}}</td>
             <td>
               {% if 'paciente_show' in permisos %}
               <button class="button_v button is-primary"><i class="far fa-eye"></i></button>
@@ -52,11 +57,6 @@
               <button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button>
               {% endif %}
             </td>
-            <td>{{paciente.apellido}}</td>
-            <td>{{paciente.nombre}}</td>
-            <td>{{paciente.tipo_doc}}</td> <!-- arreglar para que se lea el nombre y no el id -->
-            <td>{{paciente.numero}}</td>
-            <td>{{paciente.id}}</td>
 
           </tr>
           {% endfor %}
