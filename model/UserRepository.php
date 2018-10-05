@@ -67,7 +67,7 @@ require_once('core/Connection.php');
     }
 
     public function getRolAndPermisosFromUsuario($id){
-      $query = $this->conn->prepare("SELECT rol.nombre as rol, permiso.nombre as permiso FROM usuario u INNER JOIN usuario_tiene_rol ur ON u.id = :id AND ur.usuario_id = u.id INNER JOIN rol ON rol.id = ur.rol_id INNER JOIN rol_tiene_permiso rp ON rp.rol_id = rol.id INNER JOIN permiso ON permiso.id = rp.permiso_id");
+      $query = $this->conn->prepare("SELECT rol.nombre as rol, permiso.nombre as permiso FROM usuario u INNER JOIN usuario_tiene_rol ur ON u.id = :id AND ur.usuario_id = u.id LEFT JOIN rol ON rol.id = ur.rol_id LEFT JOIN rol_tiene_permiso rp ON rp.rol_id = rol.id LEFT JOIN permiso ON permiso.id = rp.permiso_id ");
       $query->bindParam(":id",$id);
       $query->execute();
       return $query->fetchall(PDO::FETCH_ASSOC); //evita que devuelva la respuesta duplicada
