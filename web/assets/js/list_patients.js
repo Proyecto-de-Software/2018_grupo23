@@ -60,9 +60,11 @@
 
             $('.modal-close').on("click",function(){
               $('#addPatient').fadeOut();
+              $('#formAddPatient')[0].reset();
             });
 
             $('#cancel').on("click",function(){
+              $('#formAddPatient')[0].reset();
               $('#addPatient').fadeOut();
             });
 
@@ -128,18 +130,29 @@
                   .done(function(paciente){
                   });
               });
-
+              */
             //funcion boton borrar
-            $('#t_pacientes').on("click",".button_d",function(){
+            $('#tabla').on("click",".button_d",function(){
+              $("#deletePatient").fadeIn();
               var id_paciente= $(this).closest('tr').find('.p_id').val();
               console.log(id_paciente);
-              $.ajax({
-                method: "POST",
-                url: "./?action=view_patient",
-                data: { id: id_paciente}
-              })
-                .done(function(paciente){
-                });
-            }); */
+
+            });
+
+            $('.modal-close').on("click",function(){
+              $('#deletePatient').fadeOut();
+            });
+
+            $('#closed').on("click",function(){
+              $('#deletePatient').fadeOut();
+            });
 
           });
+/*
+          $.ajax({
+            method: "POST",
+            url: "./?action=view_patient",
+            data: { id: id_paciente}
+          })
+            .done(function(paciente){
+            }); */
