@@ -33,20 +33,24 @@ class Dispatcher{
     PatientController::getInstance()->viewPatient();
   }
 
-  static function view_system_config(){
+  static function configuracion_index(){
     ConfigController::getInstance()->viewSystemConfig();
   }
 
-  static function save_config(){
+  static function configuracion_update(){
     ConfigController::getInstance()->saveConfig();
   }
 
-  static function view_users_list(){
+  static function usuario_index(){
     UserController::getInstance()->viewUsersList();
   }
 
-  static function add_user(){
+  static function usuario_new(){
     UserController::getInstance()->addUser();
+  }
+
+  static function usuario_show(){
+    UserController::getInstance()->viewUser();
   }
 
   static function paciente_index(){

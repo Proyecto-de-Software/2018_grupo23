@@ -34,12 +34,15 @@ class User{
 
     private function setRollAndPermissions(){
       $user_repo = new UserRepository;
-      $user_data = $user_repo->getRolAndPermisosFromUsuario($this->id);
+      $user_data = $user_repo->getRolAndPermisosFromUsuario($_SESSION['id']);
       $_SESSION['permissions'] = array();
+      $_SESSION['roles'] = array();
       foreach ($user_data as $element){
-        array_push($_SESSION['permissions'],$element['permiso']);
+        array_push($_SESSION['roles'],$element['rol']);
+        !is_null($element['permiso']) ? array_push($_SESSION['permissions'],$element['permiso']) : "";
       }
-      $_SESSION['rol'] = $element['rol'];
+      $_SESSION['roles'] = array_unique($_SESSION['roles']);
+      $_SESSION['permissions'] = array_unique($_SESSION['permissions']);
     }
 
     public function isUpToDate(){ // me devuelve si los datos que tengo estan actualisados
@@ -60,6 +63,19 @@ class User{
         $this->updateUser();
       }
       return $_SESSION['permissions'];
+    }
+
+    public function getUserData(){
+      return array(
+        'id' =>   $_SESSION['id'],
+        'email' =>   $_SESSION['email'],
+        'username' =>   $_SESSION['username'],
+        'updated_at' =>   $_SESSION['updated_at'],
+        'first_name' =>   $_SESSION['first_name'],
+        'last_name' =>   $_SESSION['last_name'],
+        'roles' =>   $_SESSION['roles'],
+        'permissions' =>   $_SESSION['permissions'],
+      );
     }
 
 }
@@ -131,6 +147,16 @@ class AppController{
         return NULL;
       }
 
+    }
+  }
+
+  public function getUserData(){
+    $session = $this->getUser();
+    if(!is_null($session)){
+      return $session->getUserData();
+    }
+    else{
+      return $session;
     }
   }
 
