@@ -1,59 +1,60 @@
 {% extends 'base_template.html' %} {% block title %}Pacientes{% endblock %}
 {% block my_css %}
-  <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css" />
 {% endblock %}
 {% block content %}
 <!--{% block titulo_del_hero %}Pacientes{% endblock %}-->
 <section class="section">
   <div class="container">
     <div class="level">
-<div class="level-left">
-     <button id="showAddPatient" class="button is-primary">Agregar paciente</button>
-</div>
-     <div class="level-right">
-     <form action="?action=add_nn" method="POST">
-       <button type="submit" class="button is-primary">Agregar NN</button>
-    </form>
+      <div class="level-left">
+        <button id="showAddPatient" class="button is-primary">Agregar paciente</button>
+      </div>
+      <div class="level-right">
+        <form action="?action=add_nn" method="POST">
+          <button type="submit" class="button is-primary">Agregar NN</button>
+        </form>
+      </div>
+    </div>
   </div>
-  </div>
- </div>
 </section>
 <section class="section">
-<div class="container is-fluid">
-<div class="box has-text-centered">
-  <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length='5'> <!-- ese 10 a ser cambiado por la var del config -->
-    <thead>
-      <tr>
-        <th>Acciones</th>
-        <th>Apellido</th>
-        <th>Nombre</th>
-        <th>Tipo</th>
-        <th>Numero documento</th>
-        <th>Historia clinica</th>
+  <div class="container is-fluid">
+    <div class="box has-text-centered">
+      <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length='5'>
+        <!-- ese 10 a ser cambiado por la var del config -->
+        <thead>
+          <tr>
+            <th>Acciones</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Numero documento</th>
+            <th>Historia clinica</th>
 
-      </tr>
-    </thead>
-    <tbody>
-      {% for paciente in patient_list %}
-      <tr>
-        <td><button class="button_v button is-primary"><i class="far fa-eye"></i></button>
-          <input class="p_id" value="{{paciente.id}}" hidden></input>
-          <button class="button_e button is-primary"><i class="far fa-edit"></i></button>
-          <button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button>
-        </td>
-        <td>{{paciente.apellido}}</td>
-        <td>{{paciente.nombre}}</td>
-        <td>{{paciente.tipo_doc}}</td> <!-- arreglar para que se lea el nombre y no el id -->
-        <td>{{paciente.numero}}</td>
-        <td>{{paciente.id}}</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for paciente in patient_list %}
+          <tr>
+            <td><button class="button_v button is-primary"><i class="far fa-eye"></i></button>
+              <input class="p_id" value="{{paciente.id}}" hidden></input>
+              <button class="button_e button is-primary"><i class="far fa-edit"></i></button>
+              <button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button>
+            </td>
+            <td>{{paciente.apellido}}</td>
+            <td>{{paciente.nombre}}</td>
+            <td>{{paciente.tipo_doc}}</td> <!-- arreglar para que se lea el nombre y no el id -->
+            <td>{{paciente.numero}}</td>
+            <td>{{paciente.id}}</td>
 
-      </tr>
-      {% endfor %}
-    </tbody>
+          </tr>
+          {% endfor %}
+        </tbody>
 
-  </table>
-</div>
-</div>
+      </table>
+    </div>
+  </div>
 </section>
 
 <!---- modals ----------------------------------------------------->
@@ -63,9 +64,14 @@
 {% endblock %}
 
 {% block my_js %}
-  <script type="text/javascript" src="web/assets/js/list_patients.js"></script>
-  <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
-  <script type="text/javascript" src="web/assets/js/data_tables.js"></script>
+<script type="text/javascript" src="web/assets/js/list_patients.js"></script>
+<script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
+<script type="text/javascript" src="web/assets/js/data_tables.js"></script>
+<script>
+    window.onload = function() {
+        history.replaceState("", "", "./?action=paciente_index");
+    }
+</script>
 
 
 {% endblock %}

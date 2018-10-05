@@ -36,12 +36,12 @@ class User{
       $user_repo = new UserRepository;
       $user_data = $user_repo->getRolAndPermisosFromUsuario($_SESSION['id']);
       $_SESSION['permissions'] = array();
-      $_SESSION['rols'] = array();
+      $_SESSION['roles'] = array();
       foreach ($user_data as $element){
-        array_push($_SESSION['rols'],$element['rol']);
+        array_push($_SESSION['roles'],$element['rol']);
         !is_null($element['permiso']) ? array_push($_SESSION['permissions'],$element['permiso']) : "";
       }
-      $_SESSION['rols'] = array_unique($_SESSION['rols']);
+      $_SESSION['roles'] = array_unique($_SESSION['roles']);
       $_SESSION['permissions'] = array_unique($_SESSION['permissions']);
     }
 
@@ -73,7 +73,7 @@ class User{
         'updated_at' =>   $_SESSION['updated_at'],
         'first_name' =>   $_SESSION['first_name'],
         'last_name' =>   $_SESSION['last_name'],
-        'rols' =>   $_SESSION['rols'],
+        'roles' =>   $_SESSION['roles'],
         'permissions' =>   $_SESSION['permissions'],
       );
     }
