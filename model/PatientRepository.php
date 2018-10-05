@@ -60,6 +60,12 @@ require_once('core/Connection.php');
     /* End of update functions */
 
     /* Delete functions */
+
+    function removePatient($id){
+      $query=$this->conn->prepare("DELETE FROM paciente WHERE id=:id");
+      $query->bindParam(":id",$id);
+      $query->execute();
+    }
     /* End of delete functions */
   }
 

@@ -29,8 +29,12 @@ class Dispatcher{
     PatientController::getInstance()->addPatient();
   }
 
-  static function view_patient(){
+  static function paciente_show(){
     PatientController::getInstance()->viewPatient();
+  }
+
+  static function paciente_destroy(){
+    PatientController::getInstance()->deletePatient();
   }
 
   static function configuracion_index(){

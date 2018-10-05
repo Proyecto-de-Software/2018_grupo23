@@ -12,7 +12,10 @@
       </div>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success">Borrar</button>
+      <form action="/?action=paciente_destroy" id="formDeletePatient" method="POST">
+        <input name=id_paciente id="p_destroy" hidden></input>
+        <button type="submit" class="button is-success">Borrar</button>
+      </form>
       <button class="button" id="closed">Cancelar</button>
     </footer>
   </div>

@@ -7,14 +7,17 @@
 <section class="section">
   <div class="container">
     <div class="level">
+      {% if 'paciente_new' in permisos %} <!--pregunto si tiene los permisos para agregar pacientes -->
       <div class="level-left">
         <button id="showAddPatient" class="button is-primary">Agregar paciente</button>
+
       </div>
       <div class="level-right">
         <form action="?action=add_nn" method="POST">
           <button type="submit" class="button is-primary">Agregar NN</button>
         </form>
       </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -37,10 +40,17 @@
         <tbody>
           {% for paciente in patient_list %}
           <tr>
-            <td><button class="button_v button is-primary"><i class="far fa-eye"></i></button>
+            <td>
+              {% if 'paciente_show' in permisos %}
+              <button class="button_v button is-primary"><i class="far fa-eye"></i></button>
+              {% endif %}
               <input class="p_id" value="{{paciente.id}}" hidden></input>
+              {% if 'paciente_update' in permisos %}
               <button class="button_e button is-primary"><i class="far fa-edit"></i></button>
+              {% endif %}
+              {% if 'paciente_destroy' in permisos %}
               <button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button>
+              {% endif %}
             </td>
             <td>{{paciente.apellido}}</td>
             <td>{{paciente.nombre}}</td>

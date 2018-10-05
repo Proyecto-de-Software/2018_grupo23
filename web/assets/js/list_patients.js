@@ -54,28 +54,18 @@ $(document).ready(function() {
   });
 
   $('#showAddPatient').on("click", function() {
-    $('#addPatient').fadeIn();
+    $('#addPatient').addClass('is-active');
   });
 
-<<<<<<< HEAD
             $('.modal-close').on("click",function(){
-              $('#addPatient').fadeOut();
+              $('#addPatient').removeClass('is-active');
               $('#formAddPatient')[0].reset();
             });
 
             $('#cancel').on("click",function(){
+              $('#addPatient').removeClass('is-active');
               $('#formAddPatient')[0].reset();
-              $('#addPatient').fadeOut();
             });
-=======
-  $('.modal-close').on("click", function() {
-    $('#addPatient').fadeOut();
-  });
-
-  $('#cancel').on("click", function() {
-    $('#addPatient').fadeOut();
-  });
->>>>>>> 7550fe3f0a3a5232a2125d2835b577108f24b7fc
 
 
 
@@ -83,7 +73,7 @@ $(document).ready(function() {
     var id_paciente = $(this).closest('tr').find('.p_id').val();
     $.ajax({
         method: "POST",
-        url: "./?action=view_patient",
+        url: "./?action=paciente_show",
         data: {
           id: id_paciente
         }
@@ -117,19 +107,18 @@ $(document).ready(function() {
         $('#v_obrasocial').val(p[0].obra_social_id.nombre);
         $('#v_historia').val(p[0].id);
         $('#v_partido').val(p[0].partido_id.nombre);
-        $('#viewPatient').fadeIn();
+        $('#viewPatient').addClass('is-active');
       });
   });
 
   $('.modal-close').on("click", function() {
-    $('#viewPatient').fadeOut();
+    $('#viewPatient').removeClass('is-active');
   });
 
   $('#close').on("click", function() {
-    $('#viewPatient').fadeOut();
+    $('#viewPatient').removeClass('is-active');
   });
 
-<<<<<<< HEAD
           /*
             //funcion boton editar
               $('#t_pacientes').on("click",".button_e",function(){
@@ -145,18 +134,21 @@ $(document).ready(function() {
               */
             //funcion boton borrar
             $('#tabla').on("click",".button_d",function(){
-              $("#deletePatient").fadeIn();
+              $("#deletePatient").addClass('is-active');
               var id_paciente= $(this).closest('tr').find('.p_id').val();
               console.log(id_paciente);
+              $('#p_destroy').val(id_paciente);
 
             });
 
             $('.modal-close').on("click",function(){
-              $('#deletePatient').fadeOut();
+              $('#deletePatient').removeClass('is-active');
+              $('#formDeletePatient')[0].reset();
             });
 
             $('#closed').on("click",function(){
-              $('#deletePatient').fadeOut();
+              $('#deletePatient').removeClass('is-active');
+              $('#formDeletePatient')[0].reset();
             });
 
           });
@@ -168,32 +160,3 @@ $(document).ready(function() {
           })
             .done(function(paciente){
             }); */
-=======
-  /*
-    //funcion boton editar
-      $('#t_pacientes').on("click",".button_e",function(){
-        var id_paciente= $(this).closest('tr').find('.p_id').val();
-        $.ajax({
-          method: "POST",
-          url: "./?action=view_patient",
-          data: { id: id_paciente}
-        })
-          .done(function(paciente){
-          });
-      });
-
-    //funcion boton borrar
-    $('#t_pacientes').on("click",".button_d",function(){
-      var id_paciente= $(this).closest('tr').find('.p_id').val();
-      console.log(id_paciente);
-      $.ajax({
-        method: "POST",
-        url: "./?action=view_patient",
-        data: { id: id_paciente}
-      })
-        .done(function(paciente){
-        });
-    }); */
-
-});
->>>>>>> 7550fe3f0a3a5232a2125d2835b577108f24b7fc

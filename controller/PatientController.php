@@ -11,6 +11,7 @@ class PatientController extends MainController{
 
 
   function addPatient(){
+    if(AppController::getInstance()->checkPermissions($_GET['action'])){
     if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
         $query=new PatientRepository();
         $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
@@ -18,6 +19,7 @@ class PatientController extends MainController{
         ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
         $this->viewPatientList();
       }
+    }
   }
 
   function addNN(){
@@ -65,14 +67,29 @@ class PatientController extends MainController{
   }
 }
   function viewPatientList(){
-    $query=new PatientRepository();
-    $patient_list=$query->getAllPatients();
-    $gender_list=$query->getAllGenders();
-    $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
-    $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
-    $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list,'genders'=>$gender_list );
-    $this::$twig->show('list_patients.html',$param);
+    if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      $query=new PatientRepository();
+      $patient_list=$query->getAllPatients();
+      $gender_list=$query->getAllGenders();
+      $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
+      $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
+      $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list,'genders'=>$gender_list, 'permisos' =>$_SESSION['permissions']);
+      $this::$twig->show('list_patients.html',$param);
+    }
+    else {
+      $this->redirectHome(); //agregar el error al home avisando que no puede ver pacientes
+    }
 }
+  function deletePatient(){
+    if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      $query=new PatientRepository();
+      $query->removePatient($_POST['id_paciente']);
+      $this->viewPatientList();
+    }
+    else {
+      $this->redirectHome(); //agregar el error al home avisando que no puede borrar pacientes
+    }
+  }
 
 }
 
