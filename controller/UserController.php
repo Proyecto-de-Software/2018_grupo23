@@ -44,22 +44,24 @@ class UserController extends MainController{
   }
 
   public function viewUser(){
-    $user_repo=new UserRepository();
-    $user_id=$_POST["id"];
-    $data=array();
-    $data['user']=$user_repo->getUsuario($user_id);
-    $data['roles']=$user_repo->getRolesFromUsuario($user_id);
-    if(!empty($data)){
-        echo(json_encode($data));
-    }
-    else{
-      $this->viewUsersList('Se produjo un error');
-    }
+    if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      $user_repo=new UserRepository();
+      $user_id=$_POST["id"];
+      $data=array();
+      $data['user']=$user_repo->getUsuario($user_id);
+      $data['roles']=$user_repo->getRolesFromUsuario($user_id);
+      if(!empty($data)){
+          echo(json_encode($data));
+      }
+      else{
+        $this->viewUsersList('Se produjo un error');
+      }
+    }$this->redirectHome();
   }
 
   public function viewUsersList($error = NULL){
     if(!is_null(AppController::getInstance()->getUser())){
-      if(AppController::getInstance()->checkPermissions('usuario_index')){
+      if(AppController::getInstance()->checkPermissions($_GET['action'])){
         $_GET['action']='';
         $user_repo = new UserRepository();
         $param = array();
@@ -71,16 +73,11 @@ class UserController extends MainController{
           $roles=$user_repo->getRolesFromUsuario($user['id']);
           $users[$key]['roles']= (isset($roles[0]) ? $roles[0] : array('NA'));
         }
-        // echo "<pre>";
-        //
-        // echo  print_r($users);
-        //   echo "<pre>";
-        // die();
         $param['users']= $users;
         $param['roles']= $user_repo->getRoles();
         $this::$twig->show('list_users.html', $param);
       }else{
-      $this->redirectHome('Error: no tiene permiso para realizar esa acción');
+      $this->redirectHome();
       }
     }else{
       $this->redirectHome();
@@ -89,15 +86,17 @@ class UserController extends MainController{
 
   public function addUser(){
     if(!is_null(AppController::getInstance()->getUser())){
-      if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
-        if($_POST["password"] == $_POST["re_password"]){
-          $user_repo= new UserRepository();
-          if($user_repo->checkEmail($_POST['email'])){
-            $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
-            $this->viewUsersList('El usuario fue agregado');
-          }else{$this->viewUsersList('Se produjo un error: el email ingresado ya existe');}
-        }else{$this->viewUsersList('Se produjo un error: el password y la confirmación deben coincidir');}
-      }else{$this->viewUsersList('Se produjo un error: faltó completar alguno de los datos');}
+      if(AppController::getInstance()->checkPermissions($_GET['action'])){
+        if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
+          if($_POST["password"] == $_POST["re_password"]){
+            $user_repo= new UserRepository();
+            if($user_repo->checkEmail($_POST['email'])){
+              $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+              $this->viewUsersList('El usuario fue agregado');
+            }else{$this->viewUsersList('Se produjo un error: el email ingresado ya existe');}
+          }else{$this->viewUsersList('Se produjo un error: el password y la confirmación deben coincidir');}
+        }else{$this->viewUsersList('Se produjo un error: faltó completar alguno de los datos');}
+      }else{$this->redirectHome();}
     }else{$this->redirectHome();}
   }
 

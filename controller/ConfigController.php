@@ -11,26 +11,35 @@ class ConfigController extends MainController {
 
   public function viewSystemConfig($error = NULL){
     if(!is_null(AppController::getInstance()->getUser())){
-      $_GET['action']='';
-      $param = array();
-      if(!is_null($error)){
-        $param['error']= $error;
+      if(AppController::getInstance()->checkPermissions($_GET['action'])){
+        $_GET['action']='';
+        $param = array();
+        if(!is_null($error)){
+          $param['error']= $error;
+        }
+        $param['config']= $this->getConfigParameters();
+        $this::$twig->show('config.html', $param);
+      }else{
+        $this->redirectHome();
       }
-      $param['config']= $this->getConfigParameters();
-      $this::$twig->show('config.html', $param);
     }else{
       $this->redirectHome();
     }
   }
 
   public function saveConfig(){
-    if($this->postElementsCheck(array('titulo', 'email', 'descripcion', 'paginado', 'estado'))){
-      $query=new ConfigRepository();
-      $query->saveConfig($_POST["titulo"],$_POST["email"],$_POST["descripcion"],$_POST["paginado"],$_POST["estado"]);
-      $this->redirectHome();
-    }else{
-      $this->viewSystemConfig('Hubo un error: debe completar todas las opciones');
-    }
+    if(!is_null(AppController::getInstance()->getUser())){
+      if(AppController::getInstance()->checkPermissions($_GET['action'])){
+        if($this->postElementsCheck(array('titulo', 'email', 'descripcion', 'paginado', 'estado'))){
+          $query=new ConfigRepository();
+          $query->saveConfig($_POST["titulo"],$_POST["email"],$_POST["descripcion"],$_POST["paginado"],$_POST["estado"]);
+        }else{
+          $this->viewSystemConfig('Hubo un error: debe completar todas las opciones');
+        }
+      }else{
+          $this->redirectHome();
+      }
+    }$this->redirectHome();
   }
 
   //obtengo todos los parámetros de configuración del sistema
