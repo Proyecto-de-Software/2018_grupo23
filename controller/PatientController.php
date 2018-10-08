@@ -13,13 +13,39 @@ class PatientController extends MainController{
   function addPatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
     if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
-        $query=new PatientRepository();
-        $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
-        ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
-        ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
-        $this->viewPatientList();
+        if($this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$_POST["partido"]) &&
+          $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$_POST["regions"]) &&
+          $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
+          $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
+          $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
+          $this->checkDate($_POST["dob"])){
+            $query=new PatientRepository();
+            $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
+            ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
+            ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
+            $this->viewPatientList();
+        }
       }
     }
+  }
+
+  function isValidId($url,$id){
+    if(!empty($id)){
+      $data=json_decode(file_get_contents($url),true);
+      for($a=0;$a<count($data);$a++){
+      if(in_array($id,$data[$a])){
+        return True;
+      }
+    }
+    return False;
+    }
+    else{
+      return True; //si el id esta vacio paso true ya que no puedo chequear que un campo nulo no pertenezca al conjunto de la API
+    }
+  }
+
+  function checkDate($date){
+    return $date<date('Y/m/d');
   }
 
   function addNN(){
@@ -33,23 +59,23 @@ class PatientController extends MainController{
     $patient=$query->getPatient($_POST["id"]); //cambiar por POST_ID
     if(!empty($patient)){
       if($patient[0]["partido_id"]!=0){
-        $p_partido=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido/'.$patient[0]["partido_id"]));
+        $p_partido=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido/'.$patient[0]["partido_id"]),true);
       }else{
         $p_partido=array("id"=>0,"nombre"=>"NN");
       }
       if($patient[0]["localidad_id"]!=0){
-        $p_localidad=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/'.$patient[0]["localidad_id"]));
+        $p_localidad=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/'.$patient[0]["localidad_id"]),true);
       }else {
         $p_localidad=array("id"=>0,"nombre"=>"NN");
       }
       if($patient[0]["region_sanitaria_id"]!=0){
-        $p_region_s=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/'.$patient[0]["region_sanitaria_id"]));
+        $p_region_s=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/'.$patient[0]["region_sanitaria_id"]),true);
       }else{
         $p_region_s=array("id"=>0,"nombre"=>"NN");
       }
-      $p_tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'.$patient[0]["tipo_doc_id"]));
+      $p_tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'.$patient[0]["tipo_doc_id"]),true);
       if($patient[0]["obra_social_id"]!=0){
-        $p_obra_social=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/'.$patient[0]["obra_social_id"]));
+        $p_obra_social=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/'.$patient[0]["obra_social_id"]),true);
       }else {
         $p_obra_social=array("id"=>0,"nombre"=>"NN");
       }
@@ -71,8 +97,8 @@ class PatientController extends MainController{
       $query=new PatientRepository();
       $patient_list=$query->getAllPatients();
       $gender_list=$query->getAllGenders();
-      $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
-      $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
+      $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'),true);
+      $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'),true);
       $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list,'genders'=>$gender_list, 'permisos' =>$_SESSION['permissions']);
       $this::$twig->show('list_patients.html',$param);
     }
@@ -91,6 +117,10 @@ class PatientController extends MainController{
     }
   }
 
+  function updatePatient(){
+    echo("xd");
+    die();
+  }
 }
 
 ?>

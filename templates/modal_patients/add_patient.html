@@ -14,14 +14,14 @@
               <div class="field">
                 <label class="label">Apellido*</label>
                 <div class="control">
-                  <input type="text" class="input is-boxed" name="apellido" required>
+                  <input id="e_apellido" type="text" class="input is-boxed" name="apellido" required>
                 </div>
               </div>
 
               <div class="field">
                 <label class="label">Fecha de nacimiento*</label>
                 <div class="control">
-                  <input type="date" class="input is-boxed" name="dob" required>
+                  <input id="e_dob" type="date" class="input is-boxed" name="dob" required>
                 </div>
               </div>
 
@@ -49,7 +49,7 @@
                 <label class="label">Género*</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="genero" required>
+                    <select id="e_genero" name="genero" required>
                       {% for gender in genders %}
                         <option value={{gender.id}}>{{gender.nombre}}</option>
                       {% endfor %}
@@ -61,7 +61,7 @@
                 <label class="label">Tipo de documento*</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="typedoc" required>
+                    <select id="e_tipodoc" name="typedoc" required>
                       {% for tipo in tipo_doc %}
                       <option value="{{tipo.id}}">{{tipo.nombre}}</option>
                       {% endfor %}
@@ -73,7 +73,7 @@
               <div class="field">
                 <label class="label">Tel/Cel</label>
                 <div class="control">
-                  <input type="number" class="input is-boxed" name="telefono">
+                  <input id="e_tel" type="number" class="input is-boxed" name="telefono">
                 </div>
               </div>
 
@@ -83,14 +83,14 @@
               <div class="field">
                 <label class="label">Nombre*</label>
                 <div class="control">
-                  <input type="text" class="input is-boxed" name="nombre" required>
+                  <input id="e_nombre" type="text" class="input is-boxed" name="nombre" required>
                 </div>
               </div>
 
               <div class="field">
                 <label class="label">Lugar de nacimiento</label>
                 <div class="control">
-                  <input type="text" class="input is-boxed" name="dobplace">
+                  <input id="e_dobplace" type="text" class="input is-boxed" name="dobplace">
                 </div>
               </div>
 
@@ -106,7 +106,7 @@
               <div class="field">
                 <label class="label">Domicilio*</label>
                 <div class="control">
-                  <input type="text" class="input is-boxed" name="domicilio" required>
+                  <input id="e_domicilio" type="text" class="input is-boxed" name="domicilio" required>
                 </div>
               </div>
 
@@ -123,14 +123,14 @@
               <div class="field">
                 <label class="label">Número de documento*</label>
                 <div class="control">
-                  <input type="number" class="input is-boxed" name="numdoc" required>
+                  <input id="e_numdoc" type="number" class="input is-boxed" name="numdoc" required>
                 </div>
               </div>
 
               <div class="field">
                 <label class="label">Número de carpeta</label>
                 <div class="control">
-                  <input type="number" max="99999" class="input is-boxed" name="numcarpeta">
+                  <input id="e_numcarpeta" type="number" max="99999" class="input is-boxed" name="numcarpeta">
                 </div>
               </div>
 
@@ -138,7 +138,7 @@
                 <label class="label">Obra social</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="obra_social" required>
+                    <select id="e_obrasocial" name="obra_social" required>
                       {% for os in obras_sociales %}
                       <option value="{{os.id}}">{{os.nombre}}</option>
                       {% endfor %}

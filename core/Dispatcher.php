@@ -37,6 +37,17 @@ class Dispatcher{
     PatientController::getInstance()->deletePatient();
   }
 
+  static function paciente_update(){
+    PatientController::getInstance()->updatePatient();
+  }
+  static function paciente_index(){
+    PatientController::getInstance()->viewPatientList();
+  }
+
+  static function add_nn(){
+    PatientController::getInstance()->addNN();
+  }
+
   static function configuracion_index(){
     ConfigController::getInstance()->viewSystemConfig();
   }
@@ -57,13 +68,6 @@ class Dispatcher{
     UserController::getInstance()->viewUser();
   }
 
-  static function paciente_index(){
-    PatientController::getInstance()->viewPatientList();
-  }
-
-  static function add_nn(){
-    PatientController::getInstance()->addNN();
-  }
 }
 
 

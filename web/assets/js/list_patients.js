@@ -35,17 +35,11 @@ $(document).ready(function() {
       $.getJSON(url, function(data) {
         $("#localidad option").remove();
         $("#localidad").append('<option value="">Selecciona una localidad</option>');
-        if (!$.isArray(data)) {
-          $("#localidad").append(
-            '<option value="' + data.id + '">' + data.nombre + "</option>"
-          );
-        } else {
           $.each(data, function(index, value) {
             $("#localidad").append(
               '<option value="' + value.id + '">' + value.nombre + "</option>"
             );
           });
-        } //cierre del else
       });
     } else {
       $("#localidad option").remove();
@@ -59,11 +53,13 @@ $(document).ready(function() {
 
             $('.modal-close').on("click",function(){
               $('#addPatient').removeClass('is-active');
+              $('#formAddPatient').attr('action', './?action=paciente_new');
               $('#formAddPatient')[0].reset();
             });
 
             $('#cancel').on("click",function(){
               $('#addPatient').removeClass('is-active');
+              $('#formAddPatient').attr('action', './?action=paciente_new');
               $('#formAddPatient')[0].reset();
             });
 
@@ -119,24 +115,37 @@ $(document).ready(function() {
     $('#viewPatient').removeClass('is-active');
   });
 
-          /*
             //funcion boton editar
-              $('#t_pacientes').on("click",".button_e",function(){
+              $('#tabla').on("click",".button_e",function(){
                 var id_paciente= $(this).closest('tr').find('.p_id').val();
                 $.ajax({
                   method: "POST",
-                  url: "./?action=view_patient",
+                  url: "./?action=paciente_show",
                   data: { id: id_paciente}
                 })
                   .done(function(paciente){
+                    var p = JSON.parse(paciente);
+                    console.log(paciente)
+                    $('#formAddPatient').attr('action', './?action=paciente_update'); //en los cierres de esto cambiar el action al addpatient
+                    $('#e_nombre').val(p[0].nombre);
+                    $('#e_apellido').val(p[0].apellido);
+                    $('#e_dob').val(p[0].fecha_nac);
+                    $('#e_dobplace').val(p[0].lugar_nac);
+                    $('#e_tipodoc option[value='+p[0].tipo_doc_id.id+']').attr('selected','selected');
+                    $('#e_numdoc').val(p[0].numero);
+                    $('#e_numcarpeta').val(p[0].nro_carpeta);
+                    $('#e_tel').val(p[0].tel);
+                    $('#e_domicilio').val(p[0].domicilio);
+                    $('#e_genero option[value='+p[0].genero_id+']').attr('selected','selected');
+                    $('#e_obrasocial option[value='+p[0].obra_social_id.id+']').attr('selected','selected');
+                    $('#partido option[value='+p[0].partido_id.id+']').attr('selected','selected');
+                    $('#addPatient').addClass('is-active');
                   });
               });
-              */
             //funcion boton borrar
             $('#tabla').on("click",".button_d",function(){
               $("#deletePatient").addClass('is-active');
               var id_paciente= $(this).closest('tr').find('.p_id').val();
-              console.log(id_paciente);
               $('#p_destroy').val(id_paciente);
 
             });

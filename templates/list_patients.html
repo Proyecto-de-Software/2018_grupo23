@@ -42,7 +42,7 @@
           <tr>
             <td>{{paciente.apellido}}</td>
             <td>{{paciente.nombre}}</td>
-            <td>{{paciente.tipo_doc}}</td> <!-- arreglar para que se lea el nombre y no el id -->
+            <td>{{ tipo_doc[paciente.tipo_doc_id -1].nombre }}</td> <!-- arreglar para que se lea el nombre y no el id -->
             <td>{{paciente.numero}}</td>
             <td>{{paciente.id}}</td>
             <td>
