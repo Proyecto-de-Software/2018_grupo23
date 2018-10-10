@@ -68,6 +68,10 @@ class Dispatcher{
     UserController::getInstance()->viewUser();
   }
 
+  static function usuario_destroy(){
+    UserController::getInstance()->deleteUser();
+  }
+
 }
 
 

@@ -5,7 +5,7 @@
         <p class="modal-card-title">Usuario</p>
         <button class="modal-close" aria-label="close"></button>
       </header>
-      <section class="modal-card-body">
+      <section  class="modal-card-body">
           <div class="field">
             <label class="label">Apellido</label>
             <div class="control">
@@ -31,12 +31,22 @@
             </div>
           </div>
           <div class="field">
+            <label class="label">Creado el: </label>
+            <div class="control">
+              <input id="view_created" class="input" readonly>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Ultima actualización: </label>
+            <div class="control">
+              <input id="view_updated" class="input" readonly>
+            </div>
+          </div>
+          <div class="field">
             <label class="label">Roles asignados</label>
               <div class="control">
-                <table id="tabla_roles">
-                  <tbody>
-                    <tr>
-                    </tr>
+                <table>
+                  <tbody id="tbody_roles">
                   </tbody>
                 </table>
               </div>
