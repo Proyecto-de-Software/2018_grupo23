@@ -57,6 +57,45 @@ require_once('core/Connection.php');
     /* End of read  functions */
 
     /* Update functions */
+
+    function updatePatient($id,$apellido,$nombre,$dob,$dobplace,$region_sanitaria,$localidad,$domicilio,
+    $genero,$doccheck,$tipo_documento,$numero_documento,$numero_carpeta,$telefono,$obra_social,$partido){
+      $query = $this->conn->prepare("UPDATE paciente
+                                      SET apellido=:apellido,
+                                          nombre=:nombre,
+                                          fecha_nac=:dob,
+                                          lugar_nac=:dobplace,
+                                          localidad_id=localidad,
+                                          region_sanitaria_id=:region_sanitaria,
+                                          domicilio=:domicilio,
+                                          genero_id=:genero,
+                                          tiene_documento=:doccheck,
+                                          tipo_doc_id=:tipo_documento,
+                                          numero=:numero_documento,
+                                          tel=:telefono,
+                                          nro_carpeta=:numero_carpeta,
+                                          obra_social_id=:obra_social,
+                                          partido_id=:partido
+                                      WHERE id=:id");
+  $query->bindParam(":apellido",$apellido);
+  $query->bindParam(":nombre",$nombre);
+  $query->bindParam(":dob",$dob);
+  $query->bindParam(":dobplace",$dobplace);
+  $query->bindParam(":region_sanitaria",$region_sanitaria);
+  $query->bindParam(":localidad",$localidad);
+  $query->bindParam(":domicilio",$domicilio);
+  $query->bindParam(":genero",$genero);
+  $query->bindParam(":doccheck",$doccheck);
+  $query->bindParam(":tipo_documento",$tipo_documento);
+  $query->bindParam(":numero_documento",$numero_documento);
+  $query->bindParam(":numero_carpeta",$numero_carpeta);
+  $query->bindParam(":telefono",$telefono);
+  $query->bindParam(":obra_social",$obra_social);
+  $query->bindParam(":partido",$partido);
+  $query->bindParam(":id",$id);
+  $query->execute();
+    }
+
     /* End of update functions */
 
     /* Delete functions */
