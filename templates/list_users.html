@@ -1,38 +1,34 @@
 {% extends 'base_template.html' %} {% block title %}Usuarios{% endblock %}
 {% block my_css %}
-  <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css" />
 {% endblock %}
 {% block content %}
 <!--{% block titulo_del_hero %}Usuarios{% endblock %}-->
 <section class="section">
+  {% if 'usuario_new' in permisos %}
   <div class="container">
-     <a id="showAddUser" class="button is-primary modal-button">Agregar Usuario</a>
- </div>
+     <a id="showAddUser" class="button is-primary">Agregar Usuario</a>
+  </div>
+  {% endif %}
 </section>
+<section class="section">
 <div class="container is-fluid">
   <div class="box has-text-centered">
-      <table id="tabla" class="table display responsive no-wrap" width="100%" data-page-length='20'> <!-- ese 10 a ser cambiado por la var del config -->
-        <thead>
+      <table id="tabla" class="table display responsive no-wrap" width="100%" data-page-length="{{page_config.paginado}}">
           <tr>
-            <!-- <th>#</th> -->
-            <th>Acciones</th>
+            <th>#</th>
             <th>Apellido</th>
             <th>Nombre</th>
             <th>e-mail</th>
             <th>Nombre de usuario</th>
-            <!-- <th>Rol</th> -->
+            <!-- <th>Roles</th> -->
+            <th data-priority="-1">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {% for user in users %}
           <tr>
-            <!-- <td>{{ loop.index }}</td> -->
-            <td>
-              <button class="button_view button is-primary"><i class="far fa-eye"></i></button>
-              <input class="user_id" value="{{ user.id }}" hidden></input>
-              <button class="button_edit button is-primary"><i class="far fa-edit"></i></button>
-              <button class="button_delete button is-primary"><i class="far fa-trash-alt"></i></button>
-            </td>
+            <td>{{ loop.index }}</td>
             <td hidden>{{ user.id }}</td>
             <td>{{ user.last_name }}</td>
             <td>{{ user.first_name }}</td>
@@ -43,16 +39,30 @@
                {{ rol }}
             {% endfor %}
             </td> -->
+            <td>
+              {% if 'usuario_show' in permisos %}
+                <button class="button_view button is-primary"><i class="far fa-eye"></i></button>
+              {% endif %}
+                <input class="user_id" value="{{ user.id }}" hidden></input>
+              {% if 'usuario_update' in permisos %}
+                <button class="button_edit button is-primary"><i class="far fa-edit"></i></button>
+              {% endif %}
+              {% if 'usuario_destroy' in permisos %}
+                <button class="button_delete button is-primary"><i class="far fa-trash-alt"></i></button>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
   </div>
 </div>
+</section>
 
-<!-- modal con el formulario para agregar usuario-->
+<!-- modals con los formularios para agregar, ver y quitar un usuario-->
 {% include "modal_users/add_user.html" %}
 {% include "modal_users/view_user.html" %}
+{% include "modal_users/delete_user.html" %}
 <!-- Hasta acá el modal-->
 
 {% endblock %}

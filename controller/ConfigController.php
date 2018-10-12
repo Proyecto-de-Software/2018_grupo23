@@ -17,12 +17,11 @@ class ConfigController extends MainController {
         if(!is_null($error)){
           $param['error']= $error;
         }
-        $param['config']= $this->getConfigParameters();
         $this::$twig->show('config.html', $param);
-      }else{
+      }else{//no tiene permiso para realizar esta acción
         $this->redirectHome();
       }
-    }else{
+    }else{//no es un usuario logueado
       $this->redirectHome();
     }
   }
@@ -49,8 +48,8 @@ class ConfigController extends MainController {
     return array('titulo'=>$config[0][2],
                   'email'=>$config[1][2],
                   'descripcion'=>$config[2][2],
-                  'paginado'=>$config[3][2],
-                  'estado'=>$config[4][2]);
+                  'estado'=>$config[3][2],
+                  'paginado'=>$config[4][2]);
   }
 
 }

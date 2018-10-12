@@ -45,6 +45,7 @@ class UserController extends MainController{
 
   public function viewUser(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      $_GET['action']='';
       $user_repo=new UserRepository();
       $user_id=$_POST["id"];
       $data=array();
@@ -56,13 +57,14 @@ class UserController extends MainController{
       else{
         $this->viewUsersList('Se produjo un error');
       }
-    }$this->redirectHome();
+    }else{
+      $this->redirectHome();
+    }
   }
 
   public function viewUsersList($error = NULL){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
-        $_GET['action']='';
         $user_repo = new UserRepository();
         $param = array();
         if(!is_null($error)){
@@ -75,6 +77,7 @@ class UserController extends MainController{
         }
         $param['users']= $users;
         $param['roles']= $user_repo->getRoles();
+        $param['permisos']= $_SESSION['permissions'];
         $this::$twig->show('list_users.html', $param);
       }else{
       $this->redirectHome();
@@ -91,13 +94,32 @@ class UserController extends MainController{
           if($_POST["password"] == $_POST["re_password"]){
             $user_repo= new UserRepository();
             if($user_repo->checkEmail($_POST['email'])){
-              $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+              if(isset($_POST['roles'])){
+                $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+              }
+              else{
+                $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+              }
               $this->viewUsersList('El usuario fue agregado');
             }else{$this->viewUsersList('Se produjo un error: el email ingresado ya existe');}
           }else{$this->viewUsersList('Se produjo un error: el password y la confirmación deben coincidir');}
         }else{$this->viewUsersList('Se produjo un error: faltó completar alguno de los datos');}
       }else{$this->redirectHome();}
     }else{$this->redirectHome();}
+  }
+
+  public function deleteUser(){
+    if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){
+        $user_repo= new UserRepository();
+        $user_repo->removeUser($_POST['id_user']);
+        $this->viewUsersList();
+      }else{
+        $this->viewUsersList('Se produjo un error: no puedes eliminar a ese usuario');
+      }
+    }else{
+      $this->redirectHome();
+    }
   }
 
 }

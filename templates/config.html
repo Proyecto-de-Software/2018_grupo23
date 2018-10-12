@@ -11,7 +11,7 @@
             <div class="field">
                 <label class="label" for="titulo">Título:</label>
                 <div class="control">
-                  <input class="input" id="titulo" type="text" name="titulo" value="{{config.titulo}}" required>
+                  <input class="input" id="titulo" type="text" name="titulo" value="{{page_config.titulo}}" required>
                 </div>
                 <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
             </div>
@@ -19,14 +19,14 @@
             <div class="field">
               <label class="label" for="email">Mail de contacto:</label>
               <div class="control">
-                <input class="input" id="email" type="text" name="email" value="{{config.email}}" required>
+                <input class="input" id="email" type="text" name="email" value="{{page_config.email}}" required>
               </div>
             </div>
 
             <div class="field">
               <label class="label" for="descripcion">Descripción:</label>
               <div class="control">
-                <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{config.descripcion}}" placeholder="{{config.descripcion}}" required></textarea>
+                <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{page_config.descripcion}}" required>{{page_config.descripcion}}</textarea>
               </div>
             </div>
 
@@ -36,7 +36,7 @@
                   <div class="select">
                     <select name="paginado">
                       {% for i in range(5, 30, 5) %}
-                        <option value="{{ i }}"{% if i == config.paginado %} selected="selected"{% endif %}>{{ config.paginado }}</option>
+                        <option value="{{ i }}"{% if i == page_config.paginado %} selected="selected"{% endif %}>{{ i }}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -49,8 +49,8 @@
               <div class="control">
                 <div class="select">
                   <select name="estado">
-                    <option value="habilitado"{% if config.estado == "Habilitado" %} selected="selected"{% endif %}>Habilitado</option>
-                    <option value="deshabilitado"{% if config.estado == "Deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
+                    <option value="habilitado"{% if page_config.estado == "habilitado" %} selected="selected"{% endif %}>Habilitado</option>
+                    <option value="deshabilitado"{% if page_config.estado == "deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
                   </select>
                 </div>
                 <p class="help">Si se encuentra deshabilitado lo podrán ver solamente el/los administradores del sistema</p>
