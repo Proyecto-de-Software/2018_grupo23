@@ -25,7 +25,16 @@ class PatientController extends MainController{
             ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
             $this->viewPatientList();
         }
+        else {
+          $this->redirectHome(); //agregar el error al home avisando alguno de los datos no fue valido
+        }
       }
+      else{
+        $this->redirectHome(); //agregar el error al home avisando que alguno de los datos no fue valido
+      }
+    }
+    else{
+      $this->redirectHome(); //agregar el error al home avisando que no puede agregar pacientes
     }
   }
 
@@ -92,7 +101,7 @@ class PatientController extends MainController{
       //tirar error que no encontró el paciente
   }
 }
-  function viewPatientList(){
+  function viewPatientList($state="",$message=""){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
       $query=new PatientRepository();
       $patient_list=$query->getAllPatients();
@@ -100,6 +109,11 @@ class PatientController extends MainController{
       $tipo_doc=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'),true);
       $obras_sociales=json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'),true);
       $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list,'genders'=>$gender_list, 'permisos' =>$_SESSION['permissions']);
+      if($state='success'){
+        $param['success']=$message;
+      }elseif ($state='error') {
+        $param['error']=$message;
+      }
       $this::$twig->show('list_patients.html',$param);
     }
     else {
@@ -118,9 +132,33 @@ class PatientController extends MainController{
   }
 
   function updatePatient(){
-    echo("xd");
-    die();
+    if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
+          if($this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$_POST["partido"]) &&
+            $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$_POST["regions"]) &&
+            $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
+            $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
+            $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
+            $this->checkDate($_POST["dob"])){
+              $query=new PatientRepository();
+              $query->updatePatient($_POST["edit_id"],$_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
+              ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
+              ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
+              $this->viewPatientList();
+          }
+          else {
+            $this->redirectHome(); //agregar el error al home avisando alguno de los datos no fue valido
+          }
+        }
+        else{
+          $this->redirectHome(); //agregar el error al home avisando que alguno de los datos no fue valido
+        }
+
   }
+  else{
+    $this->redirectHome(); //agregar el error al home avisando que no puede editar pacientes
+  }
+}
 }
 
 ?>

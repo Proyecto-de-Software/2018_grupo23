@@ -2,7 +2,9 @@
   <div class="modal-background"></div>
 <div class="modal-card">
   <header class="modal-card-head">
-    <p class="modal-card-title">Agregar paciente</p>
+    <div id="p_title">
+      <p class="modal-card-title" >Agregar paciente</p>
+    </div>
     <button class="modal-close" aria-label="close">Cerrar</button>
   </header>
   <section class="modal-card-body">
@@ -113,9 +115,9 @@
               <div class="field">
                 <label class="label">Tiene en su poder un documento</label>
                 <div class="control">
-                  <input class="is-checkradio" id="" type="radio" name="doccheck" value=1 checked="checked">
+                  <input class="is-checkradio" id="check_yes" type="radio" name="doccheck" value=1 checked="checked">
                   <label for="exampleRadioInline1">Sí</label>
-                  <input class="is-checkradio" id="" type="radio" name="doccheck"value=0>
+                  <input class="is-checkradio" id="check_no" type="radio" name="doccheck"value=0>
                   <label for="exampleRadioInline2">No</label>
                   </div>
               </div>
@@ -148,13 +150,15 @@
               </div>
             </div>
           </div>
+          <!-- input para pasar el id al editar -->
+          <input id="edit_id" name="edit_id" hidden>
 
             <p>* campos obligatorios</p>
             </div>
   </section>
   <footer class="modal-card-foot">
-    <button type="submit" class="button is-primary" value="add_patient">Agregar</button>
-    <button class="button is-text" id="cancel">Cancelar</button>
+      <button type="submit" id="p_save" class="button is-primary" value="add_patient">Agregar</button>
+    <button type="button" class="button is-text" id="cancel">Cancelar</button>
   </form>
   </footer>
 </div>
