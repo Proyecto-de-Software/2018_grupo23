@@ -40,6 +40,7 @@ class Dispatcher{
   static function paciente_update(){
     PatientController::getInstance()->updatePatient();
   }
+
   static function paciente_index(){
     PatientController::getInstance()->viewPatientList();
   }
@@ -70,6 +71,14 @@ class Dispatcher{
 
   static function usuario_destroy(){
     UserController::getInstance()->deleteUser();
+  }
+
+  static function usuario_update(){
+    UserController::getInstance()->updateUser();
+  }
+
+  static function usuario_block(){
+    UserController::getInstance()->blockUser();
   }
 
 }

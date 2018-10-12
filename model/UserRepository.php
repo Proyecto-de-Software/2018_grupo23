@@ -30,19 +30,20 @@ require_once('core/Connection.php');
       $query->execute();
       $user_id = $this->conn->lastInsertId();
       if(!empty($roles)){
-        for ($i=0; $i < count($roles) ; $i++){
-          // echo "<pre>";
-          //   echo print_r($roles);
-          // echo "<pre>";
-          $rol_id_query=$this->conn->prepare("SELECT id FROM rol WHERE nombre=:rol");
-          $rol_id_query->bindParam(":rol",$roles[$i]);
-          $rol_id_query->execute();
-          $rol_id= $rol_id_query->fetchall();
-          $query= $this->conn->prepare("INSERT INTO usuario_tiene_rol(usuario_id,rol_id) VALUES(:user_id,:rol_id)");
-          $query->bindParam(":user_id",$user_id);
-          $query->bindParam(":rol_id",$rol_id[0]['id']);
-          $query->execute();
-        }
+        $this->assignRoles($user_id, $roles);
+      }
+    }
+
+    public function assignRoles($user_id, $roles){
+      for ($i=0; $i < count($roles) ; $i++){
+        $rol_id_query=$this->conn->prepare("SELECT id FROM rol WHERE nombre=:rol");
+        $rol_id_query->bindParam(":rol",$roles[$i]);
+        $rol_id_query->execute();
+        $rol_id= $rol_id_query->fetchall();
+        $query= $this->conn->prepare("INSERT INTO usuario_tiene_rol(usuario_id,rol_id) VALUES(:user_id,:rol_id)");
+        $query->bindParam(":user_id",$user_id);
+        $query->bindParam(":rol_id",$rol_id[0]['id']);
+        $query->execute();
       }
     }
     /* End of create functions */
@@ -89,27 +90,66 @@ require_once('core/Connection.php');
         return $query->fetchall();
     }
 
-    public function checkEmail($email){
-      $query= $this->conn->prepare("SELECT * FROM usuario WHERE email=:email");
-      $query->bindParam(":email",$email);
+    public function checkUserName($username, $user_id=NULL){
+      $query= $this->conn->prepare("SELECT * FROM usuario WHERE username=:username");
+      $query->bindParam(":username",$username);
       $query->execute();
       $valid=$query->fetchAll();
-      return empty($valid);
+      if (empty($valid)){//nadie tiene ese username
+        return true;
+      }
+      else{//alguien tiene ese username
+        if ($valid[0]['id'] == $user_id){//es ese mismo usuario
+          return true;
+        }else{//otro usuario lo tiene
+          return false;
+        }
+      }
     }
-
-
     /* End of read  functions */
 
     /* Update functions */
+    public function updateUser($user_id,$email,$username,$password,$first_name,$last_name,$roles=array()){
+      $query= $this->conn->prepare("UPDATE usuario
+                                    SET email=:email,username=:username,first_name=:first_name,last_name=:last_name,password=:password,updated_at=:updated_at
+                                    WHERE id=:user_id");
+      $query->bindParam(":user_id", $user_id);
+      $query->bindParam(":email", $email);
+      $query->bindParam(":username", $username);
+      $query->bindParam(":password", $password);
+      $date_now= date('Y-m-d H:i:s');
+      $query->bindParam(":updated_at", $date_now);
+      $query->bindParam(":first_name", $first_name);
+      $query->bindParam(":last_name", $last_name);
+      $query->execute();
+      $this->removeRolesFromUser($user_id);
+      if(!empty($roles)){
+        $this->assignRoles($user_id, $roles);
+      }
+    }
+
+    public function blockUser($id){
+      $user= $this->getUsuario($id);
+      $state= $user[0]['activo'];
+      $activo= ($state == 1 ? 0 : 1);
+      $query= $this->conn->prepare("UPDATE usuario SET activo=:valor WHERE id=:id");
+      $query->bindParam(":valor", $activo);
+      $query->bindParam(":id", $id);
+      $query->execute();
+    }
     /* End of update functions */
 
     /* Delete functions */
-    public function removeUser($id){
+    public function removeRolesFromUser($id){
       $query= $this->conn->prepare("DELETE FROM usuario_tiene_rol WHERE usuario_id=:id");
       $query->bindParam(":id", $id);
       $query->execute();
+    }
+
+    public function removeUser($user_id){
+      $this->removeRolesFromUser($user_id);
       $query= $this->conn->prepare("DELETE FROM usuario WHERE id=:id");
-      $query->bindParam(":id", $id);
+      $query->bindParam(":id", $user_id);
       $query->execute();
     }
     /* End of delete functions */

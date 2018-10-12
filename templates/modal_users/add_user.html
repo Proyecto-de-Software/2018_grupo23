@@ -2,62 +2,65 @@
   <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Agregar usuario</p>
+        <!-- acá van elementos agregados con jquery -->
       </header>
       <section class="modal-card-body">
-        <form class="form" action="?action=usuario_new" method="post">
+        <form id="addUserForm" class="form" action="?action=usuario_new" method="post">
+          <div class="">
+            <input id="user_id" name="user_id" hidden>
+          </div>
           <div class="field">
             <label class="label">Apellido*</label>
             <div class="control">
-              <input type="text" class="input" name="apellido">
+              <input id="apellido" type="text" class="input" name="apellido" required>
             </div>
           </div>
           <div class="field">
             <label class="label">Nombre*</label>
             <div class="control">
-              <input type="text" class="input" name="nombre" required>
+              <input id="nombre" type="text" class="input" name="nombre" required>
             </div>
           </div>
           <div class="field">
             <label class="label">Email*</label>
             <div class="control">
-              <input type="email" class="input" name="email" required>
+              <input id="email" type="email" class="input" name="email" required>
             </div>
           </div>
           <div class="field">
             <label class="label">Nombre de usuario*</label>
             <div class="control">
-              <input type="text" class="input" name="username" required>
+              <input id="username" type="text" class="input" name="username" required>
             </div>
           </div>
-          <div class="field">
-            <label class="label">Qué roles desea asignarle? Si no asigna ninguno puede hacerlo en "editar"</label>
-            {% for rol in roles %}
+          <div id="roles_div" class="field">
+            <label class="label roles-label">Qué roles desea asignarle? Si no asigna ninguno puede hacerlo en "editar"</label>
               <div class="control">
-                  <div class="checkbox">
+                  <div id="roles_box">
+                    {% for rol in roles %}
                       <label>{{ rol.nombre }}</label>
                       <input name="roles[]" class="styled" type="checkbox" value="{{ rol.nombre }}">
+                    {% endfor %}
                   </div>
               </div>
-            {% endfor %}
           </div>
           <div class="field">
             <label class="label">Contraseña*</label>
             <div class="control">
-              <input type="password" class="input" name="password" required>
+              <input id="password" type="password" class="input" name="password" required>
             </div>
           </div>
           <div class="field">
             <label class="label">Confirmar contraseña*</label>
             <div class="control">
-              <input type="password" class="input" name="re_password" required>
+              <input id="re_password" type="password" class="input" name="re_password" required>
             </div>
           </div>
           <p>* campos obligatorios</p>
       </section>
       <footer class="modal-card-foot">
-        <button type="submit" class="button is-success" value="add_user">Agregar</button>
-        <button class="button is-text" id="cancel">Cancelar</button>
+        <button type="submit" class="button is-success" value="add_user">Aceptar</button>
+        <button type="button" class="button is-text" id="cancel">Cancelar</button>
       </form>
       </footer>
       <button class="modal-close is-large" aria-label="close"></button>
