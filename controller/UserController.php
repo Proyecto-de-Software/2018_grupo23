@@ -55,20 +55,20 @@ class UserController extends MainController{
           echo(json_encode($data));
       }
       else{
-        $this->viewUsersList('Se produjo un error');
+        $this->viewUsersList('error', 'Se produjo un error');
       }
     }else{
       $this->redirectHome();
     }
   }
 
-  public function viewUsersList($error = NULL){
+  public function viewUsersList($state=NULL, $msg=""){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
         $user_repo = new UserRepository();
         $param = array();
-        if(!is_null($error)){
-          $param['error']= $error;
+        if(!is_null($state)){
+              $param[$state]= $msg;
         }
         $users= $user_repo->getAllUsuarios();
         foreach ($users as $key=>$user){
@@ -93,17 +93,19 @@ class UserController extends MainController{
         if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
           if($_POST["password"] == $_POST["re_password"]){
             $user_repo= new UserRepository();
-            if($user_repo->checkEmail($_POST['email'])){
+            if($user_repo->checkUserName($_POST['username'])){
               if(isset($_POST['roles'])){
                 $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
               }
               else{
                 $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
               }
-              $this->viewUsersList('El usuario fue agregado');
-            }else{$this->viewUsersList('Se produjo un error: el email ingresado ya existe');}
-          }else{$this->viewUsersList('Se produjo un error: el password y la confirmación deben coincidir');}
-        }else{$this->viewUsersList('Se produjo un error: faltó completar alguno de los datos');}
+              $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
+            }else{
+              $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
+            }
+          }else{$this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');}
+        }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
       }else{$this->redirectHome();}
     }else{$this->redirectHome();}
   }
@@ -115,9 +117,59 @@ class UserController extends MainController{
         $user_repo->removeUser($_POST['id_user']);
         $this->viewUsersList();
       }else{
-        $this->viewUsersList('Se produjo un error: no puedes eliminar a ese usuario');
+        $this->viewUsersList('error', 'Se produjo un error: no puedes eliminar a ese usuario');
       }
     }else{
+      $this->redirectHome();
+    }
+  }
+
+  public function updateUser(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      if(AppController::getInstance()->checkPermissions($_GET['action'])){
+        if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
+          if($_POST["password"] == $_POST["re_password"]){
+            $user_repo= new UserRepository();
+            if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
+              if(isset($_POST['roles'])){
+                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+              }
+              else{
+                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+              }
+              $this->viewUsersList('success', 'El usuario fue actualizado exitosamente');
+            }else{
+              $this->viewUsersList('error', 'Se produjo un error :el nombre de usuario ingresado ya existe');
+            }
+          }else{
+            $this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');
+          }
+        }else{
+          $this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');
+        }
+      }else{
+        $this->redirectHome();
+      }
+    }else{
+      $this->redirectHome();
+    }
+  }
+
+  public function blockUser(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      $_GET['action']='usuario_index';
+      if(AppController::getInstance()->checkPermissions('usuario_update')){
+        if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){//no es él mismo...
+          $user_repo= new UserRepository();
+          $user_repo->blockUser($_POST['id_user']);
+          $this->viewUsersList();
+        }else {
+          $this->viewUsersList('error', 'Se produjo un error: no puedes bloquear a ese usuario');
+        }
+      }else {
+        $this->viewUsersList('error', 'Se produjo un error: no tienes permiso para realizar esa acción');
+      }
+    }else {
       $this->redirectHome();
     }
   }

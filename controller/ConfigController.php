@@ -9,13 +9,13 @@ class ConfigController extends MainController {
   protected static $instance;
   protected static $twig;
 
-  public function viewSystemConfig($error = NULL){
+  public function viewSystemConfig($state= NULL, $msg=""){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
         $_GET['action']='';
         $param = array();
-        if(!is_null($error)){
-          $param['error']= $error;
+        if(!is_null($state)){
+          $param[$state]= $msg;
         }
         $this::$twig->show('config.html', $param);
       }else{//no tiene permiso para realizar esta acción
@@ -32,8 +32,9 @@ class ConfigController extends MainController {
         if($this->postElementsCheck(array('titulo', 'email', 'descripcion', 'paginado', 'estado'))){
           $query=new ConfigRepository();
           $query->saveConfig($_POST["titulo"],$_POST["email"],$_POST["descripcion"],$_POST["paginado"],$_POST["estado"]);
+          $this->viewSystemConfig('success', 'Configuración guardada');
         }else{
-          $this->viewSystemConfig('Hubo un error: debe completar todas las opciones');
+          $this->viewSystemConfig('error', 'Se produjo un error: debe completar todas las opciones');
         }
       }else{
           $this->redirectHome();
