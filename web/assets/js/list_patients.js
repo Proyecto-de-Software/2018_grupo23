@@ -8,6 +8,9 @@ function getPartidos() {
         '<option value="' + value.id + '">' + value.nombre + "</option>"
       );
     });
+  })
+  .fail(function(){
+      viewAlert();
   });
 }
 
@@ -26,11 +29,22 @@ function getLocalidades(id){
             $('#localidad option[value='+id+']').prop('selected',true);
           }
         });
-    });
+    }
+    .fail(function(){
+        viewAlert();
+    }));
   } else {
     $("#localidad option").remove();
     $("#localidad").append('<option value="">Selecciona una localidad</option>');
   }
+}
+function isJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 window.onload = function() { //funcion que evita el resubmit de un mismo form
   history.replaceState("", "", "./?action=paciente_index");
@@ -44,7 +58,10 @@ $(document).ready(function() {
       $.getJSON(url, function(data) {
         $("#region_s").val(data.nombre);
         $("#region_id").val(data.id);
-      });
+      }
+      .fail(function(){
+          viewAlert();
+      }));
     } else {
       $("#region_s").val("");
     }
@@ -71,6 +88,7 @@ $(document).ready(function() {
 
 //ver paciente
   $('#tabla').on("click", ".button_v", function() {
+    showLoading();
     var id_paciente = $(this).closest('tr').find('.p_id').val();
     $.ajax({
         method: "POST",
@@ -80,6 +98,7 @@ $(document).ready(function() {
         }
       })
       .done(function(paciente) {
+        if(isJsonString(paciente)){
         var p = JSON.parse(paciente);
         $('#v_nombre').val(p[0].nombre);
         $('#v_apellido').val(p[0].apellido);
@@ -109,6 +128,11 @@ $(document).ready(function() {
         $('#v_historia').val(p[0].id);
         $('#v_partido').val(p[0].partido_id.nombre);
         $('#viewPatient').addClass('is-active');
+        }
+        else {
+          showNotAvailable();
+        }
+        hideLoading();
       });
   });
 //cerrar ver paciente
@@ -118,6 +142,7 @@ $(document).ready(function() {
 
 //funcion boton editar
   $('#tabla').on("click",".button_e",function(){
+    showLoading();
     var id_paciente= $(this).closest('tr').find('.p_id').val();
     $.ajax({
       method: "POST",
@@ -125,6 +150,7 @@ $(document).ready(function() {
       data: { id: id_paciente}
     })
       .done(function(paciente){
+        if(isJsonString(paciente)){
         var p = JSON.parse(paciente);
         console.log(p);
         $('#formAddPatient').attr('action', './?action=paciente_update'); //en los cierres de esto cambiar el action al addpatient
@@ -155,6 +181,11 @@ $(document).ready(function() {
           $('#check_no').attr('checked','checked');
         }
         $('#addPatient').addClass('is-active');
+        }
+        else {
+          showNotAvailable();
+        }
+        hideLoading();
       });
   });
 //funcion boton borrar

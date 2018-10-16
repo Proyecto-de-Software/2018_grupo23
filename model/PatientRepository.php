@@ -54,6 +54,13 @@ require_once('core/Connection.php');
       $query->execute();
       return $query->fetchall();
     }
+
+    function isDocAvailable($type,$num){
+      $query=$this->conn->prepare("SELECT * FROM paciente WHERE paciente.tipo_doc_id= :type AND paciente.numero= :num");
+      $query->bindParam(":type",$type);
+      $query->bindParam(":num",$num);
+      return !empty($query->execute());
+    }
     /* End of read  functions */
 
     /* Update functions */
@@ -65,7 +72,7 @@ require_once('core/Connection.php');
                                           nombre=:nombre,
                                           fecha_nac=:dob,
                                           lugar_nac=:dobplace,
-                                          localidad_id=localidad,
+                                          localidad_id=:localidad,
                                           region_sanitaria_id=:region_sanitaria,
                                           domicilio=:domicilio,
                                           genero_id=:genero,
@@ -81,15 +88,15 @@ require_once('core/Connection.php');
   $query->bindParam(":nombre",$nombre);
   $query->bindParam(":dob",$dob);
   $query->bindParam(":dobplace",$dobplace);
-  $query->bindParam(":region_sanitaria",$region_sanitaria);
   $query->bindParam(":localidad",$localidad);
+  $query->bindParam(":region_sanitaria",$region_sanitaria);
   $query->bindParam(":domicilio",$domicilio);
   $query->bindParam(":genero",$genero);
   $query->bindParam(":doccheck",$doccheck);
   $query->bindParam(":tipo_documento",$tipo_documento);
   $query->bindParam(":numero_documento",$numero_documento);
-  $query->bindParam(":numero_carpeta",$numero_carpeta);
   $query->bindParam(":telefono",$telefono);
+  $query->bindParam(":numero_carpeta",$numero_carpeta);
   $query->bindParam(":obra_social",$obra_social);
   $query->bindParam(":partido",$partido);
   $query->bindParam(":id",$id);

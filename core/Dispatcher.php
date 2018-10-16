@@ -41,7 +41,7 @@ class Dispatcher{
     PatientController::getInstance()->updatePatient();
   }
   static function paciente_index(){
-    PatientController::getInstance()->viewPatientList();
+    PatientController::getInstance()->pacienteIndex();
   }
 
   static function add_nn(){

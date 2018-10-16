@@ -50,19 +50,21 @@
         if (!empty($_POST['token'])) {
           if(!is_null($key_word)){
             $calc = hash_hmac('sha256', $key_word, $_SESSION['key_token']);
+            echo($calc);
+            die();
             if (hash_equals($calc, $_POST['token'])) {
               return true;
             }
           }
           else{
-            if (hash_equals($_SESSION['token'], $_POST['token'])) {
+            if (hash_equals($_SESSION['general_token'], $_POST['token'])) {
               return true;
             }
             else {
               return false;
             }
           }
-        } return false;  
+        } return false;
       }
   }
 ?>

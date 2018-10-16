@@ -13,7 +13,8 @@
 
       </div>
       <div class="level-right">
-        <form action="?action=add_nn" method="POST">
+        <form action="?action=paciente_new" method="POST">
+          <input value="True" name="addNN" hidden></input>
           <button type="submit" class="button is-primary">Agregar NN</button>
         </form>
       </div>
@@ -71,6 +72,8 @@
 {% include "modal_patients/view_patient.html" %}
 {% include "modal_patients/add_patient.html" %}
 {% include "modal_patients/delete_patient.html" %}
+{% include "modal_loading/loading.html" %}
+{% include "modal_not_available/not_available.html" %}
 <!---- fin modals -------------------------------------------------->
 {% endblock %}
 
@@ -78,6 +81,8 @@
 <script type="text/javascript" src="web/assets/js/list_patients.js"></script>
 <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
 <script type="text/javascript" src="web/assets/js/data_tables.js"></script>
+<script type="text/javascript" src="web/assets/js/loading.js"></script>
+<script type="text/javascript" src="web/assets/js/not_available.js"></script>
 <script>
     window.onload = function() {
         history.replaceState("", "", "./?action=paciente_index");
