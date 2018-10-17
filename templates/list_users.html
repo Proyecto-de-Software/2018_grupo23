@@ -3,7 +3,6 @@
 <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css" />
 {% endblock %}
 {% block content %}
-<!--{% block titulo_del_hero %}Usuarios{% endblock %}-->
 <section class="section">
   {% if 'usuario_new' in permisos %}
   <div class="container">
@@ -20,10 +19,9 @@
             <th>#</th>
             <th>Apellido</th>
             <th>Nombre</th>
-            <th>e-mail</th>
             <th>Nombre de usuario</th>
+            <th>Roles</th>
             <th>Estado</th>
-            <!-- <th>Roles</th> -->
             <th data-priority="-1">Acciones</th>
           </tr>
         </thead>
@@ -33,18 +31,15 @@
             <td>{{ loop.index }}</td>
             <td>{{ user.last_name }}</td>
             <td>{{ user.first_name }}</td>
-            <td>{{ user.email }}</td>
             <td>{{ user.username }}</td>
+            <td>
+              {{ user.roles }}
+            </td>
             {% if user.activo == 1 %}
               <td>Activo</td>
             {% else %}
               <td>Bloqueado</td>
             {% endif %}
-            <!-- <td>
-            {% for rol in user.roles %}
-               {{ rol }}
-            {% endfor %}
-            </td> -->
             <td>
               {% if 'usuario_show' in permisos %}
                 <button class="button_view button is-success" title="Ver"><i class="far fa-eye"></i></button>
@@ -53,13 +48,13 @@
               {% if 'usuario_update' in permisos %}
                 <button class="button_edit button is-success" title="Editar"><i class="far fa-edit"></i></button>
               {% endif %}
-              {% if 'usuario_destroy' in permisos %}
-                <button class="button_delete button is-danger"  title="Eliminar"><i class="far fa-trash-alt"></i></button>
-              {% endif %}
               {% if user.activo == 1 %}
-                <button class="button_block button is-danger">Bloquear</button>
+                <button class="button_block button is-danger" title="Bloquear"><i class="fas fa-ban"></i></button>
               {% else %}
-                <button class="button_unblock button is-success">Desbloquear</button>
+                <button class="button_unblock button is-success" title="Desbloquear"><i class="fas fa-check-square"></i></button>
+              {% endif %}
+              {% if 'usuario_destroy' in permisos %}
+                <button class="button_delete button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>
               {% endif %}
             </td>
           </tr>
@@ -70,11 +65,12 @@
 </div>
 </section>
 
-<!-- modals con los formularios para agregar, ver y quitar un usuario-->
+<!-- modals con los formularios para agregar, ver, quitar y bloquear a un usuario-->
 {% include "modal_users/add_user.html" %}
 {% include "modal_users/view_user.html" %}
 {% include "modal_users/delete_user.html" %}
 {% include "modal_users/block_user.html" %}
+{% include "modal_loading/loading.html" %}
 <!-- Hasta acá el modal-->
 
 {% endblock %}
@@ -83,7 +79,8 @@
   <script type="text/javascript" src="web/assets/js/list_users.js"></script>
   <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
   <script type="text/javascript" src="web/assets/js/data_tables.js"></script>
+  <script type="text/javascript" src="web/assets/js/loading.js"></script>
   <script type="text/javascript" src="web/assets/jQueryValidation/dist/jquery.validate.min.js"></script>
-  <script type="text/javascript" src="web/assets/jQueryValidation/dist/additional_methods.min.js"></script>
-  <script type="text/javascript" src="web\assets\jQueryValidation\dist\localization\messages_es_AR.min.js"></script>
+  <script type="text/javascript" src="web/assets/jQueryValidation/dist/additional-methods.js"></script>
+  <script type="text/javascript" src="web/assets/jQueryValidation/dist/localization/messages_es_AR.js"></script>
 {% endblock %}

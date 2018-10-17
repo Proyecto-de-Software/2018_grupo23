@@ -1,91 +1,69 @@
 {% extends 'base_template.html' %} {% block title %}Configuración{% endblock %}
-
 {% block content %}
-
-<!--{% block titulo_del_hero %}Configuración del sistema{% endblock %}-->
 <section class="section">
-<div class="columns">
-  <div class="column is-6 is-offset-3">
-        <h2 class="subtitle">{{ error }}</h2>
-        <form id="f_1" class="box" action="?action=configuracion_update" method="post">
-            <div class="field">
-                <label class="label" for="titulo">Título:</label>
-                <div class="control">
-                  <input class="input" id="titulo" type="text" name="titulo" value="{{page_config.titulo}}" required>
-                </div>
-                <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
-            </div>
-
-            <div class="field">
-              <label class="label" for="email">Mail de contacto:</label>
+  <div class="columns">
+    <div class="column is-6 is-offset-3">
+      <form class="box" action="?action=configuracion_update" method="post">
+          <div class="field">
+              <label class="label" for="titulo">Título:</label>
               <div class="control">
-                <input class="input" id="email" type="text" name="email" value="{{page_config.email}}" required>
+                <input class="input" id="titulo" type="text" name="titulo" value="{{page_config.titulo}}" required>
               </div>
+              <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
+          </div>
+          <div class="field">
+            <label class="label" for="email">Mail de contacto:</label>
+            <div class="control">
+              <input class="input" id="email" type="text" name="email" value="{{page_config.email}}" required>
             </div>
-
-            <div class="field">
-              <label class="label" for="descripcion">Descripción:</label>
-              <div class="control">
-                <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{page_config.descripcion}}" required>{{page_config.descripcion}}</textarea>
-              </div>
+          </div>
+          <div class="field">
+            <label class="label" for="descripcion">Descripción:</label>
+            <div class="control">
+              <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{page_config.descripcion}}" required>{{page_config.descripcion}}</textarea>
             </div>
-
-            <div class="field">
-              <label class="label">Cantidad de elementos por página en los listados</label>
-                <div class="control">
-                  <div class="select">
-                    <select name="paginado">
-                      {% for i in range(5, 30, 5) %}
-                        <option value="{{ i }}"{% if i == page_config.paginado %} selected="selected"{% endif %}>{{ i }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                    <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="label">Estado del sitio</label>
+          </div>
+          <div class="field">
+            <label class="label">Cantidad de elementos por página en los listados</label>
               <div class="control">
                 <div class="select">
-                  <select name="estado">
-                    <option value="habilitado"{% if page_config.estado == "habilitado" %} selected="selected"{% endif %}>Habilitado</option>
-                    <option value="deshabilitado"{% if page_config.estado == "deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
+                  <select name="paginado">
+                    {% for i in range(5, 30, 5) %}
+                      <option value="{{ i }}"{% if i == page_config.paginado %} selected="selected"{% endif %}>{{ i }}</option>
+                    {% endfor %}
                   </select>
                 </div>
-                <p class="help">Si se encuentra deshabilitado lo podrán ver solamente el/los administradores del sistema</p>
+                  <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Estado del sitio</label>
+            <div class="control">
+              <div class="select">
+                <select name="estado">
+                  <option value="habilitado"{% if page_config.estado == "habilitado" %} selected="selected"{% endif %}>Habilitado</option>
+                  <option value="deshabilitado"{% if page_config.estado == "deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
+                </select>
               </div>
+              <p class="help">Si se encuentra deshabilitado lo podrán ver solamente el/los administradores del sistema</p>
             </div>
+          </div>
+          <div class="field is-grouped is-grouped-centered">
+            <button type="submit" class="button is-success" value="save_config">Guardar cambios</button>
+            <button type="button" class="button is-light" onclick="window.location.href='/';">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</section>
 
-            <div class="field is-grouped is-grouped-centered">
-              <button type="submit" class="button is-primary" value="save_config">Guardar cambios</button>
-              <button class="button is-light" onclick="window.location.href='/';">Cancelar</button>
-            </div>
-
-          </form>
-        </div>
-        </div>
-
-     </section>
-
-    {% block my_js %}
-         <script type="text/javascript">
-           function grayer(formId, yesNo) {
-              var f = document.getElementById(formId), s, opacity;
-              s = f.style;
-              opacity = yesNo? '60' : '100';
-              s.opacity = s.MozOpacity = s.KhtmlOpacity = opacity/100;
-              s.filter = 'alpha(opacity='+opacity+')';
-              for(var i=0; i<f.length; i++) f[i].disabled = yesNo;
-           }
-           // window.onload=function(){grayer('f_1',true);}; // disabled by default
-
-           // function toggleText(button_id)  {
-           //     var text = document.getElementById(button_id).firstChild;
-           //     text.data = text.data == "Editar" ? "Cancelar" : "Editar";
-           // }
-         </script>
-       {% endblock %}
+{% block my_js %}
+<script type="text/javascript">
+  window.onload = function() { //funcion que evita el resubmit de un mismo form
+    history.replaceState("", "", "./?action=configuracion_index");
+  };
+</script>
+{% endblock %}
 
 
 {% endblock %}

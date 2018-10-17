@@ -73,10 +73,18 @@ class UserController extends MainController{
         $users= $user_repo->getAllUsuarios();
         foreach ($users as $key=>$user){
           $roles=$user_repo->getRolesFromUsuario($user['id']);
-          $users[$key]['roles']= (isset($roles[0]) ? $roles[0] : array('NA'));
+          if (isset($roles[0])){
+            $str='';
+            foreach ($roles as $rol){
+              $str .= $rol['rol'] .', ';
+            }
+            $users[$key]['roles']= $str;
+          }else{
+            $users[$key]['roles']= 'NA';
+          }
         }
         $param['users']= $users;
-        $param['roles']= $user_repo->getRoles();
+        $param['roles']= $user_repo->getRoles();//para los roles que se muestran en el addUserForm
         $param['permisos']= $_SESSION['permissions'];
         $this::$twig->show('list_users.html', $param);
       }else{
