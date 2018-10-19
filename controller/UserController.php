@@ -91,6 +91,7 @@ class UserController extends MainController{
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
         if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
+          if($this->checkToken('usuario_new')){
           if($_POST["password"] == $_POST["re_password"]){
             $user_repo= new UserRepository();
             if($user_repo->checkUserName($_POST['username'])){
@@ -105,7 +106,8 @@ class UserController extends MainController{
               $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
             }
           }else{$this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');}
-        }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
+        }else{$this->viewUsersList('error', 'Token csrf invalido');}
+      }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
       }else{$this->redirectHome();}
     }else{$this->redirectHome();}
   }
