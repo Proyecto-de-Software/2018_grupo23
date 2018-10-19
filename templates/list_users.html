@@ -6,7 +6,7 @@
 <section class="section">
   {% if 'usuario_new' in permisos %}
   <div class="container">
-     <a id="showAddUser" class="button is-success">Agregar Usuario</a>
+     <a id="showAddUser" class="button is-info">Agregar Usuario</a>
   </div>
   {% endif %}
 </section>
@@ -42,16 +42,16 @@
             {% endif %}
             <td>
               {% if 'usuario_show' in permisos %}
-                <button class="button_view button is-success" title="Ver"><i class="far fa-eye"></i></button>
+                <button class="button_view button is-info" title="Ver"><i class="far fa-eye"></i></button>
               {% endif %}
                 <input class="user_id" value="{{ user.id }}" hidden></input>
               {% if 'usuario_update' in permisos %}
-                <button class="button_edit button is-success" title="Editar"><i class="far fa-edit"></i></button>
+                <button class="button_edit button is-info" title="Editar"><i class="far fa-edit"></i></button>
               {% endif %}
               {% if user.activo == 1 %}
                 <button class="button_block button is-danger" title="Bloquear"><i class="fas fa-ban"></i></button>
               {% else %}
-                <button class="button_unblock button is-success" title="Desbloquear"><i class="fas fa-check-square"></i></button>
+                <button class="button_unblock button is-info" title="Desbloquear"><i class="fas fa-check-square"></i></button>
               {% endif %}
               {% if 'usuario_destroy' in permisos %}
                 <button class="button_delete button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>

@@ -43,6 +43,13 @@ class UserController extends MainController{
     $_GET['action']='';
   }
 
+  // function test_input($data) {
+  //   $data = trim($data);
+  //   $data = stripslashes($data);
+  //   $data = htmlspecialchars($data);
+  //   return $data;
+  // }
+
   public function viewUser(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
       $_GET['action']='';
@@ -95,27 +102,83 @@ class UserController extends MainController{
     }
   }
 
+  // public function addUser(){
+  //   if(!is_null(AppController::getInstance()->getUser())){
+  //     if(AppController::getInstance()->checkPermissions($_GET['action'])){
+  //       if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
+  //         if($_POST["password"] == $_POST["re_password"]){
+  //           $user_repo= new UserRepository();
+  //           if($user_repo->checkUserName($_POST['username'])){
+  //             if(isset($_POST['roles'])){
+  //               $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+  //             }
+  //             else{
+  //               $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+  //             }
+  //             $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
+  //           }else{
+  //             $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
+  //           }
+  //         }else{$this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');}
+  //       }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
+  //     }else{$this->redirectHome();}
+  //   }else{$this->redirectHome();}
+  // }
+
+
+  function isValidForm($surname, $name, $username, $email, $pass, $re_pass){
+    $err='';
+    if ($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
+      if (!(preg_match("/^[a-z ñáéíóú]{2,60}+$/i", $surname))) {
+        $err.= 'error en apellido: se permiten solo letras, espacios y acentos. Mínimo 2 caracteres, máximo 60. ';
+      }
+      if (!(preg_match("/^[a-z ñáéíóú]{2,60}+$/i", $name))) {
+        $err.= 'error en nombre: se permiten solo letras, espacios y acentos. Mínimo 2 caracteres, máximo 60. ';
+      }
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL) === true) {
+        $err.= 'error en email: no es un email válido. ';
+      }
+      if ( ( strlen($username) < 6 ) || (!ctype_alnum($username) ) ){
+        $err.= 'error en nombre de usuario: mínimo 6 caracteres alfanuméricos. ';
+      }
+      if ( ( strlen($pass) < 8 ) || ( strlen($pass) > 20 ) ) {
+        $err.= 'error en password: mínimo 8 caracteres, máximo 20.';
+      }
+      if ( $pass != $re_pass ){
+        $err.= 'error: password y confirmación deben coincidir. ';
+      }
+    }else {
+      $err.= 'Se produjo un error: faltó completar alguno/s de los datos. ';
+    }
+    return $err;
+  }
+
   public function addUser(){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
-        if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
-          if($_POST["password"] == $_POST["re_password"]){
+        $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
+        if(empty($err)){
             $user_repo= new UserRepository();
             if($user_repo->checkUserName($_POST['username'])){
               if(isset($_POST['roles'])){
                 $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
               }
-              else{
+              else {
                 $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
               }
               $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
-            }else{
+            }else {
               $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
             }
-          }else{$this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');}
-        }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
-      }else{$this->redirectHome();}
-    }else{$this->redirectHome();}
+        }else {
+          $this->viewUsersList('error', $err);
+        }
+      }else {//no tiene permiso para esta acción
+        $this->redirectHome();
+      }
+    }else {//no es un usuario logueado
+      $this->redirectHome();
+    }
   }
 
   public function deleteUser(){
@@ -135,30 +198,27 @@ class UserController extends MainController{
   public function updateUser(){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
-        if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
-          if($_POST["password"] == $_POST["re_password"]){
-            $user_repo= new UserRepository();
-            if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
-              if(isset($_POST['roles'])){
-                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
-              }
-              else{
-                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
-              }
-              $this->viewUsersList('success', 'El usuario fue actualizado exitosamente');
-            }else{
-              $this->viewUsersList('error', 'Se produjo un error :el nombre de usuario ingresado ya existe');
+        $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
+        if(empty($err)){
+          $user_repo= new UserRepository();
+          if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
+            if(isset($_POST['roles'])){
+              $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
             }
-          }else{
-            $this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');
+            else {
+              $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+            }
+            $this->viewUsersList('success', 'El usuario fue actualizado exitosamente');
+          }else {
+            $this->viewUsersList('error', 'Se produjo un error :el nombre de usuario ingresado ya existe');
           }
-        }else{
-          $this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');
+        }else {//error con algun campo del form
+          $this->viewUsersList('error', $err);
         }
-      }else{
+      }else {
         $this->redirectHome();
       }
-    }else{
+    }else {
       $this->redirectHome();
     }
   }
