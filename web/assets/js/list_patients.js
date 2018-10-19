@@ -29,10 +29,10 @@ function getLocalidades(id){
             $('#localidad option[value='+id+']').prop('selected',true);
           }
         });
-    }
-    .fail(function(){
+
+    }).fail(function(){
         viewAlert();
-    }));
+      });
   } else {
     $("#localidad option").remove();
     $("#localidad").append('<option value="">Selecciona una localidad</option>');
@@ -58,10 +58,10 @@ $(document).ready(function() {
       $.getJSON(url, function(data) {
         $("#region_s").val(data.nombre);
         $("#region_id").val(data.id);
-      }
+      })
       .fail(function(){
           viewAlert();
-      }));
+        });
     } else {
       $("#region_s").val("");
     }
