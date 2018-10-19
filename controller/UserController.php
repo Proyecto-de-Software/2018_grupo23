@@ -125,8 +125,14 @@ class UserController extends MainController{
   public function addUser(){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
+<<<<<<< HEAD
         $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
         if(empty($err)){
+=======
+        if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
+          if($this->checkToken('usuario_new')){
+          if($_POST["password"] == $_POST["re_password"]){
+>>>>>>> ca617169c80f922bf9f03942db057391babbb827
             $user_repo= new UserRepository();
             if($user_repo->checkUserName($_POST['username'])){
               if(isset($_POST['roles'])){
@@ -139,6 +145,7 @@ class UserController extends MainController{
             }else {
               $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
             }
+<<<<<<< HEAD
         }else {
           $this->viewUsersList('error', $err);
         }
@@ -148,6 +155,13 @@ class UserController extends MainController{
     }else {//no es un usuario logueado
       $this->redirectHome();
     }
+=======
+          }else{$this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');}
+        }else{$this->viewUsersList('error', 'Token csrf invalido');}
+      }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
+      }else{$this->redirectHome();}
+    }else{$this->redirectHome();}
+>>>>>>> ca617169c80f922bf9f03942db057391babbb827
   }
 
   public function deleteUser(){

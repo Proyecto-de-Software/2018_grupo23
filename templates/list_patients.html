@@ -9,13 +9,13 @@
     <div class="level">
       {% if 'paciente_new' in permisos %} <!--pregunto si tiene los permisos para agregar pacientes -->
       <div class="level-left">
-        <button id="showAddPatient" class="button is-primary">Agregar paciente</button>
+        <button id="showAddPatient" class="button is-info">Agregar paciente</button>
 
       </div>
       <div class="level-right">
         <form action="?action=paciente_new" method="POST">
           <input value="True" name="addNN" hidden></input>
-          <button type="submit" class="button is-primary">Agregar NN</button>
+          <button type="submit" class="button is-info">Agregar NN</button>
         </form>
       </div>
       {% endif %}
@@ -48,14 +48,14 @@
             <td>{{paciente.id}}</td>
             <td>
               {% if 'paciente_show' in permisos %}
-              <button class="button_v button is-primary"><i class="far fa-eye"></i></button>
+              <button class="button_v button is-info" title="ver"><i class="far fa-eye"></i></button>
               {% endif %}
               <input class="p_id" value="{{paciente.id}}" hidden></input>
               {% if 'paciente_update' in permisos %}
-              <button class="button_e button is-primary"><i class="far fa-edit"></i></button>
+              <button class="button_e button is-info" title="editar"><i class="far fa-edit"></i></button>
               {% endif %}
               {% if 'paciente_destroy' in permisos %}
-              <button class="button_d button is-primary"><i class="far fa-trash-alt"></i></button>
+              <button class="button_d button is-danger" title="eliminar"><i class="far fa-trash-alt"></i></button>
               {% endif %}
             </td>
 

@@ -9,11 +9,10 @@
   </header>
   <section class="modal-card-body">
     <form action="?action=paciente_new" id="formAddPatient" method="POST">
+      <input type="hidden" name= "token" value="{{ form_token('paciente_new') }}">
     <div class="box">
         <div class="columns">
             <div class="column">
-              {% set key_word='patient' %}
-              <input name="token" value="" hidden></input>
 
               <div class="field">
                 <label class="label">Apellido*</label>

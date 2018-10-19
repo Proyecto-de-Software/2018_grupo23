@@ -16,14 +16,14 @@ abstract class TwigView {
             self::$twig->addFunction(
               new \Twig_SimpleFunction(
                 'form_token',
-                function($kew_word = null) {
+                function($key_word = null) {
                   if (empty($_SESSION['general_token'])) {
                     $_SESSION['token'] = bin2hex(random_bytes(32));
                   }
                   if (empty($_SESSION['key_token'])) {
                     $_SESSION['key_token'] = random_bytes(32);
                   }
-                  if (empty($kew_word)) {
+                  if (empty($key_word)) {
                     return $_SESSION['token'];
                   }
                   return hash_hmac('sha256', $key_word, $_SESSION['key_token']);

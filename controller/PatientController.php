@@ -20,17 +20,18 @@ class PatientController extends MainController{
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
           $this->checkDate($_POST["dob"])){
-            if(checkDoc($_POST["typedoc"],$_POST["numdoc"])){
-          //if($this->checkToken('patient')){
-            $query=new PatientRepository();
-            $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
-            ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
-            ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
-            $this->viewPatientList('success','El paciente ha sido agregado exitosamente.');
-          //}
-          //else{
-            //avisar que no somos pelotudos
-          //}
+            if($this->checkDoc($_POST["typedoc"],$_POST["numdoc"])){
+              if($this->checkToken('paciente_new')){
+                $query=new PatientRepository();
+                $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
+                ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
+                ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
+                $this->viewPatientList('success','El paciente ha sido agregado exitosamente.');
+          }
+          else{
+            echo("xd");
+            die();
+          }
         }
         else {
           $this->viewPatientList('error','El documento ya está en uso.');
@@ -87,7 +88,7 @@ class PatientController extends MainController{
 
   function viewPatient(){
     $query=new PatientRepository();
-    $patient=$query->getPatient($_POST["id"]); //cambiar por POST_ID
+    $patient=$query->getPatient($_POST["id"]);
     if(!empty($patient)){
       if($patient[0]["partido_id"]!=0){
         $p_partido=json_decode(@file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido/'.$patient[0]["partido_id"]),true);
@@ -120,7 +121,7 @@ class PatientController extends MainController{
       }
     }
     else{
-      //tirar error que no encontró el paciente
+      $this->viewPatientList('error','No se encontró el paciente');
   }
 }
 
@@ -129,7 +130,7 @@ class PatientController extends MainController{
       $this->viewPatientList();
     }
   else {
-    $this->redirectHome(); //agregar el error al home avisando que no puede ver pacientes
+    $this->redirectHome();
   }
 }
 
@@ -155,7 +156,7 @@ class PatientController extends MainController{
       $this->viewPatientList('success','El paciente ha sido eliminado exitosamente');
     }
     else {
-      $this->redirectHome(); //agregar el error al home avisando que no puede borrar pacientes
+      $this->viewPatientList('error','No tienes permisos para eliminar pacientes.');
     }
   }
 
@@ -175,16 +176,16 @@ class PatientController extends MainController{
               $this->viewPatientList();
           }
           else {
-            $this->redirectHome(); //agregar el error al home avisando alguno de los datos no fue valido
+            $this->viewPatientList('error','Alguno de los campos no fue válido.');
           }
         }
         else{
-          $this->redirectHome(); //agregar el error al home avisando que alguno de los datos no fue valido
+          $this->viewPatientList('error','Alguno de los campos no fue válido.');
         }
 
   }
   else{
-    $this->redirectHome(); //agregar el error al home avisando que no puede editar pacientes
+    $this->viewPatientList('error','No tienes permisos para editar pacientes.');
   }
 }
 }

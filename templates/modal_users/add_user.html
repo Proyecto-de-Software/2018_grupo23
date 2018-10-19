@@ -5,6 +5,7 @@
       </header>
       <section class="modal-card-body">
         <form id="addUserForm" class="form" action="?action=usuario_new" method="post">
+          <input type="hidden" name= "token" value="{{ form_token('usuario_new') }}">
           <div class="">
             <input id="user_id" name="user_id" hidden>
           </div>
