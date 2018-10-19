@@ -21,16 +21,17 @@ class PatientController extends MainController{
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
           $this->checkDate($_POST["dob"])){
             if($this->checkDoc($_POST["typedoc"],$_POST["numdoc"])){
-          //if($this->checkToken('patient')){
-            $query=new PatientRepository();
-            $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
-            ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
-            ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
-            $this->viewPatientList('success','El paciente ha sido agregado exitosamente.');
-          //}
-          //else{
-            //avisar que no somos pelotudos
-          //}
+              if($this->checkToken('paciente_new')){
+                $query=new PatientRepository();
+                $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
+                ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
+                ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
+                $this->viewPatientList('success','El paciente ha sido agregado exitosamente.');
+          }
+          else{
+            echo("xd");
+            die();
+          }
         }
         else {
           $this->viewPatientList('error','El documento ya está en uso.');

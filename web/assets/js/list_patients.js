@@ -99,6 +99,7 @@ $(document).ready(function() {
       })
       .done(function(paciente) {
         if(isJsonString(paciente)){
+          console.log(paciente);
         var p = JSON.parse(paciente);
         $('#v_nombre').val(p[0].nombre);
         $('#v_apellido').val(p[0].apellido);

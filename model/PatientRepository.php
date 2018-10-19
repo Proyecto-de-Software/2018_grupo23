@@ -27,7 +27,13 @@ require_once('core/Connection.php');
       $query->bindParam(":doccheck",$doccheck);
       $query->bindParam(":tipo_documento",$tipo_documento);
       $query->bindParam(":numero_documento",$numero_documento);
-      $query->bindParam(":numero_carpeta",$numero_carpeta);
+      if($numero_carpeta=''){
+        $query->bindParam(":numero_carpeta",null);
+      }
+      else {
+        $query->bindParam(":numero_carpeta",$numero_carpeta);
+      }
+
       $query->bindParam(":telefono",$telefono);
       $query->bindParam(":obra_social",$obra_social);
       $query->bindParam(":partido",$partido);
