@@ -43,13 +43,6 @@ class UserController extends MainController{
     $_GET['action']='';
   }
 
-  // function test_input($data) {
-  //   $data = trim($data);
-  //   $data = stripslashes($data);
-  //   $data = htmlspecialchars($data);
-  //   return $data;
-  // }
-
   public function viewUser(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
       $_GET['action']='';
@@ -101,30 +94,6 @@ class UserController extends MainController{
       $this->redirectHome();
     }
   }
-
-  // public function addUser(){
-  //   if(!is_null(AppController::getInstance()->getUser())){
-  //     if(AppController::getInstance()->checkPermissions($_GET['action'])){
-  //       if($this->postElementsCheck(array('apellido','nombre','email','password','re_password','username'))){
-  //         if($_POST["password"] == $_POST["re_password"]){
-  //           $user_repo= new UserRepository();
-  //           if($user_repo->checkUserName($_POST['username'])){
-  //             if(isset($_POST['roles'])){
-  //               $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
-  //             }
-  //             else{
-  //               $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
-  //             }
-  //             $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
-  //           }else{
-  //             $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
-  //           }
-  //         }else{$this->viewUsersList('error', 'Se produjo un error: el password y la confirmación deben coincidir');}
-  //       }else{$this->viewUsersList('error', 'Se produjo un error: faltó completar alguno de los datos');}
-  //     }else{$this->redirectHome();}
-  //   }else{$this->redirectHome();}
-  // }
-
 
   function isValidForm($surname, $name, $username, $email, $pass, $re_pass){
     $err='';
@@ -186,7 +155,7 @@ class UserController extends MainController{
       if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){
         $user_repo= new UserRepository();
         $user_repo->removeUser($_POST['id_user']);
-        $this->viewUsersList();
+        $this->viewUsersList('success', 'El usuario fue eliminado');
       }else{
         $this->viewUsersList('error', 'Se produjo un error: no puedes eliminar a ese usuario');
       }
