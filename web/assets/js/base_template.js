@@ -13,4 +13,12 @@ $(document).ready(function() {
     $("#success_noti").remove();
   });
 
+  $("#close_alert").on("click",function(){
+    $("#js_alert").prop('hidden',true);
+  });
+
 });
+
+function viewAlert(){
+  $('#js_alert').removeAttr('hidden','hidden');
+}

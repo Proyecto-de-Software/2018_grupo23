@@ -50,6 +50,8 @@
         if (!is_null($_POST['token']) && !empty($_POST['token'])) {
           if(!is_null($key_word)){
             $calc = hash_hmac('sha256', $key_word, $_SESSION['key_token']);
+            echo($calc);
+            die();
             if (hash_equals($calc, $_POST['token'])) {
               return true;
             }
@@ -62,7 +64,7 @@
               return false;
             }
           }
-        } return false;  
+        } return false;
       }
   }
 ?>

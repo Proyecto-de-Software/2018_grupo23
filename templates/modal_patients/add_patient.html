@@ -12,6 +12,8 @@
     <div class="box">
         <div class="columns">
             <div class="column">
+              {% set key_word='patient' %}
+              <input name="token" value="" hidden></input>
 
               <div class="field">
                 <label class="label">Apellido*</label>
@@ -31,8 +33,8 @@
                 <label class="label">Partido</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select id="partido" name="partido" required>
-                      <option value=""> Partido </option>
+                    <select id="partido" name="partido">
+                      <option value="0"> Partido </option>
                     </select>
                   </div>
                 </div>
@@ -41,8 +43,8 @@
                 <label class="label">Localidad</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="localidad" id="localidad" required>
-                      <option value=1>Localidad</option>
+                    <select name="localidad" id="localidad">
+                      <option value=0>Localidad</option>
                     </select>
                   </div>
                 </div>
@@ -141,6 +143,7 @@
                 <div class="control">
                   <div class="select is-boxed">
                     <select id="e_obrasocial" name="obra_social" required>
+                      <option value=0>Sin obra social</option>
                       {% for os in obras_sociales %}
                       <option value="{{os.id}}">{{os.nombre}}</option>
                       {% endfor %}

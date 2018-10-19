@@ -1,16 +1,98 @@
 window.onload = function() { //funcion que evita el resubmit de un mismo form
   history.replaceState("", "", "./?action=usuario_index");
-}
+};
 
-//para validar addUserForm
 $(document).ready(function () {
-  $('#addUserForm').validate({ // initialize the plugin
+    jQuery.validator.addMethod('lettersonly', function(value, element) {
+        return this.optional(element) || /^[a-z áãâäàéêëèíîïìóõôöòúûüùçñ]+$/i.test(value);
+    }, "No se permiten números");
+    $("#addUser #addUserForm").validate(
+        {
+          rules:
+          {
+            apellido:
+            {
+              required: true,
+              lettersonly: true
+            },
+            nombre:
+            {
+              required: true,
+              lettersonly: true
+            },
+            email:
+            {
+              required: true,
+              email: true
+            },
+            username:
+            {
+              required: true,
+              minlength: 6,
+              alphanumeric: true
+            },
+            password:
+            {
+              required: true,
+              minlength: 8,
+              maxlength: 20,
+            },
+            re_password:
+            {
+              required: true,
+              equalTo: "#password",
+              minlength: 8,
+              maxlength: 20
+            }
+          },
+          messages:
+          {
+            apellido:
+            {
+              required: "Por favor ingrese su apellido.",
+            },
+            nombre:
+            {
+              required: "Por favor ingrese su nombre.",
+            },
+            email:
+            {
+              required: "Por favor ingrese su dirección de correo electrónico.",
+            },
+            username:
+            {
+              required: "Por favor ingrese un nombre de usuario.",
+              minlength: "El nombre de usuario debe tener al menos 6 caracteres."
+            },
+            password:
+            {
+              required: "Por favor ingrese una contraseña.",
+              minlength: "La contraseña debe tener al menos 8 caracteres.",
+              maxlength: "La contraseña no debe superar los 20 caracteres."
+            },
+            re_password:
+            {
+              required: "Por favor confirme su contraseña.",
+              minlength: "La contraseña debe tener al menos 8 caracteres.",
+              maxlength: "La contraseña no debe superar los 20 caracteres."
+            }
+          },
+          success: function(label,element) {
+            label.parent().removeClass('error');
+            label.remove();
+          },
+          highlight: function(element) {
+              $(element).removeClass('is-success').addClass('is-warning');
+          },
+          unhighlight: function(element) {
+            $(element).removeClass('is-warning').addClass('is-success');
+          }
+        });
   });
-});
-
 
 //para el modal de ver un usuario
 $('#tabla').on("click",".button_view",function(){
+  showLoading();
   var id_usuario= $(this).closest('tr').find('.user_id').val();
   $.ajax({
     method: "POST",
@@ -33,6 +115,7 @@ $('#tabla').on("click",".button_view",function(){
       if ((u['roles']).length == 0) {
           $('<tr>').append($('<td>').text('Sin roles asignados')).appendTo("#tbody_roles");
       }
+      hideLoading();
     });
     $('#viewUser').addClass('is-active');
 });
@@ -45,6 +128,7 @@ $('.modal-close, #close').on("click",function(){
 
 //funcion boton editar
 $('#tabla').on("click",".button_edit",function(){
+  showLoading();
   var id_usuario= $(this).closest('tr').find('.user_id').val();
   $.ajax({
     method: "POST",
@@ -74,6 +158,7 @@ $('#tabla').on("click",".button_edit",function(){
       });
       $('#password').val(u['user'][0].password);
       $('#re_password').val(u['user'][0].password);
+      hideLoading();
     });
     $('#addUser').addClass('is-active');
 });
@@ -104,16 +189,20 @@ $('#blockModal .modal-close, #blockModal #closed').on("click",function(){
 
 //modal de agregar usuario
 $('#showAddUser').on("click",function(){
+  showLoading();
   $('header').append("<p class='modal-card-title'>Agregar usuario</p>");
   $('#addUserForm').attr('action', './?action=usuario_new');
   $('#roles_div .roles-label').text('¿Qué roles desea asignarle? Si no asigna ninguno podrá hacerlo en "editar"');
+  hideLoading();
   $('#addUser').addClass('is-active');
 });
 
 $('#addUser .modal-close, #addUser #cancel').on("click",function(){
   $('#addUser').removeClass('is-active');
-  $('#addUser #roles_box :checkbox').prop('checked',false);
-  $("#addUser input[type!='checkbox']").val('');
+  $('#addUserForm #roles_box :checkbox').prop('checked',false);
+  $("#addUserForm input[type!='checkbox']").val('');
+  $('#addUserForm input').removeClass('is-warning is-success');
+  $('label.error').remove();
   $('header').empty();
 });
 
