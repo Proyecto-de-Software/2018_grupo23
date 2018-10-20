@@ -1,17 +1,17 @@
 <div class="modal" id="addPatient">
   <div class="modal-background"></div>
-<div class="modal-card">
-  <header class="modal-card-head">
-    <div id="p_title">
-      <p class="modal-card-title" >Agregar paciente</p>
-    </div>
-    <button class="modal-close" aria-label="close">Cerrar</button>
-  </header>
-  <section class="modal-card-body">
-    <form action="?action=paciente_new" id="formAddPatient" method="POST">
-      <input type="hidden" name= "token" value="{{ form_token('paciente_new') }}">
-    <div class="box">
-        <div class="columns">
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <div id="p_title">
+        <p class="modal-card-title">Agregar paciente</p>
+      </div>
+      <button class="modal-close" aria-label="close">Cerrar</button>
+    </header>
+    <section class="modal-card-body">
+      <form action="?action=paciente_new" id="formAddPatient" method="POST">
+        <input type="hidden" name="token" value="{{ form_token('paciente_new') }}">
+        <div class="box">
+          <div class="columns">
             <div class="column">
 
               <div class="field">
@@ -54,7 +54,7 @@
                   <div class="select is-boxed">
                     <select id="e_genero" name="genero" required>
                       {% for gender in genders %}
-                        <option value={{gender.id}}>{{gender.nombre}}</option>
+                      <option value={{gender.id}}>{{gender.nombre}}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -101,7 +101,7 @@
                 <label class="label">Región sanitaria</label>
                 <div class="control">
                   <input type="text" class="input is-boxed" id="region_s" name="region" readonly>
-                   <input type="hidden" id="region_id" name="regions">
+                  <input type="hidden" id="region_id" name="regions">
                 </div>
               </div>
 
@@ -118,9 +118,9 @@
                 <div class="control">
                   <input class="is-checkradio" id="check_yes" type="radio" name="doccheck" value=1 checked="checked">
                   <label for="exampleRadioInline1">Sí</label>
-                  <input class="is-checkradio" id="check_no" type="radio" name="doccheck"value=0>
+                  <input class="is-checkradio" id="check_no" type="radio" name="doccheck" value=0>
                   <label for="exampleRadioInline2">No</label>
-                  </div>
+                </div>
               </div>
 
               <div class="field">
@@ -155,13 +155,13 @@
           <!-- input para pasar el id al editar -->
           <input id="edit_id" name="edit_id" hidden>
 
-            <p>* campos obligatorios</p>
-            </div>
-  </section>
-  <footer class="modal-card-foot">
+          <p>* campos obligatorios</p>
+        </div>
+    </section>
+    <footer class="modal-card-foot">
       <button type="submit" id="p_save" class="button is-primary" value="add_patient">Agregar</button>
-    <button type="button" class="button is-text" id="cancel">Cancelar</button>
-  </form>
-  </footer>
-</div>
+      <button type="button" class="button is-text" id="cancel">Cancelar</button>
+      </form>
+    </footer>
+  </div>
 </div>

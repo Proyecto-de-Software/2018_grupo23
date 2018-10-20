@@ -61,6 +61,13 @@ require_once('core/Connection.php');
       return $query->fetchall();
     }
 
+    function getGenero($id){
+      $query=$this->conn->prepare("SELECT * FROM genero WHERE :id=id");
+      $query->bindParam(":id",$id);
+      $query->execute();
+      return $query->fetchall();
+    }
+
     function isDocAvailable($type,$num){
       $query=$this->conn->prepare("SELECT * FROM paciente WHERE paciente.tipo_doc_id= :type AND paciente.numero= :num");
       $query->bindParam(":type",$type);

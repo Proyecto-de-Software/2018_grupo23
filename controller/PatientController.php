@@ -117,6 +117,8 @@ class PatientController extends MainController{
         $patient[0]["tipo_doc_id"]=$p_tipo_doc;
         $patient[0]["obra_social_id"]=$p_obra_social;
         $patient[0]["partido_id"]=$p_partido;
+        $query=new PatientRepository();
+        $patient[0]["genero_id"]=$query->getGenero($patient[0]["genero_id"]);
         echo(json_encode($patient));
       }
     }

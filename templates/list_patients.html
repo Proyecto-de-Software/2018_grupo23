@@ -7,7 +7,8 @@
 <section class="section">
   <div class="container">
     <div class="level">
-      {% if 'paciente_new' in permisos %} <!--pregunto si tiene los permisos para agregar pacientes -->
+      {% if 'paciente_new' in permisos %}
+      <!--pregunto si tiene los permisos para agregar pacientes -->
       <div class="level-left">
         <button id="showAddPatient" class="button is-info">Agregar paciente</button>
 
@@ -84,9 +85,9 @@
 <script type="text/javascript" src="web/assets/js/loading.js"></script>
 <script type="text/javascript" src="web/assets/js/not_available.js"></script>
 <script>
-    window.onload = function() {
-        history.replaceState("", "", "./?action=paciente_index");
-    }
+  window.onload = function() {
+    history.replaceState("", "", "./?action=paciente_index");
+  }
 </script>
 
 
