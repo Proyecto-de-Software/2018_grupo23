@@ -50,8 +50,7 @@
         if (!is_null($_POST['token']) && !empty($_POST['token'])) {
           if(!is_null($key_word)){
             $calc = hash_hmac('sha256', $key_word, $_SESSION['key_token']);
-            echo($calc);
-            die();
+
             if (hash_equals($calc, $_POST['token'])) {
               return true;
             }
@@ -66,5 +65,14 @@
           }
         } return false;
       }
+    	public function prepareData($elements) {
+        foreach($elements as $key){
+				  $_POST[$key] = trim($_POST[$key]); //Elimina espacio en blanco (u otro tipo de caracteres) del inicio y el final de la cadena
+				  $_POST[$key] = strip_tags($_POST[$key]); //Retira las etiquetas HTML y PHP de un string
+				  $_POST[$key] = addslashes($_POST[$key]); //Escapa un string con barras invertidas
+				  $_POST[$key] = stripslashes($_POST[$key]); //Quita las barras de un string con comillas escapadas
+				  $_POST[$key] = htmlspecialchars($_POST[$key]); //Convierte caracteres especiales en entidades HTML
+        }
+		}
   }
 ?>
