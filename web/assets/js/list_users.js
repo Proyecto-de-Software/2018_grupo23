@@ -5,7 +5,7 @@ window.onload = function() { //funcion que evita el resubmit de un mismo form
 $(document).ready(function () {
     jQuery.validator.addMethod('lettersonly', function(value, element) {
         return this.optional(element) || /^[a-z áãâäàéêëèíîïìóõôöòúûüùçñ]+$/i.test(value);
-    }, "No se permiten números");
+    }, "Se permiten solamente letras");
     $("#addUser #addUserForm").validate(
         {
           rules:
@@ -13,11 +13,15 @@ $(document).ready(function () {
             apellido:
             {
               required: true,
+              minlength: 2,
+              maxlength: 60,
               lettersonly: true
             },
             nombre:
             {
               required: true,
+              minlength: 2,
+              maxlength: 60,
               lettersonly: true
             },
             email:
