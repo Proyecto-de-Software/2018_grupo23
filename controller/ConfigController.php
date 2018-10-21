@@ -40,7 +40,9 @@ class ConfigController extends MainController {
       }else{
           $this->redirectHome();
       }
-    }$this->redirectHome();
+    }else{
+      $this->redirectHome();
+    }
   }
 
   //obtengo todos los parámetros de configuración del sistema

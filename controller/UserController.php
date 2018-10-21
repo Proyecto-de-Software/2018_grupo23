@@ -28,7 +28,6 @@ class UserController extends MainController{
         if(!empty($user)){ //si el usuario existe lo logeo
           AppController::getInstance()->startUserSession($user[0]);
           $this->redirectHome();
-          $_GET['action']=''; //limpio el action
           return;
         }else{$this->viewLogin("Email o Contraseña incorrecta");}
       }else{$this->viewLogin("Email o Contraseña incorrecta");}
@@ -40,7 +39,6 @@ class UserController extends MainController{
       AppController::getInstance()->endUserSession();
     }
     $this->redirectHome();
-    $_GET['action']='';
   }
 
   public function viewUser(){
