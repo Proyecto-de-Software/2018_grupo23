@@ -171,11 +171,22 @@ class PatientController extends MainController{
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
             $this->checkDate($_POST["dob"])){
+              if($this->checkDocbyID($_POST["edit_id"],$_POST["typedoc"],$_POST["numdoc"])){
+                if($this->checkToken('paciente_new')){
               $query=new PatientRepository();
               $query->updatePatient($_POST["edit_id"],$_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
               ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
               ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
               $this->viewPatientList();
+            }
+              else{
+                $this->viewPatientList('error','No tienes permisos para hacer esto');
+              }
+            }
+            else {
+              $this->viewPatientList('error','El documento ya está en uso.');
+            }
+
           }
           else {
             $this->viewPatientList('error','Alguno de los campos no fue válido.');
@@ -190,6 +201,12 @@ class PatientController extends MainController{
     $this->viewPatientList('error','No tienes permisos para editar pacientes.');
   }
 }
+
+function checkDocbyID($id,$type,$num){
+  $query=new PatientRepository();
+  return $query->isDocAvailableWithID($id,$type,$num);
+}
+
 }
 
 
