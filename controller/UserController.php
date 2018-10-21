@@ -107,11 +107,11 @@ class UserController extends MainController{
       if (!filter_var($email, FILTER_VALIDATE_EMAIL) === true) {
         $err.= 'error en email: no es un email válido. ';
       }
-      if ( ( strlen($username) < 6 ) || (!ctype_alnum($username) ) ){
-        $err.= 'error en nombre de usuario: mínimo 6 caracteres alfanuméricos. ';
+      if ( ( strlen($username) < 6 ) || ( strlen($username) > 20 ) || (!ctype_alnum($username) ) ){
+        $err.= 'error en nombre de usuario: mínimo 6 caracteres alfanuméricos, máximo 20. ';
       }
       if ( ( strlen($pass) < 8 ) || ( strlen($pass) > 20 ) ) {
-        $err.= 'error en password: mínimo 8 caracteres, máximo 20.';
+        $err.= 'error en password: mínimo 8 caracteres, máximo 20. ';
       }
       if ( $pass != $re_pass ){
         $err.= 'error: password y confirmación deben coincidir. ';
@@ -125,22 +125,27 @@ class UserController extends MainController{
   public function addUser(){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
-        $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
-        if(empty($err)){
-            $user_repo= new UserRepository();
-            if($user_repo->checkUserName($_POST['username'])){
-              if(isset($_POST['roles'])){
-                $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+        if($this->checkToken('usuario_new')){
+          $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
+          if(empty($err)){
+              $user_repo= new UserRepository();
+              if($user_repo->checkUserName($_POST['username'])){
+                $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
+                if(isset($_POST['roles'])){
+                  $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+                }
+                else {
+                  $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+                }
+                $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
+              }else {
+                $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
               }
-              else {
-                $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
-              }
-              $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
-            }else {
-              $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
-            }
+          }else {
+            $this->viewUsersList('error', $err);
+          }
         }else {
-          $this->viewUsersList('error', $err);
+          $this->viewUsersList('error', 'Se produjo un error: Token no válido');
         }
       }else {//no tiene permiso para esta acción
         $this->redirectHome();
@@ -167,22 +172,27 @@ class UserController extends MainController{
   public function updateUser(){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
-        $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
-        if(empty($err)){
-          $user_repo= new UserRepository();
-          if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
-            if(isset($_POST['roles'])){
-              $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+        if($this->checkToken('usuario_new')){
+          $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
+          if(empty($err)){
+            $user_repo= new UserRepository();
+            if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
+              $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
+              if(isset($_POST['roles'])){
+                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+              }
+              else {
+                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+              }
+              $this->viewUsersList('success', 'El usuario fue actualizado exitosamente');
+            }else {
+              $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
             }
-            else {
-              $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
-            }
-            $this->viewUsersList('success', 'El usuario fue actualizado exitosamente');
-          }else {
-            $this->viewUsersList('error', 'Se produjo un error :el nombre de usuario ingresado ya existe');
+          }else {//error con algun campo del form
+            $this->viewUsersList('error', $err);
           }
-        }else {//error con algun campo del form
-          $this->viewUsersList('error', $err);
+        }else {
+          $this->viewUsersList('error', 'Se produjo un error: Token no válido');
         }
       }else {
         $this->redirectHome();
@@ -198,8 +208,12 @@ class UserController extends MainController{
       if(AppController::getInstance()->checkPermissions('usuario_update')){
         if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){//no es él mismo...
           $user_repo= new UserRepository();
-          $user_repo->blockUser($_POST['id_user']);
-          $this->viewUsersList();
+          $state= $user_repo->blockUser($_POST['id_user']);
+          if($state == 1){
+            $this->viewUsersList('success', 'El usuario fue bloqueado');
+          }else {
+            $this->viewUsersList('success', 'El usuario fue desbloqueado');
+          }
         }else {
           $this->viewUsersList('error', 'Se produjo un error: no puedes bloquear a ese usuario');
         }

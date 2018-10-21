@@ -33,6 +33,7 @@ $(document).ready(function () {
             {
               required: true,
               minlength: 6,
+              maxlength: 20,
               alphanumeric: true
             },
             password:
@@ -54,10 +55,12 @@ $(document).ready(function () {
             apellido:
             {
               required: "Por favor ingrese su apellido.",
+              minlength: "El apellido debe tener al menos 2 caracteres."
             },
             nombre:
             {
               required: "Por favor ingrese su nombre.",
+              minlength: "El nombre debe tener al menos 2 caracteres."
             },
             email:
             {
@@ -110,8 +113,11 @@ $('#tabla').on("click",".button_view",function(){
       $('#view_nombre').val(u['user'][0].first_name);
       $('#view_email').val(u['user'][0].email);
       $('#view_username').val(u['user'][0].username);
-      $('#view_created').val(u['user'][0].created_at);
-      $('#view_updated').val(u['user'][0].updated_at);
+      var created= new Date(u['user'][0].created_at);
+      var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+      $('#view_created').val(created.toLocaleDateString("es-ES", options));
+      var updated= new Date(u['user'][0].updated_at);
+      $('#view_updated').val(updated.toLocaleDateString("es-ES", options));
       ((u['user'][0].activo) = 1) ? $('#view_activo').val('Activo') : $('#view_activo').val('Bloqueado');
       $.each(u['roles'],function(index,item){
           $('<tr>').append($('<td>').text(item.rol)).appendTo("#tbody_roles");
@@ -204,7 +210,9 @@ $('#showAddUser').on("click",function(){
 $('#addUser .modal-close, #addUser #cancel').on("click",function(){
   $('#addUser').removeClass('is-active');
   $('#addUserForm #roles_box :checkbox').prop('checked',false);
+  var token= $("#addUserForm #token").val();
   $("#addUserForm input[type!='checkbox']").val('');
+  $("#addUserForm input[id='token']").val(token);
   $('#addUserForm input').removeClass('is-warning is-success');
   $('label.error').remove();
   $('header').empty();

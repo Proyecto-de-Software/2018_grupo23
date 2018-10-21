@@ -1,51 +1,90 @@
 {% extends 'base_template.html' %} {% block title %}Configuración{% endblock %}
 {% block content %}
 <section class="section">
-  <div class="columns">
-    <div class="column is-6 is-offset-3">
-      <form class="box" action="?action=configuracion_update" method="post">
-          <div class="field">
-              <label class="label" for="titulo">Título:</label>
-              <div class="control">
-                <input class="input" id="titulo" type="text" name="titulo" value="{{page_config.titulo}}" required>
+  <div class="container">
+    <div class="box">
+      <h4 class="title is-4">Configuración general del sistema</h4>
+      <div class="columns">
+        <div class="column is-6">
+          <form action="?action=configuracion_update" method="post">
+              <div class="field">
+                  <label class="label" for="titulo">Título:</label>
+                  <div class="control">
+                    <input class="input" id="titulo" type="text" name="titulo" value="{{page_config.titulo}}" required>
+                  </div>
+                  <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
               </div>
-              <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
-          </div>
-          <div class="field">
-            <label class="label" for="email">Mail de contacto:</label>
-            <div class="control">
-              <input class="input" id="email" type="text" name="email" value="{{page_config.email}}" required>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label" for="descripcion">Descripción:</label>
-            <div class="control">
-              <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{page_config.descripcion}}" required>{{page_config.descripcion}}</textarea>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Cantidad de elementos por página en los listados</label>
-              <div class="control">
-                <div class="select">
-                  <select name="paginado">
-                    {% for i in range(5, 30, 5) %}
-                      <option value="{{ i }}"{% if i == page_config.paginado %} selected="selected"{% endif %}>{{ i }}</option>
-                    {% endfor %}
-                  </select>
+              <div class="field">
+                <label class="label" for="email">Mail de contacto:</label>
+                <div class="control">
+                  <input class="input" id="email" type="email" name="email" value="{{page_config.email}}" placeholder="e-mail" required>
                 </div>
-                  <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Estado del sitio</label>
-            <div class="control">
-              <div class="select">
-                <select name="estado">
-                  <option value="habilitado"{% if page_config.estado == "habilitado" %} selected="selected"{% endif %}>Habilitado</option>
-                  <option value="deshabilitado"{% if page_config.estado == "deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
-                </select>
               </div>
-              <p class="help">Si se encuentra deshabilitado lo podrán ver solamente el/los administradores del sistema</p>
+              <div class="field">
+                <label class="label" for="descripcion">Descripción:</label>
+                <div class="control">
+                  <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{page_config.descripcion}}" rows="4" required>{{page_config.descripcion}}</textarea>
+                </div>
+              </div>
+          </div>
+          <div class="column is-6">
+              <div class="field">
+                <label class="label">Cantidad de elementos por página en los listados</label>
+                  <div class="control">
+                    <div class="select">
+                      <select name="paginado">
+                        {% for i in range(5, 30, 5) %}
+                          <option value="{{ i }}"{% if i == page_config.paginado %} selected="selected"{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                      <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Estado del sitio</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="estado">
+                      <option value="habilitado"{% if page_config.estado == "habilitado" %} selected="selected"{% endif %}>Habilitado</option>
+                      <option value="deshabilitado"{% if page_config.estado == "deshabilitado" %} selected="selected"{% endif %}>Deshabilitado</option>
+                    </select>
+                  </div>
+                  <p class="help">Si se encuentra deshabilitado lo podrán ver solamente el/los administradores del sistema</p>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+          <div class="box">
+            <h4 class="title is-4">Contenido de la página principal</h4>
+            <div class="columns">
+              <div class="column">
+                  <div class="field">
+                    <label class="label" for="descripcion">Columna 1</label>
+                    <div class="control">
+                      <textarea class="textarea" type="text" name="col1_text" value="{{page_config.columna_uno}}" rows="12">{{page_config.columna_uno}}</textarea>
+                    </div>
+                  </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="descripcion">Columna 2</label>
+                  <div class="control">
+                    <textarea class="textarea" type="text" name="col2_text" value="{{page_config.columna_dos}}" rows="12">{{page_config.columna_dos}}</textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="descripcion">Columna 3</label>
+                  <div class="control">
+                    <textarea class="textarea" type="text" name="col3_text" value="{{page_config.columna_tres}}" rows="12">{{page_config.columna_tres}}</textarea>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="field is-grouped is-grouped-centered">
@@ -53,7 +92,6 @@
             <button type="button" class="button is-light" onclick="window.location.href='/';">Cancelar</button>
           </div>
         </form>
-      </div>
     </div>
 </section>
 

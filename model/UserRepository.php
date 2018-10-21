@@ -136,6 +136,7 @@ require_once('core/Connection.php');
       $query->bindParam(":valor", $activo);
       $query->bindParam(":id", $id);
       $query->execute();
+      return $state;
     }
     /* End of update functions */
 
