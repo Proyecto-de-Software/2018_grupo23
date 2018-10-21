@@ -23,6 +23,7 @@ class PatientController extends MainController{
             if($this->checkDoc($_POST["typedoc"],$_POST["numdoc"])){
               if($this->checkToken('paciente_new')){
                 $query=new PatientRepository();
+                $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
                 $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
                 ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
                 ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
@@ -174,6 +175,7 @@ class PatientController extends MainController{
               if($this->checkDocbyID($_POST["edit_id"],$_POST["typedoc"],$_POST["numdoc"])){
                 if($this->checkToken('paciente_new')){
               $query=new PatientRepository();
+              $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
               $query->updatePatient($_POST["edit_id"],$_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
               ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
               ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
