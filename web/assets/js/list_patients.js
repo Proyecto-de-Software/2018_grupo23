@@ -149,7 +149,6 @@ $(document).ready(function() {
       .done(function(paciente) {
         if (isJsonString(paciente)) {
           var p = JSON.parse(paciente);
-          console.log(p);
           $('#formAddPatient').attr('action', './?action=paciente_update'); //en los cierres de esto cambiar el action al addpatient
           $('#p_title').text('Editar paciente');
           $('#p_save').text('Guardar');
@@ -163,7 +162,7 @@ $(document).ready(function() {
           $('#e_numcarpeta').val(p[0].nro_carpeta);
           $('#e_tel').val(p[0].tel);
           $('#e_domicilio').val(p[0].domicilio);
-          $('#e_genero option[value=' + p[0].genero_id + ']').attr('selected', 'selected');
+          $('#e_genero option[value=' + p[0].genero_id[0].id + ']').attr('selected', 'selected');
           $('#e_obrasocial option[value=' + p[0].obra_social_id.id + ']').attr('selected', 'selected');
           $('#partido option[value=' + p[0].partido_id.id + ']').prop('selected', true);
           $('#region_s').val(p[0].region_sanitaria_id.nombre);
