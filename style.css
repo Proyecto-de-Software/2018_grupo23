@@ -1,19 +1,25 @@
-html, body {
+html {
   height:100%;
   margin:0;
+}
+
+body {
+  margin: 0;
+  margin-bottom: 40px;
 }
 
 .navbar {
   background-color: white;
   overflow: hidden;
   border-bottom: 1px solid black;
-  display: inline-flex;
-  width: 100%;
+
+
   left: 0;
-  position: relative;
 }
 
 .navbar a {
+  display: block;
+  float: left;
   color: black;
   text-align: center;
   padding: 1% 1%;
@@ -22,36 +28,55 @@ html, body {
   margin: 0%;
 }
 
+<<<<<<< HEAD
 .navbar p{
   display: inline;
   margin: 0;
   padding: 1% 1%;
   font-size: 18px;
   width: 100%;
+=======
+.navbar p {
+  display: block;
+  float: left;
+  padding: 1% 1%;
+  font-size: 18px;
+  margin: 0%;
+}
+
+.navbar .user-name{
+  width: auto;
+  float: right;
+>>>>>>> c3316d8d65dbb750b3e8fe8c6dbf4fba7e10b9bc
 }
 
 .navbar .search_div {
-  position: absolute;
+  position:absolute;
   left: 65%;
   right: 0px;
   margin-top: 0.555%;
   vertical-align: middle;
 }
 
-.search_div input{
-  width: 55%;
-  margin-top: 5px;
-  height: 30px;
+.navbar input{
+  display: block;
+  float: right;
+  width: 30%;
+  margin: 0.7% 0.7%;
   box-sizing: border-box;
+  font-size: 18px;
   margin-right: 1px;
 }
 
-.search_div button{
-  margin-top: 5px;
-  height: 30px;
-  padding: 2px;
-  margin-left: 0px;
-  margin-right: 10%;
+.navbar .b-search{
+  display: block;
+  float: right;
+  margin: 0.7% 0.7%;
+  font-size: 18px;
+}
+
+.navbar .a-login{
+  float: right;
 }
 
 .header{
@@ -61,17 +86,25 @@ html, body {
 }
 
 .dropdown {
+  display: block;
   float: left;
-  overflow: hidden;
+  padding: 1% 1%;
 }
 
 .dropdown .dropbtn {
   font-size: 18px;
+<<<<<<< HEAD
   position: fixed;
   border: none;
   outline: none;
   color: black;
   padding: 1% 1%;
+=======
+  text-align: center;
+  border: none;
+  outline: none;
+  color: black;
+>>>>>>> c3316d8d65dbb750b3e8fe8c6dbf4fba7e10b9bc
   background-color: inherit;
   font-family: inherit;
   
@@ -109,7 +142,7 @@ html, body {
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   height: 40px;
@@ -136,10 +169,10 @@ html, body {
 }
 
 form {
-    width: 600px;
-    margin: 0px auto;
-    padding: 150px;
-    text-align: center;
+  width: 600px;
+  margin: 0px auto;
+  padding: 150px;
+  text-align: center;
 }
 
 label {
@@ -151,19 +184,58 @@ input {
 }
 
 .row {
-  width: 85%;
-  display: flex;
-  margin-top: 3%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+    clear: both;
+    height: 100%;
+    width: 80%;
+  	padding: 0px;
+  	margin: auto;
+    text-align: center;
 }
 
 .row .column{
-  width: 33%;
-  padding: 5%;
-  padding-top: 0px;
+  display: block;
+	float: left;
+  margin: 5%;
+  margin-left: 0%;
+  margin-right: 20%;
 }
+
+.column:last-child { margin-right: 0; }
+
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; }
+
+
+.span { width: 20%; }
+@media only screen and (max-width: 1150px) {
+  .navbar.logued input {width: 20%;}
+}
+@media only screen and (max-width: 937px) {
+  .navbar.logued input{ clear: left;}
+  .navbar.logued .b-search{ clear: left;}
+  .navbar.logued input {width: 80%;}
+  .navbar.logued .b-search {
+    width: 20%
+    margin-right : 15%
+  }
+}
+@media only screen and (max-width: 720px) {
+	.col {  margin: 1% 0 1% 0%; }
+	.span { width: 100%; }
+  .navbar p { display: none;}
+  .navbar a { width: 15%;}
+  .navbar.logued { width: 100%; }
+  .navbar.logued a, .dropdown, .dropbtn { width: 100%;}
+  .navbar.logued .dropdown-content {
+    position: unset;
+    box-shadow: unset;
+  }
+  .navbar.logued input {width: 60%;}
+  .navbar.logued .b-search {margin-right: 5%;}
+}
+
 .row .column h1{
   font-family: "Arial Black", Gadget, sans-serif;
 }
@@ -180,8 +252,4 @@ input {
   padding-left: 5%;
   padding-right: 5%;
 
-
 }
-.column-left{ float: left;}
-.column-right{ float: right;}
-.column-center{ display: inline-block;}

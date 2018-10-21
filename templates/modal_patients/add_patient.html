@@ -1,0 +1,167 @@
+<div class="modal" id="addPatient">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <div id="p_title">
+        <p class="modal-card-title">Agregar paciente</p>
+      </div>
+      <button class="modal-close" aria-label="close">Cerrar</button>
+    </header>
+    <section class="modal-card-body">
+      <form action="?action=paciente_new" id="formAddPatient" method="POST">
+        <input type="hidden" name="token" value="{{ form_token('paciente_new') }}">
+        <div class="box">
+          <div class="columns">
+            <div class="column">
+
+              <div class="field">
+                <label class="label">Apellido*</label>
+                <div class="control">
+                  <input id="e_apellido" title="apellido" type="text" class="input is-boxed" name="apellido" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Fecha de nacimiento*</label>
+                <div class="control">
+                  <input id="e_dob" type="date" title="fecha de nacimiento" class="input is-boxed" name="dob" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Partido</label>
+                <div class="control">
+                  <div class="select is-boxed">
+                    <select id="partido" name="partido">
+                      <option value="0"> Partido </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Localidad</label>
+                <div class="control">
+                  <div class="select is-boxed">
+                    <select name="localidad" id="localidad">
+                      <option value=0>Localidad</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Género*</label>
+                <div class="control">
+                  <div class="select is-boxed">
+                    <select id="e_genero" name="genero" required>
+                      {% for gender in genders %}
+                      <option value={{gender.id}}>{{gender.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Tipo de documento*</label>
+                <div class="control">
+                  <div class="select is-boxed">
+                    <select id="e_tipodoc" name="typedoc" required>
+                      {% for tipo in tipo_doc %}
+                      <option value="{{tipo.id}}">{{tipo.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Tel/Cel</label>
+                <div class="control">
+                  <input id="e_tel" title="numero de telefono" type="number" class="input is-boxed" name="telefono">
+                </div>
+              </div>
+
+            </div>
+            <div class="column">
+
+              <div class="field">
+                <label class="label">Nombre*</label>
+                <div class="control">
+                  <input id="e_nombre" title="nombre" type="text" class="input is-boxed" name="nombre" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Lugar de nacimiento</label>
+                <div class="control">
+                  <input id="e_dobplace" title="lugar de nacimiento" type="text" class="input is-boxed" name="dobplace">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Región sanitaria</label>
+                <div class="control">
+                  <input type="text" title="region sanitaria" class="input is-boxed" id="region_s" name="region" readonly>
+                  <input type="hidden" id="region_id" name="regions">
+                </div>
+              </div>
+
+
+              <div class="field">
+                <label class="label">Domicilio*</label>
+                <div class="control">
+                  <input id="e_domicilio" title="domicilio" type="text" class="input is-boxed" name="domicilio" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Tiene en su poder un documento</label>
+                <div class="control">
+                  <input class="is-checkradio" title="si" id="check_yes" type="radio" name="doccheck" value=1 checked="checked">
+                  <label for="exampleRadioInline1">Sí</label>
+                  <input class="is-checkradio" title="no" id="check_no" type="radio" name="doccheck" value=0>
+                  <label for="exampleRadioInline2">No</label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Número de documento*</label>
+                <div class="control">
+                  <input id="e_numdoc" title="Número de documento" type="number" class="input is-boxed" name="numdoc" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Número de carpeta</label>
+                <div class="control">
+                  <input id="e_numcarpeta" title="Número de carpeta" type="number" max="99999" class="input is-boxed" name="numcarpeta">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Obra social</label>
+                <div class="control">
+                  <div class="select is-boxed">
+                    <select id="e_obrasocial" name="obra_social" required>
+                      <option value=0>Sin obra social</option>
+                      {% for os in obras_sociales %}
+                      <option value="{{os.id}}">{{os.nombre}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- input para pasar el id al editar -->
+          <input id="edit_id" name="edit_id" hidden>
+
+          <p>* campos obligatorios</p>
+        </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button type="submit" id="p_save" class="button is-primary" value="add_patient">Agregar</button>
+      <button type="button" class="button is-text" id="cancel">Cancelar</button>
+      </form>
+    </footer>
+  </div>
+</div>

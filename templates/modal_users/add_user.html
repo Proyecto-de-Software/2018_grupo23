@@ -1,0 +1,70 @@
+<div class="modal" id="addUser">
+  <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+      </header>
+      <section class="modal-card-body">
+        <form id="addUserForm" class="form" action="?action=usuario_new" method="post">
+          <input id="token" type="hidden" name="token" value="{{ form_token('usuario_new') }}">
+          <div class="">
+            <input id="user_id" name="user_id" hidden>
+          </div>
+          <div class="field">
+            <label class="label">Apellido*</label>
+            <div class="control">
+              <input id="apellido" type="text" class="input" name="apellido" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Nombre*</label>
+            <div class="control">
+              <input id="nombre" type="text" class="input" name="nombre" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Email*</label>
+            <div class="control">
+              <input id="email" type="email" class="input" name="email" placeholder="ejemplo@ejemplo.com" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Nombre de usuario*</label>
+            <div class="control">
+              <input id="username" type="text" class="input" name="username" required>
+            </div>
+            <p class="help">Debe tener entre 6 y 20 caracteres</p>
+          </div>
+          <div id="roles_div" class="field">
+            <label class="label roles-label">Qué roles desea asignarle? Si no asigna ninguno puede hacerlo en "editar"</label>
+              <div class="control">
+                  <div id="roles_box">
+                    {% for rol in roles %}
+                      <label>{{ rol.nombre }}</label>
+                      <input name="roles[]" class="styled" type="checkbox" value="{{ rol.nombre }}">
+                    {% endfor %}
+                  </div>
+              </div>
+          </div>
+          <div class="field">
+            <label class="label">Contraseña*</label>
+            <div class="control">
+              <input id="password" type="password" class="input" name="password" required>
+            </div>
+            <p class="help">Debe tener entre 8 y 20 caracteres</p>
+          </div>
+          <div class="field">
+            <label class="label">Confirmar contraseña*</label>
+            <div class="control">
+              <input id="re_password" type="password" class="input" name="re_password" required>
+            </div>
+          </div>
+          <p>* campos obligatorios</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button type="submit" class="button is-success" value="add_user">Aceptar</button>
+        <button type="button" class="button is-text" id="cancel">Cancelar</button>
+      </form>
+      </footer>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+</div>

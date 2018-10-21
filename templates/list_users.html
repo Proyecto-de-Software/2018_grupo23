@@ -1,0 +1,86 @@
+{% extends 'base_template.html' %} {% block title %}Usuarios{% endblock %}
+{% block my_css %}
+<link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css" />
+{% endblock %}
+{% block content %}
+<section class="section">
+  {% if 'usuario_new' in permisos %}
+  <div class="container">
+     <a id="showAddUser" class="button is-info">Agregar Usuario</a>
+  </div>
+  {% endif %}
+</section>
+<section class="section">
+<div class="container is-fluid">
+  <div class="box has-text-centered">
+      <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length='{{page_config.paginado}}'>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Nombre de usuario</th>
+            <th>Roles</th>
+            <th>Estado</th>
+            <th data-priority="-1">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+              {{ user.roles }}
+            </td>
+            {% if user.activo == 1 %}
+              <td>Activo</td>
+            {% else %}
+              <td>Bloqueado</td>
+            {% endif %}
+            <td>
+              {% if 'usuario_show' in permisos %}
+                <button class="button_view button is-info" title="Ver"><i class="far fa-eye"></i></button>
+              {% endif %}
+                <input class="user_id" value="{{ user.id }}" hidden></input>
+              {% if 'usuario_update' in permisos %}
+                <button class="button_edit button is-info" title="Editar"><i class="far fa-edit"></i></button>
+              {% endif %}
+              {% if user.activo == 1 %}
+                <button class="button_block button is-danger" title="Bloquear"><i class="fas fa-ban"></i></button>
+              {% else %}
+                <button class="button_unblock button is-info" title="Desbloquear"><i class="fas fa-check-square"></i></button>
+              {% endif %}
+              {% if 'usuario_destroy' in permisos %}
+                <button class="button_delete button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+</section>
+
+<!-- modals con los formularios para agregar, ver, quitar y bloquear a un usuario-->
+{% include "modal_users/add_user.html" %}
+{% include "modal_users/view_user.html" %}
+{% include "modal_users/delete_user.html" %}
+{% include "modal_users/block_user.html" %}
+{% include "modal_loading/loading.html" %}
+<!-- Hasta acá el modal-->
+
+{% endblock %}
+
+{% block my_js %}
+  <script type="text/javascript" src="web/assets/js/list_users.js"></script>
+  <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
+  <script type="text/javascript" src="web/assets/js/data_tables.js"></script>
+  <script type="text/javascript" src="web/assets/js/loading.js"></script>
+  <script type="text/javascript" src="web/assets/jQueryValidation/dist/jquery.validate.min.js"></script>
+  <script type="text/javascript" src="web/assets/jQueryValidation/dist/additional-methods.js"></script>
+  <script type="text/javascript" src="web/assets/jQueryValidation/dist/localization/messages_es_AR.js"></script>
+{% endblock %}
