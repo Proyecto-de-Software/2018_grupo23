@@ -26,28 +26,28 @@
 <section class="section">
   <div class="container is-fluid">
     <div class="box has-text-centered">
-      <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length='5'>
+      <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length={{page_config.paginado}}>
         <!-- ese 10 a ser cambiado por la var del config -->
         <thead>
           <tr>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>Tipo</th>
-            <th>Numero documento</th>
-            <th>Historia clinica</th>
-            <th data-priority="-1">Acciones</th>
+            <th id="th_apellido" alt="Apellido">Apellido</th>
+            <th id="th_nombre" alt="Nombre">Nombre</th>
+            <th id="th_doctipe" alt="Tipo de documento">Tipo</th>
+            <th id="th_numdoc" alt="Numero de documento">Numero documento</th>
+            <th id="th_hc" alt="Historia Clinica">Historia clinica</th>
+            <th id="th_a" alt="acciones" data-priority="-1">Acciones</th>
 
           </tr>
         </thead>
         <tbody>
           {% for paciente in patient_list %}
           <tr>
-            <td>{{paciente.apellido}}</td>
-            <td>{{paciente.nombre}}</td>
-            <td>{{ tipo_doc[paciente.tipo_doc_id -1].nombre }}</td> <!-- arreglar para que se lea el nombre y no el id -->
-            <td>{{paciente.numero}}</td>
-            <td>{{paciente.id}}</td>
-            <td>
+            <td headers="th_apellido">{{paciente.apellido}}</td>
+            <td headers="th_nombre">{{paciente.nombre}}</td>
+            <td headers="th_doctipe">{{ tipo_doc[paciente.tipo_doc_id -1].nombre }}</td> <!-- arreglar para que se lea el nombre y no el id -->
+            <td headers="th_numdoc">{{paciente.numero}}</td>
+            <td headers="th_hc">{{paciente.id}}</td>
+            <td headers="th_a">
               {% if 'paciente_show' in permisos %}
               <button class="button_v button is-info" title="ver"><i class="far fa-eye"></i></button>
               {% endif %}
