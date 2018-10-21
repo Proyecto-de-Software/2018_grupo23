@@ -115,9 +115,9 @@ $('#tabla').on("click",".button_view",function(){
       $('#view_username').val(u['user'][0].username);
       var created= new Date(u['user'][0].created_at);
       var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
-      $('#view_created').val(created.toLocaleDateString("es-ES", options));
+      $('#view_created').val(created.toLocaleDateString("es-ES", options) + "hs.");
       var updated= new Date(u['user'][0].updated_at);
-      $('#view_updated').val(updated.toLocaleDateString("es-ES", options));
+      $('#view_updated').val(updated.toLocaleDateString("es-ES", options) + "hs.");
       ((u['user'][0].activo) = 1) ? $('#view_activo').val('Activo') : $('#view_activo').val('Bloqueado');
       $.each(u['roles'],function(index,item){
           $('<tr>').append($('<td>').text(item.rol)).appendTo("#tbody_roles");

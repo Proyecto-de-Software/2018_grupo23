@@ -72,7 +72,8 @@ require_once('core/Connection.php');
       $query=$this->conn->prepare("SELECT * FROM paciente WHERE paciente.tipo_doc_id= :type AND paciente.numero= :num");
       $query->bindParam(":type",$type);
       $query->bindParam(":num",$num);
-      return !empty($query->execute());
+      $query->execute();
+      return empty($query->fetchall());
     }
     /* End of read  functions */
 
