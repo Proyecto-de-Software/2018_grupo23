@@ -90,9 +90,9 @@ require_once('core/Connection.php');
         return $query->fetchall();
     }
 
-    public function checkUserName($username, $user_id=NULL){
-      $query= $this->conn->prepare("SELECT * FROM usuario WHERE username=:username");
-      $query->bindParam(":username",$username);
+    function checkIfExists($query, $data, $user_id=NULL){
+      $query= $this->conn->prepare($query);
+      $query->bindParam(":data",$data);
       $query->execute();
       $valid=$query->fetchAll();
       if (empty($valid)){//nadie tiene ese username
@@ -105,6 +105,16 @@ require_once('core/Connection.php');
           return false;
         }
       }
+    }
+
+    public function checkUserName($username, $user_id=NULL){
+      $query= "SELECT * FROM usuario WHERE username=:data";
+      return $this->checkIfExists($query, $username, $user_id);
+    }
+
+    public function checkEmail($email, $user_id=NULL){
+      $query= "SELECT * FROM usuario WHERE email=:data";
+      return $this->checkIfExists($query, $email, $user_id);
     }
     /* End of read  functions */
 

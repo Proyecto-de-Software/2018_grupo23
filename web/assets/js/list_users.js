@@ -32,7 +32,7 @@ $(document).ready(function () {
             username:
             {
               required: true,
-              minlength: 6,
+              minlength: 5,
               maxlength: 20,
               alphanumeric: true
             },
@@ -69,7 +69,7 @@ $(document).ready(function () {
             username:
             {
               required: "Por favor ingrese un nombre de usuario.",
-              minlength: "El nombre de usuario debe tener al menos 6 caracteres."
+              minlength: "El nombre de usuario debe tener al menos 5 caracteres."
             },
             password:
             {
@@ -158,6 +158,7 @@ $('#tabla').on("click",".button_edit",function(){
       var roles_box_values= $("input[name='roles[]']").map(function(){
         return $(this).val();
       }).get();
+      // $("#roles_box input[value='Administrador']").prop('disabled', true);
       $.each(u['roles'],function(index,item){
         if (roles_box_values.includes(item.rol.toString())){
           $('#roles_box input[value="' + item.rol.toString() + '"]').prop('checked', true);

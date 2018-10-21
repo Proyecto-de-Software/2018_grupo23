@@ -28,6 +28,7 @@ class UserController extends MainController{
         if(!empty($user)){ //si el usuario existe lo logeo
           AppController::getInstance()->startUserSession($user[0]);
           $this->redirectHome();
+          $_GET['action']=''; //limpio el action
           return;
         }else{$this->viewLogin("Email o Contraseña incorrecta");}
       }else{$this->viewLogin("Email o Contraseña incorrecta");}
@@ -39,6 +40,7 @@ class UserController extends MainController{
       AppController::getInstance()->endUserSession();
     }
     $this->redirectHome();
+    $_GET['action']='';
   }
 
   public function viewUser(){
@@ -105,7 +107,7 @@ class UserController extends MainController{
       if (!filter_var($email, FILTER_VALIDATE_EMAIL) === true) {
         $err.= 'error en email: no es un email válido. ';
       }
-      if ( ( strlen($username) < 6 ) || ( strlen($username) > 20 ) || (!ctype_alnum($username) ) ){
+      if ( ( strlen($username) < 5 ) || ( strlen($username) > 20 ) || (!ctype_alnum($username) ) ){
         $err.= 'error en nombre de usuario: mínimo 6 caracteres alfanuméricos, máximo 20. ';
       }
       if ( ( strlen($pass) < 8 ) || ( strlen($pass) > 20 ) ) {
@@ -128,14 +130,18 @@ class UserController extends MainController{
           if(empty($err)){
               $user_repo= new UserRepository();
               if($user_repo->checkUserName($_POST['username'])){
-                $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
-                if(isset($_POST['roles'])){
-                  $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+                if($user_repo->checkEmail($_POST['email'])){
+                  $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
+                  if(isset($_POST['roles'])){
+                    $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+                  }
+                  else {
+                    $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+                  }
+                  $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
+                }else {
+                  $this->viewUsersList('error', 'Se produjo un error: el email ingresado ya existe');
                 }
-                else {
-                  $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
-                }
-                $this->viewUsersList('success', 'El usuario fue agregado exitosamente');
               }else {
                 $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
               }
@@ -162,7 +168,7 @@ class UserController extends MainController{
       }else{
         $this->viewUsersList('error', 'Se produjo un error: no puedes eliminar a ese usuario');
       }
-    }else{
+    }else {
       $this->redirectHome();
     }
   }
@@ -175,14 +181,24 @@ class UserController extends MainController{
           if(empty($err)){
             $user_repo= new UserRepository();
             if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
-              $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
-              if(isset($_POST['roles'])){
-                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+              if($user_repo->checkEmail($_POST['email'], $_POST['user_id'])){
+                $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
+                if(isset($_POST['roles'])){
+                  if($_POST['user_id'] != AppController::getInstance()->getUserData()['id']){//está viendo a otro admin
+                    $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+                  }else {//se está viendo a sí mismo
+                    if (in_array('Administrador', $_POST['roles'])){//chequeo que no se esté quitando el rol de admin
+                      $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+                    }else {
+                      $this->viewUsersList('error', 'No puedes quitarte el rol de Administrador a vos mismo');
+                    }
+                  }
+                }else {//no asignó roles
+                  $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+                }
+              }else {
+                $this->viewUsersList('error', 'Se produjo un error: el email ingresado ya existe');
               }
-              else {
-                $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
-              }
-              $this->viewUsersList('success', 'El usuario fue actualizado exitosamente');
             }else {
               $this->viewUsersList('error', 'Se produjo un error: el nombre de usuario ingresado ya existe');
             }
