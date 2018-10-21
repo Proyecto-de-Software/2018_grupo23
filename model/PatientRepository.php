@@ -75,6 +75,15 @@ require_once('core/Connection.php');
       $query->execute();
       return empty($query->fetchall());
     }
+
+    function isDocAvailableWithID($id,$type,$num){
+      $query=$this->conn->prepare("SELECT * FROM paciente WHERE paciente.id!= :id AND paciente.tipo_doc_id= :type AND paciente.numero= :num");
+      $query->bindParam(":id",$id);
+      $query->bindParam(":type",$type);
+      $query->bindParam(":num",$num);
+      $query->execute();
+      return empty($query->fetchall());
+    }
     /* End of read  functions */
 
     /* Update functions */
