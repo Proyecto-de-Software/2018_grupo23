@@ -183,18 +183,21 @@ class UserController extends MainController{
             if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
               if($user_repo->checkEmail($_POST['email'], $_POST['user_id'])){
                 $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
-                if(isset($_POST['roles'])){
-                  if($_POST['user_id'] != AppController::getInstance()->getUserData()['id']){//está viendo a otro admin
+                if($_POST['user_id'] != AppController::getInstance()->getUserData()['id']){//está viendo a otro usuario
+                  if(isset($_POST['roles'])){
                     $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
-                  }else {//se está viendo a sí mismo
-                    if (in_array('Administrador', $_POST['roles'])){//chequeo que no se esté quitando el rol de admin
-                      $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
-                    }else {
-                      $this->viewUsersList('error', 'No puedes quitarte el rol de Administrador a vos mismo');
-                    }
+                    $this->viewUsersList('success', 'El usuario se actualizó exitosamente');
+                  }else {
+                    $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+                    $this->viewUsersList('success', 'El usuario se actualizó exitosamente');
                   }
-                }else {//no asignó roles
-                  $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido']);
+                }else {//soy yo
+                  if ( !isset($_POST['roles']) || !in_array('Administrador', $_POST['roles'])  ){//chequeo que no se esté quitando el rol de admin
+                    $this->viewUsersList('error', 'No puedes quitarte el rol de Administrador a vos mismo');
+                  }else {
+                    $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
+                    $this->viewUsersList('success', 'El usuario se actualizó exitosamente');
+                  }
                 }
               }else {
                 $this->viewUsersList('error', 'Se produjo un error: el email ingresado ya existe');
