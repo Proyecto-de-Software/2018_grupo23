@@ -117,8 +117,13 @@ class AppController{
     public function checkPermissions($permission){ //chequea si tengo permisos para hacer esa accion
 
       try{
+        if($this->getUser()){
         $permissions = $this->user->getPermissions();
         return in_array($permission,$permissions);
+      }
+      else {
+        return(array());
+      }
       }
 
       catch (\UserIsBlocked $e){ //si el usuario fue bloqueado lo saca de la session

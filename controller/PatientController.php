@@ -72,7 +72,7 @@ class PatientController extends MainController{
   }
 
   function checkDate($date){
-    return $date<date('Y/m/d');
+    return $date<date('Y-m-d');
   }
 
   function addNN(){
@@ -143,9 +143,9 @@ class PatientController extends MainController{
       $tipo_doc=json_decode(@file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'),true);
       $obras_sociales=json_decode(@file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'),true);
       $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list,'genders'=>$gender_list, 'permisos' =>$_SESSION['permissions']);
-      if($state='success'){
+      if($state=='success'){
         $param['success']=$message;
-      }elseif ($state='error') {
+      }elseif ($state=='error') {
         $param['error']=$message;
       }
       $this::$twig->show('list_patients.html',$param);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
     <head>
         <meta charset="utf-8">
@@ -17,7 +17,7 @@
         <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
 
-                <a class="navbar-item" href="./?action=home">
+                <a class="navbar-item" href="./?action=home" title="Logo Hospital">
                     <img src="web/src/images/logo.png" width="60" height="30" alt="Logo Hospital">
                 </a>
 
@@ -38,9 +38,9 @@
                             <!-- navbar-link, navbar-dropdown etc. -->
                             <a class="navbar-link">Administración</a>
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" href="./?action=usuario_index">Usuarios</a>
-                                <a class="navbar-item" href="./?action=">Roles</a>
-                                <a class="navbar-item" href="./?action=">Permisos</a>
+                                <a class="navbar-item" href="./?action=usuario_index" >Usuarios</a>
+                                <a class="navbar-item" >Roles</a>
+                                <a class="navbar-item" >Permisos</a>
                                 <hr class="navbar-divider">
                                 <a class="navbar-item" href="./?action=configuracion_index">Configuración</a>
                             </div>
@@ -67,14 +67,14 @@
 
         {% if error %}
             <div id="error_noti" class="container notification is-danger">
-                <button id="close_error" class="delete"></button>
+                <button id="close_error" class="delete" title="Cerrar alerta"></button>
                 {{ error }}
             </div>
         {% endif %}
 
         {% if success %}
             <div id="success_noti" class="container notification is-success">
-                <button id="close_success" class="delete"></button>
+                <button id="close_success" class="delete" title="Cerrar alerta"></button>
                 {{ success }}
             </div>
         {% endif %}
@@ -99,8 +99,12 @@
                     <p class="level-item">
                         <strong>Proyecto de Software 2018</strong>-Hospital Dr. Alejandro Korn</p>
                 </div>
+                <div class="level-left">
+                  <p class="level-item"> {{ page_config.descripcion }}
+                </div>
                 <div class="level-rigth">
                     <p class="level-item">v 0.1.0</p>
+                    <p class="level-item"> Contacto: {{page_config.email }}</p>
                 </div>
             </div>
         </footer>
