@@ -126,12 +126,12 @@ class UserController extends MainController{
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
         if($this->checkToken('usuario_new')){
+          $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
           $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
           if(empty($err)){
               $user_repo= new UserRepository();
               if($user_repo->checkUserName($_POST['username'])){
                 if($user_repo->checkEmail($_POST['email'])){
-                  $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
                   if(isset($_POST['roles'])){
                     $user_repo->newUser($_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);
                   }
@@ -177,12 +177,12 @@ class UserController extends MainController{
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
         if($this->checkToken('usuario_new')){
+          $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
           $err= $this->isValidForm($_POST['apellido'],$_POST['nombre'],$_POST['username'],$_POST['email'],$_POST['password'],$_POST['re_password']);
           if(empty($err)){
             $user_repo= new UserRepository();
             if($user_repo->checkUserName($_POST['username'], $_POST['user_id'])){
               if($user_repo->checkEmail($_POST['email'], $_POST['user_id'])){
-                $this->prepareData(array('apellido','nombre','email','password','re_password','username'));
                 if($_POST['user_id'] != AppController::getInstance()->getUserData()['id']){//está viendo a otro usuario
                   if(isset($_POST['roles'])){
                     $user_repo->updateUser($_POST['user_id'],$_POST['email'],$_POST['username'],$_POST['password'],$_POST['nombre'],$_POST['apellido'],$_POST['roles']);

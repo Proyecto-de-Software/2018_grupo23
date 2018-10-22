@@ -23,7 +23,7 @@
               <div class="field">
                 <label class="label" for="descripcion">Descripción:</label>
                 <div class="control">
-                  <textarea class="textarea" id="descripcion" type="text" name="descripcion" value="{{page_config.descripcion}}" rows="4" required>{{page_config.descripcion}}</textarea>
+                  <textarea class="textarea" id="descripcion" name="descripcion" value="{{page_config.descripcion}}" rows="4" required>{{page_config.descripcion}}</textarea>
                 </div>
               </div>
           </div>
@@ -65,13 +65,13 @@
                   <div class="field">
                     <label class="label" for="email">Título</label>
                     <div class="control">
-                      <input class="input" type="text" name="col1_title" value="{{page_config.titulo_col_uno}}">
+                      <input class="input" name="col1_title" value="{{page_config.titulo_col_uno}}">
                     </div>
                   </div>
                   <div class="field">
                     <label class="label" for="descripcion">Cuerpo</label>
                     <div class="control">
-                      <textarea class="textarea" type="text" name="col1_text" value="{{page_config.columna_uno}}" rows="12">{{page_config.columna_uno}}</textarea>
+                      <textarea class="textarea" name="col1_text" value="{{page_config.columna_uno}}" rows="12">{{page_config.columna_uno}}</textarea>
                     </div>
                   </div>
               </div>
@@ -79,13 +79,13 @@
                 <div class="field">
                   <label class="label" for="email">Título</label>
                   <div class="control">
-                    <input class="input" type="text" name="col2_title" value="{{page_config.titulo_col_dos}}">
+                    <input class="input" name="col2_title" value="{{page_config.titulo_col_dos}}">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label" for="descripcion">Cuerpo</label>
                   <div class="control">
-                    <textarea class="textarea" type="text" name="col2_text" value="{{page_config.columna_dos}}" rows="12">{{page_config.columna_dos}}</textarea>
+                    <textarea class="textarea" name="col2_text" value="{{page_config.columna_dos}}" rows="12">{{page_config.columna_dos}}</textarea>
                   </div>
                 </div>
               </div>
@@ -93,13 +93,13 @@
                 <div class="field">
                   <label class="label" for="email">Título</label>
                   <div class="control">
-                    <input class="input" type="text" name="col3_title" value="{{page_config.titulo_col_tres}}">
+                    <input class="input" name="col3_title" value="{{page_config.titulo_col_tres}}">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label" for="descripcion">Cuerpo</label>
                   <div class="control">
-                    <textarea class="textarea" type="text" name="col3_text" value="{{page_config.columna_tres}}" rows="12">{{page_config.columna_tres}}</textarea>
+                    <textarea class="textarea" name="col3_text" value="{{page_config.columna_tres}}" rows="12">{{page_config.columna_tres}}</textarea>
                   </div>
                 </div>
               </div>
@@ -114,7 +114,7 @@
 </section>
 
 {% block my_js %}
-<script type="text/javascript">
+<script>
   window.onload = function() { //funcion que evita el resubmit de un mismo form
     history.replaceState("", "", "./?action=configuracion_index");
   };

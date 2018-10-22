@@ -44,7 +44,7 @@
               {% if 'usuario_show' in permisos %}
                 <button class="button_view button is-info" title="Ver"><i class="far fa-eye"></i></button>
               {% endif %}
-                <input class="user_id" value="{{ user.id }}" hidden></input>
+                <input class="user_id" value="{{ user.id }}" hidden>
               {% if 'usuario_update' in permisos %}
                 <button class="button_edit button is-info" title="Editar"><i class="far fa-edit"></i></button>
               {% endif %}
@@ -76,11 +76,11 @@
 {% endblock %}
 
 {% block my_js %}
-  <script type="text/javascript" src="web/assets/js/list_users.js"></script>
-  <script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
-  <script type="text/javascript" src="web/assets/js/data_tables.js"></script>
-  <script type="text/javascript" src="web/assets/js/loading.js"></script>
-  <script type="text/javascript" src="web/assets/jQueryValidation/dist/jquery.validate.min.js"></script>
-  <script type="text/javascript" src="web/assets/jQueryValidation/dist/additional-methods.js"></script>
-  <script type="text/javascript" src="web/assets/jQueryValidation/dist/localization/messages_es_AR.js"></script>
+  <script src="web/assets/js/list_users.js"></script>
+  <script src="web/assets/dataTables/datatables.min.js"></script>
+  <script src="web/assets/js/data_tables.js"></script>
+  <script src="web/assets/js/loading.js"></script>
+  <script src="web/assets/jQueryValidation/dist/jquery.validate.min.js"></script>
+  <script src="web/assets/jQueryValidation/dist/additional-methods.js"></script>
+  <script src="web/assets/jQueryValidation/dist/localization/messages_es_AR.js"></script>
 {% endblock %}
