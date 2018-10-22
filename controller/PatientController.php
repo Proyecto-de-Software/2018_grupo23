@@ -13,7 +13,8 @@ class PatientController extends MainController{
   function addPatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
     if(!isset($_POST["addNN"])){
-    if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
+      $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
+      if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
         if($this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$_POST["partido"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$_POST["regions"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
@@ -29,8 +30,7 @@ class PatientController extends MainController{
                 $this->viewPatientList('success','El paciente ha sido agregado exitosamente.');
           }
           else{
-            echo("xd");
-            die();
+            $this->viewPatientList('error','No deberías estar haciendo esto.');
           }
         }
         else {
@@ -164,6 +164,7 @@ class PatientController extends MainController{
 
   function updatePatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
       if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
           if($this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$_POST["partido"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$_POST["regions"]) &&
