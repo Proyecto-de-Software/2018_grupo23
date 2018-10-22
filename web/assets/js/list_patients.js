@@ -75,6 +75,7 @@ $(document).ready(function() {
   $('#showAddPatient').on("click", function() {
     $('#addPatient').addClass('is-active');
   });
+
   //cerrar form add/edit paciente
   $('.modal-close, #cancel').on("click", function() {
     $('#addPatient').removeClass('is-active');
@@ -87,7 +88,15 @@ $(document).ready(function() {
 
   });
 
+  //mostrar modal add nn - cerrarlo
 
+  $('#showAddNN').on("click", function() {
+    $('#addNN').addClass('is-active');
+  });
+
+  $('.modal-close, #cancel').on("click", function() {
+    $('#addNN').removeClass('is-active');
+  });
 
   //ver paciente
   $('#tabla').on("click", ".button_v", function() {

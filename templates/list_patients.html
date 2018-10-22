@@ -14,10 +14,7 @@
 
       </div>
       <div class="level-right">
-        <form action="?action=paciente_new" method="POST">
-          <input value="True" name="addNN" hidden>
-          <button type="submit" class="button is-info">Agregar NN</button>
-        </form>
+          <button id="showAddNN" class="button is-info">Agregar NN</button>
       </div>
       {% endif %}
     </div>
@@ -74,6 +71,7 @@
 {% include "modal_patients/delete_patient.html" %}
 {% include "modal_loading/loading.html" %}
 {% include "modal_not_available/not_available.html" %}
+{% include "modal_patients/add_nn.html" %}
 <!---- fin modals -------------------------------------------------->
 {% endblock %}
 
