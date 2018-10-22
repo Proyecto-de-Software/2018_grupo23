@@ -15,7 +15,7 @@
       </div>
       <div class="level-right">
         <form action="?action=paciente_new" method="POST">
-          <input value="True" name="addNN" hidden></input>
+          <input value="True" name="addNN" hidden>
           <button type="submit" class="button is-info">Agregar NN</button>
         </form>
       </div>
@@ -26,8 +26,7 @@
 <section class="section">
   <div class="container is-fluid">
     <div class="box has-text-centered">
-      <table class="table display responsive no-wrap" width="100%" id="tabla" data-page-length={{page_config.paginado}}>
-        <!-- ese 10 a ser cambiado por la var del config -->
+      <table class="table display responsive no-wrap" id="tabla" data-page-length={{page_config.paginado}}>
         <thead>
           <tr>
             <th id="th_apellido" alt="Apellido">Apellido</th>
@@ -44,14 +43,14 @@
           <tr>
             <td headers="th_apellido">{{paciente.apellido}}</td>
             <td headers="th_nombre">{{paciente.nombre}}</td>
-            <td headers="th_doctipe">{{ tipo_doc[paciente.tipo_doc_id -1].nombre }}</td> <!-- arreglar para que se lea el nombre y no el id -->
+            <td headers="th_doctipe">{{ tipo_doc[paciente.tipo_doc_id -1].nombre }}</td>
             <td headers="th_numdoc">{{paciente.numero}}</td>
             <td headers="th_hc">{{paciente.id}}</td>
             <td headers="th_a">
               {% if 'paciente_show' in permisos %}
               <button class="button_v button is-info" title="ver"><i class="far fa-eye"></i></button>
               {% endif %}
-              <input class="p_id" value="{{paciente.id}}" hidden></input>
+              <input class="p_id" value="{{paciente.id}}" hidden>
               {% if 'paciente_update' in permisos %}
               <button class="button_e button is-info" title="editar"><i class="far fa-edit"></i></button>
               {% endif %}
