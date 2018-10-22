@@ -87,6 +87,7 @@ class PatientController extends MainController{
   }
 
   function viewPatient(){
+    if(AppController::getInstance()->getUser()){
     $query=new PatientRepository();
     $patient=$query->getPatient($_POST["id"]);
     if(!empty($patient)){
@@ -125,6 +126,9 @@ class PatientController extends MainController{
     else{
       $this->viewPatientList('error','No se encontró el paciente');
   }
+}else{
+  $this->redirectHome();
+}
 }
 
   function pacienteIndex(){
@@ -137,6 +141,7 @@ class PatientController extends MainController{
 }
 
   function viewPatientList($state="",$message=""){
+      if(AppController::getInstance()->checkPermissions('paciente_index')){
       $query=new PatientRepository();
       $patient_list=$query->getAllPatients();
       $gender_list=$query->getAllGenders();
@@ -150,6 +155,10 @@ class PatientController extends MainController{
       }
       $this::$twig->show('list_patients.html',$param);
 
+}
+else{
+  $this->redirectHome();
+}
 }
   function deletePatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
