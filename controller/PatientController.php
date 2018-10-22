@@ -20,7 +20,8 @@ class PatientController extends MainController{
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
-          $this->checkDate($_POST["dob"])){
+          $this->checkDate($_POST["dob"]) &&
+          is_numeric($_POST['numdoc'])){
             if($this->checkDoc($_POST["typedoc"],$_POST["numdoc"])){
               if($this->checkToken('paciente_new')){
                 $query=new PatientRepository();
@@ -180,7 +181,8 @@ else{
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
-            $this->checkDate($_POST["dob"])){
+            $this->checkDate($_POST["dob"]) &&
+            is_numeric($_POST['numdoc'])){
               if($this->checkDocbyID($_POST["edit_id"],$_POST["typedoc"],$_POST["numdoc"])){
                 if($this->checkToken('paciente_new')){
               $query=new PatientRepository();
