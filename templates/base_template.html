@@ -32,10 +32,13 @@
                 <div class="navbar-start">
                     <!-- navbar items izquierda -->
                     <p class="is-hidden-touch navbar-item">{{ page_config.titulo }}</p>
-                    {% if loged_user %}
+                    {% if 'paciente_index' in loged_user.permissions %}
                         <a class="navbar-item" href="./?action=paciente_index">Pacientes</a>
+                    {% endif %}
+                    {% if 'Administrador' in loged_user.roles %}
                         <div class="navbar-item has-dropdown is-hoverable">
                             <!-- navbar-link, navbar-dropdown etc. -->
+
                             <a class="navbar-link">Administración</a>
                             <div class="navbar-dropdown">
                                 <a class="navbar-item" href="./?action=usuario_index" >Usuarios</a>
@@ -44,8 +47,9 @@
                                 <hr class="navbar-divider">
                                 <a class="navbar-item" href="./?action=configuracion_index">Configuración</a>
                             </div>
+
                         </div>
-                    {% endif %}
+                      {% endif %}
                 </div>
 
                 <div class="navbar-end">
