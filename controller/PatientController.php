@@ -13,7 +13,8 @@ class PatientController extends MainController{
   function addPatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
     if(!isset($_POST["addNN"])){
-    if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
+      $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
+      if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
         if($this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$_POST["partido"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$_POST["regions"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
@@ -23,15 +24,13 @@ class PatientController extends MainController{
             if($this->checkDoc($_POST["typedoc"],$_POST["numdoc"])){
               if($this->checkToken('paciente_new')){
                 $query=new PatientRepository();
-                $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
                 $query->newPatient($_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
                 ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
                 ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
                 $this->viewPatientList('success','El paciente ha sido agregado exitosamente.');
           }
           else{
-            echo("xd");
-            die();
+            $this->viewPatientList('error','No deberías estar haciendo esto.');
           }
         }
         else {
@@ -165,6 +164,7 @@ class PatientController extends MainController{
 
   function updatePatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
       if($this->postElementsCheck( array('apellido','nombre','dob','domicilio','genero','typedoc','numdoc'))){
           if($this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$_POST["partido"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$_POST["regions"]) &&
@@ -175,7 +175,6 @@ class PatientController extends MainController{
               if($this->checkDocbyID($_POST["edit_id"],$_POST["typedoc"],$_POST["numdoc"])){
                 if($this->checkToken('paciente_new')){
               $query=new PatientRepository();
-              $this->prepareData(array('apellido','nombre','dobplace','domicilio'));
               $query->updatePatient($_POST["edit_id"],$_POST["apellido"],$_POST["nombre"],$_POST["dob"],$_POST["dobplace"],$_POST["regions"]
               ,$_POST["localidad"],$_POST["domicilio"],$_POST["genero"],$_POST["doccheck"],$_POST["typedoc"],$_POST["numdoc"]
               ,$_POST["numcarpeta"],$_POST["telefono"],$_POST["obra_social"],$_POST["partido"]);
