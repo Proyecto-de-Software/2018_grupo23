@@ -1,0 +1,73 @@
+<div class="modal" id="addRole">
+  <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+      </header>
+      <section class="modal-card-body">
+        <form id="addRoleForm" class="form" action="?action=rol_new" method="post">
+          <input id="token" type="hidden" name="token" value="{{ form_token('rol_new') }}">
+          <div class="">
+            <input id="rol_id" name="rol_id" hidden>
+          </div>
+          <div class="field">
+            <label class="label">Nombre*</label>
+            <div class="control">
+              <input id="nombre" type="text" class="input" name="nombre" required>
+            </div>
+          </div>
+
+          <h4 id="perms_title" class="h4 has-text-weight-bold">¿Qué permisos desea asignarle al nuevo rol? También puede hacerlo en "editar"</h4>
+          <h5 class="h5 has-text-weight-semibold">Usuarios</h5>
+          <div id="user_perms_div" class="field">
+              <div class="control">
+                <div id="user_perms_box">
+                  {% for key, value in permisos_roles %}
+                    <label>{{ key }}</label>
+                    <input name="rol_perms[]" class="styled" type="checkbox" value="usuario_{{ value }}">
+                  {% endfor %}
+                </div>
+              </div>
+          </div>
+          <h5 class="h5 has-text-weight-semibold">Pacientes</h5>
+          <div id="pacient_perms_div" class="field">
+            <div class="control">
+              <div id="pacient_perms_box">
+                {% for key, value in permisos_roles %}
+                  <label>{{ key }}</label>
+                  <input name="rol_perms[]" class="styled" type="checkbox" value="paciente_{{ value }}">
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <h5 class="h5 has-text-weight-semibold">Configuración</h5>
+          <div id="config_perms_div" class="field">
+            <div class="control">
+              <div id="config_perms_box">
+                  <label>Ver</label>
+                  <input name="rol_perms[]" class="styled" type="checkbox" value="configuracion_index">
+                  <label>Editar</label>
+                  <input name="rol_perms[]" class="styled" type="checkbox" value="configuracion_update">
+              </div>
+            </div>
+          </div>
+          <h5 class="h5 has-text-weight-semibold">Roles</h5>
+          <div id="rol_perms_div" class="field">
+            <div class="control">
+              <div id="rol_perms_box">
+                {% for key, value in permisos_roles %}
+                  <label>{{ key }}</label>
+                  <input name="rol_perms[]" class="styled" type="checkbox" value="rol_{{ value }}">
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <p>* campos obligatorios</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button type="submit" class="button is-success" value="add_rol">Aceptar</button>
+        <button type="button" class="button is-text" id="cancel">Cancelar</button>
+      </form>
+      </footer>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+</div>

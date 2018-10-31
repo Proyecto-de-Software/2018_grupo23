@@ -24,7 +24,6 @@ class Dispatcher{
     UserController::getInstance()->logout();
   }
 
-
   static function paciente_new(){
     PatientController::getInstance()->addPatient();
   }
@@ -79,6 +78,26 @@ class Dispatcher{
 
   static function usuario_block(){
     UserController::getInstance()->blockUser();
+  }
+
+  static function rol_index(){
+    ConfigController::getInstance()->viewRolesConfig();
+  }
+
+  static function rol_new(){
+    ConfigController::getInstance()->addRole();
+  }
+
+  static function rol_destroy(){
+    ConfigController::getInstance()->deleteRole();
+  }
+
+  static function rol_show(){
+    ConfigController::getInstance()->viewRole();
+  }
+
+  static function rol_update(){
+    ConfigController::getInstance()->updateRole();
   }
 
 }

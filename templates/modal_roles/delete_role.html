@@ -1,0 +1,20 @@
+<div class="modal" id="deleteRoleModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <button class="modal-close" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="box">
+        <p>¿Estás seguro que deseas borrar ese rol?</p>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <form action="/?action=rol_destroy" id="deleteRoleForm" method="POST">
+        <input name=id_rol id="rol_destroy" hidden>
+        <button type="submit" class="button is-danger">Aceptar</button>
+      </form>
+      <button class="button" id="closed">Cancelar</button>
+    </footer>
+  </div>
+</div>

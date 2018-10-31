@@ -1,0 +1,58 @@
+{% extends 'base_template.html' %} {% block title %}Roles{% endblock %}
+{% block content %}
+<section class="section">
+  {% if 'rol_new' in permisos_usuario %}
+  <div class="container">
+     <a id="showAddRole" class="button is-info">Agregar Rol</a>
+  </div>
+  {% endif %}
+</section>
+<section class="section">
+<div class="container is-fluid">
+  <div class="box has-text-centered">
+      <table class="table display responsive no-wrap" width="80%" id="tabla">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Rol</th>
+            <th data-priority="-1">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rol in roles %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ rol.nombre }}</td>
+            <td>
+              <input class="rol_id" value="{{ rol.id }}" hidden>
+              {% if 'rol_show' in permisos_usuario %}
+                <button class="button_view button is-info" title="Ver"><i class="far fa-eye"></i></button>
+              {% endif %}
+              {% if 'rol_update' in permisos_usuario %}
+                <button class="button_edit button is-info" title="Editar"><i class="far fa-edit"></i></button>
+              {% endif %}
+              {% if 'rol_destroy' in permisos_usuario %}
+                <button class="button_delete button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+</section>
+
+<!-- modals-->
+{% include "modal_loading/loading.html" %}
+{% include "modal_roles/add_role.html" %}
+{% include "modal_roles/view_role.html" %}
+{% include "modal_roles/delete_role.html" %}
+<!-- Hasta acá el modal-->
+
+{% endblock %}
+
+{% block my_js %}
+  <script src="web/assets/js/loading.js"></script>
+  <script src="web/assets/js/list_roles.js"></script>
+{% endblock %}
