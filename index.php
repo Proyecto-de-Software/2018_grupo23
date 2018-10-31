@@ -17,6 +17,7 @@ session_start();
 
 $action=isset($_GET['action'])? $_GET['action'] :'home'; /* si el action esta seteado asigno el valor del get al action y sino es home */
 
+try{
 if(ConfigController::getInstance()->getConfigParameters()['estado'] == "habilitado"){
   Dispatcher::$action();
 }
@@ -33,10 +34,10 @@ else{
   }
 }
 
-
-/*
-catch (Throwable $t) {
-    echo $t->getMessage(); //esto se agrega despues, es para evitar actions no validos
 }
-*/
+
+catch (Throwable $t) {
+    Dispatcher::home();
+}
+
 ?>

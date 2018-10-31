@@ -17,7 +17,7 @@
               <div class="field">
                 <label class="label">Apellido*</label>
                 <div class="control">
-                  <input id="e_apellido" title="apellido" type="text" class="input is-boxed" name="apellido" required>
+                  <input id="e_apellido" title="apellido" type="text" pattern="[A-Za-z]{2,}" class="input is-boxed" name="apellido" required>
                 </div>
               </div>
 
@@ -86,7 +86,7 @@
               <div class="field">
                 <label class="label">Nombre*</label>
                 <div class="control">
-                  <input id="e_nombre" title="nombre" type="text" class="input is-boxed" name="nombre" required>
+                  <input id="e_nombre" title="nombre" type="text" pattern="[A-Za-z]{2,}" class="input is-boxed" name="nombre" required>
                 </div>
               </div>
 
@@ -117,16 +117,16 @@
                 <label class="label">Tiene en su poder un documento</label>
                 <div class="control">
                   <input class="is-checkradio" title="si" id="check_yes" type="radio" name="doccheck" value=1 checked="checked">
-                  <label for="exampleRadioInline1">Sí</label>
+                  <label for="formAddPatient">Sí</label>
                   <input class="is-checkradio" title="no" id="check_no" type="radio" name="doccheck" value=0>
-                  <label for="exampleRadioInline2">No</label>
+                  <label for="formAddPatient">No</label>
                 </div>
               </div>
 
               <div class="field">
                 <label class="label">Número de documento*</label>
                 <div class="control">
-                  <input id="e_numdoc" title="Número de documento" type="number" class="input is-boxed" name="numdoc" required>
+                  <input id="e_numdoc" title="Número de documento" type="number" class="input is-boxed" name="numdoc" required></input>
                 </div>
               </div>
 

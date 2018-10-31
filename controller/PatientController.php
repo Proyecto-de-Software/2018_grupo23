@@ -20,7 +20,8 @@ class PatientController extends MainController{
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
           $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
-          $this->checkDate($_POST["dob"])){
+          $this->checkDate($_POST["dob"]) &&
+          is_numeric($_POST['numdoc'])){
             if($this->checkDoc($_POST["typedoc"],$_POST["numdoc"])){
               if($this->checkToken('paciente_new')){
                 $query=new PatientRepository();
@@ -72,7 +73,7 @@ class PatientController extends MainController{
   }
 
   function checkDate($date){
-    return $date<date('Y/m/d');
+    return $date<date('Y-m-d');
   }
 
   function addNN(){
@@ -87,6 +88,7 @@ class PatientController extends MainController{
   }
 
   function viewPatient(){
+    if(AppController::getInstance()->getUser()){
     $query=new PatientRepository();
     $patient=$query->getPatient($_POST["id"]);
     if(!empty($patient)){
@@ -125,6 +127,9 @@ class PatientController extends MainController{
     else{
       $this->viewPatientList('error','No se encontró el paciente');
   }
+}else{
+  $this->redirectHome();
+}
 }
 
   function pacienteIndex(){
@@ -137,19 +142,24 @@ class PatientController extends MainController{
 }
 
   function viewPatientList($state="",$message=""){
+      if(AppController::getInstance()->checkPermissions('paciente_index')){
       $query=new PatientRepository();
       $patient_list=$query->getAllPatients();
       $gender_list=$query->getAllGenders();
       $tipo_doc=json_decode(@file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'),true);
       $obras_sociales=json_decode(@file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'),true);
       $param = array('tipo_doc' =>$tipo_doc, 'obras_sociales' => $obras_sociales,'patient_list'=>$patient_list,'genders'=>$gender_list, 'permisos' =>$_SESSION['permissions']);
-      if($state='success'){
+      if($state=='success'){
         $param['success']=$message;
-      }elseif ($state='error') {
+      }elseif ($state=='error') {
         $param['error']=$message;
       }
       $this::$twig->show('list_patients.html',$param);
 
+}
+else{
+  $this->redirectHome();
+}
 }
   function deletePatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
@@ -171,7 +181,8 @@ class PatientController extends MainController{
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$_POST["localidad"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$_POST["obra_social"]) &&
             $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$_POST["typedoc"]) &&
-            $this->checkDate($_POST["dob"])){
+            $this->checkDate($_POST["dob"]) &&
+            is_numeric($_POST['numdoc'])){
               if($this->checkDocbyID($_POST["edit_id"],$_POST["typedoc"],$_POST["numdoc"])){
                 if($this->checkToken('paciente_new')){
               $query=new PatientRepository();

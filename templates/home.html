@@ -1,12 +1,15 @@
-{% extends 'base_template.html' %} {% block title %}Home{% endblock %}
+{% extends 'base_template.html' %} {% block title %}Hospital Korn - home{% endblock %}
 {% block content %}
 <!--{% block titulo_del_hero %}Bienvenido!!!{% endblock %}-->
+
+<section class="section is-hidden-touch">
+</section>
 <section class="section">
   <div class = "columns">
      <div class="column">
        <article>
          <div class="content box">
-            <h2 class="h2">{{page_config.titulo_col_uno}}</h1>
+            <h2 class="h2">{{page_config.titulo_col_uno}}</h2>
             {{page_config.columna_uno}}
          </div>
        </article>
@@ -14,7 +17,7 @@
       <div class="column">
         <article>
           <div class="content box">
-            <h2 class="h2">{{page_config.titulo_col_dos}}</h1>
+            <h2 class="h2">{{page_config.titulo_col_dos}}</h2>
             {{page_config.columna_dos}}
           </div>
         </article>
@@ -22,11 +25,14 @@
       <div class="column">
         <article>
           <div class="content box">
-             <h2 class="h2">{{page_config.titulo_col_tres}}</h1>
+             <h2 class="h2">{{page_config.titulo_col_tres}}</h2>
              {{page_config.columna_tres}}
            </div>
         </article>
       </div>
   </div>
+
+  <section class="section is-hidden-touch">
+  </section>
 </section>
 {% endblock %}
