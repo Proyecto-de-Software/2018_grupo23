@@ -6,6 +6,7 @@ require_once('controller/MainController.php');
 require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
 require_once('controller/ConfigController.php');
+require_once('controller/AttentionController.php');
 
 class Dispatcher{
   static function home(){
@@ -46,6 +47,10 @@ class Dispatcher{
 
   static function add_nn(){
     PatientController::getInstance()->addNN();
+  }
+
+  static function atencion_index(){
+    AttentionController::getInstance()->viewAttentionsList();
   }
 
   static function configuracion_index(){

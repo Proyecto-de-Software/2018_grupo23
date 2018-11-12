@@ -122,6 +122,13 @@ class ConfigRepository extends Connection{
     if(!empty($perms)) {
       $this->assignPerms($rol_id, $perms);
     }
+    $this->updateUsersTimeWithRole($rol_id);
+  }
+
+  private function updateUsersTimeWithRole($rol_id){
+    $query= $this->conn->prepare("UPDATE usuario SET updated_at = NOW() WHERE id IN (SELECT usuario_id FROM usuario_tiene_rol WHERE rol_id = :id_rol)");
+    $query->bindParam(":id_rol", $rol_id);
+    $query->execute();
   }
 
   /* Delete functions */

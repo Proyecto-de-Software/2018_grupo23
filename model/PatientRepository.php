@@ -84,6 +84,7 @@ require_once('core/Connection.php');
       $query->execute();
       return empty($query->fetchall());
     }
+
     /* End of read  functions */
 
     /* Update functions */

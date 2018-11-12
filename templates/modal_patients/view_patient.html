@@ -3,6 +3,9 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">Paciente</p>
+      {% if 'atencion_index' in permisos %}
+        <a href="./?action=atencion_index" class="button_atts button is-success" title="Ver atenciones">Ver atenciones</a>
+      {% endif %}
       <button class="modal-close" aria-label="close">Cerrar</button>
     </header>
     <section class="modal-card-body">

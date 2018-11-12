@@ -1,0 +1,34 @@
+{% extends 'base_template.html' %} {% block title %}Atenciones{% endblock %}
+{% block my_css %}
+  <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css" />
+{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="level">
+      {% if 'atencion_new' in permisos %}
+        <!--pregunto si tiene los permisos para agregar atenciones -->
+        <div class="level-left">
+          <button id="showAddAttention" class="button is-info">Agregar atención</button>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!---- DataTables ----------------------------------------------------->
+<!-- Acá va todo lo de DataTables Mariannnn -->
+<!---- fin DataTables -------------------------------------------------->
+
+<!---- modals ----------------------------------------------------->
+{% include "modal_attentions/add_attention.html" %}
+<!---- fin modals -------------------------------------------------->
+{% endblock %}
+
+{% block my_js %}
+<script type="text/javascript" src="web/assets/js/list_attentions.js"></script>
+<script type="text/javascript" src="web/assets/dataTables/datatables.min.js"></script>
+<script type="text/javascript" src="web/assets/js/data_tables.js"></script>
+<script type="text/javascript" src="web/assets/js/loading.js"></script>
+<script type="text/javascript" src="web/assets/js/not_available.js"></script>
+{% endblock %}
