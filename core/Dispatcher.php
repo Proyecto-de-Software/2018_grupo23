@@ -53,6 +53,10 @@ class Dispatcher{
     AttentionController::getInstance()->viewAttentionsList();
   }
 
+  static function atencion_new(){
+    AttentionController::getInstance()->addAttention();
+  }
+
   static function configuracion_index(){
     ConfigController::getInstance()->viewSystemConfig();
   }

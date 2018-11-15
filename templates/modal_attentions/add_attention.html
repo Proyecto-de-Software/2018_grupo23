@@ -15,12 +15,19 @@
             <div class="column">
 
               <div class="field">
-                <label class="label">Motivo</label>
+                <label class="label">Fecha de la consulta*</label>
+                <div class="control">
+                  <input id="fecha_consulta" type="date" title="fecha de la consulta" class="input is-boxed" name="fecha_consulta" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Motivo*</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="motivo " id="motivo">
+                    <select name="motivo" id="motivo">
                       {% for motivo in motivos %}
-                        <option value="{{motivo.nombre}}">{{motivo.nombre}}</option>
+                        <option value="{{motivo.id}}">{{motivo.nombre}}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -41,20 +48,13 @@
               <div class="field">
                 <label class="label">Articulación con otras instituciones</label>
                 <div class="control">
-                  <input id="articulacion" type="text" class="input" name="articulacion">
+                  <textarea id="articulacion" type="text" class="textarea" name="articulacion" rows="2"></textarea>
                   <p class="help">Por ej: Hablé con Juan Carlos para coordinar la derivación del paciente XXX</p>
                 </div>
               </div>
 
               <div class="field">
-                <label class="label">Fecha de la consulta*</label>
-                <div class="control">
-                  <input id="fecha_consulta" type="date" title="fecha de la consulta" class="input is-boxed" name="dob" required>
-                </div>
-              </div>
-
-              <div class="field">
-                <label class="label">La atención derivo en una internación?</label>
+                <label class="label">Requiere internación</label>
                 <div class="control">
                   <div class="select is-boxed">
                     <select name="internacion" id="internacion">
@@ -68,14 +68,14 @@
               <div class="field">
                 <label class="label">Diagnóstico*</label>
                 <div class="control">
-                  <input id="diagnostico" type="text" class="input" name="diagnostico" required>
+                  <textarea id="diag" class="textarea" type="text" name="diag" rows="2" required></textarea>
                 </div>
               </div>
 
               <div class="field">
                 <label class="label">Observaciones</label>
                 <div class="control">
-                  <textarea class="textarea" id="descripcion" name="descripcion" rows="3"></textarea>
+                  <textarea id="obs" class="textarea" type="text" name="obs" rows="2"></textarea>
                 </div>
               </div>
 
@@ -83,9 +83,9 @@
                 <label class="label">Tratamiento farmacológico</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="motivo " id="motivo">
+                    <select name="trat" id="trat">
                       {% for tratamiento in tratamientos %}
-                        <option value="{{tratamiento.nombre}}">{{tratamiento.nombre}}</option>
+                        <option value="{{tratamiento.id}}">{{tratamiento.nombre}}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -96,9 +96,9 @@
                 <label class="label">Acompañamiento</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="motivo " id="motivo">
+                    <select name="acomp" id="acomp">
                       {% for acomp in acomps %}
-                        <option value="{{acomp.nombre}}">{{acomp.nombre}}</option>
+                        <option value="{{acomp.id}}">{{acomp.nombre}}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -106,15 +106,14 @@
               </div>
 
           <!-- input para pasar el id al editar -->
-          <input id="edit_id" name="edit_id" hidden>
-
+          <input id="id_paciente" name="id_paciente" value="{{id_paciente}}" hidden>
           <p>* campos obligatorios</p>
         </div>
     </section>
     <footer class="modal-card-foot">
-      <button type="submit" id="attention_save" class="button is-primary" value="add_attention">Agregar</button>
+      <button type="submit" id="attention_save" class="button is-primary">Agregar</button>
       <button type="button" class="button is-text" id="cancel">Cancelar</button>
-      </form>
+    </form>
     </footer>
   </div>
 </div>
