@@ -15,6 +15,6 @@ class APIRepository extends Connection{
     $query->execute();
     print_r($query->fetchall());
     die();
-    return $query->fetchall();
+    return $query->fetchall(PDO::FETCH_ASSOC);
   }
 }

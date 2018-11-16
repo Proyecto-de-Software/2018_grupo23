@@ -12,15 +12,16 @@ $message=$update['message']['text'];
 
 switch ($message) {
   case '/ayuda':
-    $response='escribiendo /instituciones obtenés las instituciones disponibles';
-    $response.='escribiendo /instituciones/+id obtenés los datos de la institucion con ese id';
-    $response.='escribiendo /instituciones/region-sanitaria/+id obtenés los datos de la institucion con ese id de región sanitaria';
+    $response='escribiendo /instituciones  Devolverá un listado de Instituciones disponibles /n ';
+    $response.='escribiendo /instituciones/region-sanitaria: region-sanitaria: Devolverá un listado de Instituciones a
+partir de la región sanitaria indicada por parámetro.';
     sendMessage($chatId,$response);
     break;
   case '/instituciones':
     $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/?action=list_instituciones');
     sendMessage($chatId,$response);
     break;
+
   default:
   $response='ese no es un comando válido. escribe /ayuda para obtener los comandos válidos';
   sendMessage($chatId,$response);
