@@ -10,8 +10,6 @@ class APIController extends MainController{
   protected static $twig;
 
   function api(){
-    $db=new APIRepository;
-    $response=$db->getAllInstitutions();
     $returnArray = true;
     $rawData = file_get_contents('php://input');
     $response = json_decode($rawData, $returnArray);
@@ -60,7 +58,7 @@ class APIController extends MainController{
     case '/instituciones':
         $msg['text']  = 'Las instituciones son:' . PHP_EOL;
         $db=new APIRepository;
-        $response=$db->getAllInstitutions();
+        $response=implode(" ",$db->getAllInstitutions());
         $msg['text'] .= implode(" ",$response);
         $msg['reply_to_message_id'] = null;
         break;
