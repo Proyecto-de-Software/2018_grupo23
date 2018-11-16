@@ -58,7 +58,8 @@ class APIController extends MainController{
     case '/instituciones':
         $msg['text']  = 'Las instituciones son:' . PHP_EOL;
         $db=new APIRepository;
-        $msg['text'] .= $db->getAllInstitutions();
+        $response=$db->getAllInstitutions();
+        $msg['text'] .= implode(" ",$response);
         $msg['reply_to_message_id'] = null;
         break;
 
