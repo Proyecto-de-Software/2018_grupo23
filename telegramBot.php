@@ -1,7 +1,7 @@
 <?php
 
 $botToken="763852469:AAFUJhgWC4xoGEw1DXE3cKPXpROwa5H7V1U";
-$website="https://api.telegram.org.bot".$botToken;
+$website="https://api.telegram.org/bot".$botToken;
 
 $update=file_get_contents('php://input');
 $update=json_decode($update,TRUE);
@@ -22,6 +22,6 @@ switch ($message) {
 }
 
 function sendMessage($chatId,$response){
-$url=$GLOBALS['website'].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($response);
+$url=$GLOBALS[website].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($response);
 file_get_contents($url);
 }
