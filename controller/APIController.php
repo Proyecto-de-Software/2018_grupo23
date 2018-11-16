@@ -1,6 +1,6 @@
 <?php
 
-//require_once('model/APIRepository.php');
+require_once('model/APIRepository.php');
 
 /**
  * Controlador de la API
@@ -48,15 +48,17 @@ class APIController extends MainController{
     case '/help':
         $msg['text']  = 'Los comandos disponibles son estos:' . PHP_EOL;
         $msg['text'] .= '/start Inicializa el bot' . PHP_EOL;
-        $msg['text'] .= '/turnos dd-mm-aaaa Muestra los turnos disponibles del día' . PHP_EOL;
-        $msg['text'] .= '/reservar dd-mm-aaaa hh:mm Realiza la reserva del turno' . PHP_EOL;
-        $msg['text'] .= '/help Muestra esta ayuda flaca';
+        $msg['text'] .= '/instituciones devuelve la lista de instituciones disponibles' . PHP_EOL;
+        $msg['text'] .= '/instituciones/ +institucion-id devuelve los datos de la institución con ese id' . PHP_EOL;
+        $msg['text'] .= '/instituciones/region-sanitaria/ +region-sanitaria-id devuelve el listado de instituciones de la
+                        region sanitaria con ese id';
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/reservar':
-        $msg['text']  = 'Te confirmamos el turno para:' . PHP_EOL;
-        $msg['text'] .= '10:30' . PHP_EOL;
+    case '/instituciones':
+        $msg['text']  = 'Las instituciones son:' . PHP_EOL;
+        $db=new APIRepository;
+        $msg['text'] .= $db->getAllInstitutions();
         $msg['reply_to_message_id'] = null;
         break;
 
