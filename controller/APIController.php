@@ -57,7 +57,7 @@ class APIController extends MainController{
 
     case '/instituciones':
         $msg['text']  = 'Las instituciones son:' . PHP_EOL;
-        $msg['text'] .= 'aquí irían mis instituciones... si tuviera alguna :('
+        $msg['text'] .= 'aquí irían mis instituciones... si tuviera alguna :(';
         $msg['reply_to_message_id'] = null;
         break;
 
