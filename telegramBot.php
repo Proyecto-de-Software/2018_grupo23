@@ -12,7 +12,9 @@ $message=$update['message']['text'];
 
 switch ($message) {
   case '/ayuda':
-    $response='yo te ayudo np';
+    $response='escribiendo /instituciones obtenés las instituciones disponibles';
+    $response.='escribiendo /instituciones/+id obtenés los datos de la institucion con ese id';
+    $response.='escribiendo /instituciones/region-sanitaria/+id obtenés los datos de la institucion con ese id de región sanitaria'
     sendMessage($chatId,$response);
     break;
   case '/instituciones':
