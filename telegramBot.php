@@ -14,7 +14,7 @@ switch ($message) {
   case '/ayuda':
     $response='escribiendo /instituciones obtenés las instituciones disponibles';
     $response.='escribiendo /instituciones/+id obtenés los datos de la institucion con ese id';
-    $response.='escribiendo /instituciones/region-sanitaria/+id obtenés los datos de la institucion con ese id de región sanitaria'
+    $response.='escribiendo /instituciones/region-sanitaria/+id obtenés los datos de la institucion con ese id de región sanitaria';
     sendMessage($chatId,$response);
     break;
   case '/instituciones':
