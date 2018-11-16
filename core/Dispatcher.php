@@ -109,6 +109,22 @@ class Dispatcher{
     ConfigController::getInstance()->updateRole();
   }
 
+  static function reporte_index(){
+    AttentionController::getInstance()->viewAttentionsReport();
+  }
+
+  static function reporte_motivo_show(){
+    AttentionController::getInstance()->viewAttentionsByReason();
+  }
+
+  static function reporte_genero_show(){
+    AttentionController::getInstance()->viewAttentionsByGenre();
+  }
+
+  static function reporte_localidad_show(){
+    AttentionController::getInstance()->viewAttentionsByLocation();
+  }
+
 }
 
 

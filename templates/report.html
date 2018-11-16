@@ -1,0 +1,38 @@
+{% extends 'base_template.html' %} {% block title %}Reportes{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container is-fluid">
+    <div class="has-text-centered">
+      <h4 class="title is-4">Gráfico y listado de atenciones agrupadas por:</h4>
+      <button id="reporte_motivo" class="button is-info" type="button">Motivo</button>
+      <button id="reporte_genero" class="button is-info" type="button">Género</button>
+      <button id="reporte_localidad" class="button is-info" type="button">Localidad</button>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+    <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</section>
+
+<section class="section">
+    <div class="columns is-centered">
+      <div class="column is-narrow">
+        <table id="tabla" class="table is-bordered is-fullwidth">
+          <thead>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block my_js %}
+<script type="text/javascript" src="web/assets/canvasJS/jquery.canvasjs.min.js"></script>
+<script src="web/assets/js/reports.js"></script>
+{% endblock %}

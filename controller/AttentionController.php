@@ -23,7 +23,7 @@ class AttentionController extends MainController{
       $this->redirectHome();
     }
   }
-  
+
   //faltan validaciones
   function isValidForm($fecha_consulta){
     $err='';
@@ -62,6 +62,36 @@ class AttentionController extends MainController{
       $this->redirectHome();
     }
   }
+
+  /*reportes*/
+
+  public function viewAttentionsReport(){
+    $this::$twig->show('report.html');
+  }
+
+  public function viewAttentionsBy($result){
+    $dataPoints=array();
+    foreach($result as $row){
+        array_push($dataPoints, array('y'=> $row->porcentaje, 'label'=> $row->nombre, 'cant'=> $row->cant));
+    }
+    echo json_encode($dataPoints, JSON_NUMERIC_CHECK);
+  }
+
+  public function viewAttentionsByReason(){
+    $repo= new AttentionRepository();
+    $this->viewAttentionsBy($repo->getAtencionesPorMotivo());
+  }
+
+  public function viewAttentionsByGenre(){
+    $repo= new AttentionRepository();
+    $this->viewAttentionsBy($repo->getAtencionesPorGenero());
+  }
+
+  public function viewAttentionsByLocation(){
+    $repo= new AttentionRepository();
+    $this->viewAttentionsBy($repo->getAtencionesPorLocalidad());
+  }
+
 
 }
 
