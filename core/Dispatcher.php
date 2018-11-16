@@ -111,6 +111,10 @@ class Dispatcher{
     ConfigController::getInstance()->updateRole();
   }
 
+  static function list_instituciones(){
+    APIController::getInstance()->list_instituciones();
+  }
+
 }
 
 

@@ -15,9 +15,12 @@ switch ($message) {
     $response='yo te ayudo np';
     sendMessage($chatId,$response);
     break;
-
-  default:
-    // code...
+  case '/instituciones':
+    $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/?action=list_instituciones');
+    break;
+  else:
+  $response='ese no es un comando válido. escribe /ayuda para obtener los comandos válidos';
+  sendMessage($chatId,$response);
     break;
 }
 

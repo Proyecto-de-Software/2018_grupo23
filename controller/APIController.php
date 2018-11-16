@@ -9,4 +9,9 @@ class APIController extends MainController{
   protected static $instance;
   protected static $twig;
 
+  function list_instituciones(){
+    $db=new APIRepository;
+    echo json_encode($db->getAllInstitutions());
+  }
+
 }
