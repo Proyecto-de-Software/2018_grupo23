@@ -129,10 +129,8 @@ class Dispatcher{
 
   static function reporte_localidad_show(){
     AttentionController::getInstance()->viewAttentionsByLocation();
+  }
+
+
 
 }
-
-
-
-
-?>
