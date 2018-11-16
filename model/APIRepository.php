@@ -13,8 +13,6 @@ class APIRepository extends Connection{
   function getAllInstitutions(){
     $query=$this->conn->prepare("SELECT * FROM institucion");
     $query->execute();
-    print_r($query->fetchall());
-    die();
     return $query->fetchall(PDO::FETCH_ASSOC);
   }
 }
