@@ -12,8 +12,8 @@ $message=$update['message']['text'];
 
 switch ($message) {
   case '/ayuda':
-    $rensponse='yo te ayudo np';
-    sendMessage($chatId,$rensponse);
+    $response='yo te ayudo np';
+    sendMessage($chatId,$response);
     break;
 
   default:
@@ -21,7 +21,7 @@ switch ($message) {
     break;
 }
 
-function sendMessage($chatId,$message){
-$url=$GLOBALS[website].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($message);
+function sendMessage($chatId,$response){
+$url=$GLOBALS[website].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($response);
 file_get_contents($url);
 }
