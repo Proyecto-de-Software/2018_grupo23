@@ -17,8 +17,9 @@ switch ($message) {
     break;
   case '/instituciones':
     $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/?action=list_instituciones');
+    sendMessage($chatId,$response);
     break;
-  else:
+  default:
   $response='ese no es un comando válido. escribe /ayuda para obtener los comandos válidos';
   sendMessage($chatId,$response);
     break;
