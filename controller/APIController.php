@@ -10,6 +10,7 @@ class APIController extends MainController{
   protected static $twig;
 
   function api(){
-    echo 'xd'
+    echo 'prueba';
+
   }
 }
