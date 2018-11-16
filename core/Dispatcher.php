@@ -7,11 +7,13 @@ require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
 require_once('controller/ConfigController.php');
 require_once('controller/AttentionController.php');
+require_once('controller/APIController.php');
 
 class Dispatcher{
   static function home(){
     MainController::getInstance()->viewHome();
   }
+
 
   static function view_login(){
     UserController::getInstance()->viewLogin();
@@ -109,6 +111,10 @@ class Dispatcher{
     ConfigController::getInstance()->updateRole();
   }
 
+  static function list_instituciones(){
+    APIController::getInstance()->list_instituciones();
+  }
+
   static function reporte_index(){
     AttentionController::getInstance()->viewAttentionsReport();
   }
@@ -123,7 +129,6 @@ class Dispatcher{
 
   static function reporte_localidad_show(){
     AttentionController::getInstance()->viewAttentionsByLocation();
-  }
 
 }
 

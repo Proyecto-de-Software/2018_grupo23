@@ -4,7 +4,7 @@ abstract class Connection {
 
   private $username = "grupo23";
   private $password = "ZjJjODE4MTY5M2U3";
-	private $host ="127.0.0.1";
+	private $host ="localhost";
   private $db = "grupo23";
   protected $conn;
 
