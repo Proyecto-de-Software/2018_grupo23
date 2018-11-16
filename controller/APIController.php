@@ -11,6 +11,6 @@ class APIController extends MainController{
 
   function api(){
     echo 'prueba';
-
+    die();
   }
 }
