@@ -13,6 +13,10 @@ class Dispatcher{
     MainController::getInstance()->viewHome();
   }
 
+  static function api(){
+    APIController::getInstance()->api();
+  }
+
   static function view_login(){
     UserController::getInstance()->viewLogin();
   }
