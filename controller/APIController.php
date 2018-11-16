@@ -10,6 +10,8 @@ class APIController extends MainController{
   protected static $twig;
 
   function api(){
+    $db=new APIRepository;
+    $response=$db->getAllInstitutions();
     $returnArray = true;
     $rawData = file_get_contents('php://input');
     $response = json_decode($rawData, $returnArray);
