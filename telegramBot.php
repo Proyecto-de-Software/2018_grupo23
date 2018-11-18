@@ -26,7 +26,7 @@ partir de la región sanitaria indicada por parámetro.';
     sendMessage($chatId,$response);
     break;
   case '/instituciones-region-sanitaria':
-    if(is_int($message[1])){
+    if(!empty($message[1])){
       $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/'.$message[1]);
     }
     else{
