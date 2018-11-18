@@ -9,8 +9,8 @@ $update=json_decode($update,TRUE);
 $chatId=$update['message']['chat']['id'];
 
 $message=$update['message']['text'];
-
-switch ($message) {
+$message=explode(" ",$message);
+switch ($message[0]) {
   case '/ayuda':
     $response='escribiendo /instituciones  Devolverá un listado de Instituciones disponibles /n ';
     $response.='escribiendo /instituciones/region-sanitaria: region-sanitaria: Devolverá un listado de Instituciones a
@@ -18,10 +18,22 @@ partir de la región sanitaria indicada por parámetro.';
     sendMessage($chatId,$response);
     break;
   case '/instituciones':
-    $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/?action=list_instituciones');
+    if(empty($message[1])){
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/instituciones');
+    }else {
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/instituciones/'.$message[1]);
+    }
     sendMessage($chatId,$response);
     break;
-
+  case '/region-sanitaria':
+    if(!empty($message[1])){
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/instituciones/region-sanitaria'.$message[1]);
+    }
+    else{
+      $reponse='Te faltó indicar la region sanitaria';
+    }
+    sendMessage($chatId,$response);
+    break;
   default:
   $response='ese no es un comando válido. escribe /ayuda para obtener los comandos válidos';
   sendMessage($chatId,$response);
