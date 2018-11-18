@@ -14,7 +14,9 @@ class AttentionController extends MainController{
       $tratamientos= $repo->getTratamientos();
       $acomps= $repo->getAcompanamientos();
       $motivos= $repo->getMotivosDeConsulta();
-      $params = array('permisos'=>$_SESSION['permissions'], 'id_paciente'=>$id_paciente_local, 'tratamientos'=>$tratamientos, 'acomps'=>$acomps, 'motivos'=>$motivos);
+      $api_repo= new APIRepository();
+      $instituciones= $api_repo->getAllInstitutions();
+      $params = array('permisos'=>$_SESSION['permissions'], 'id_paciente'=>$id_paciente_local, 'instituciones'=> $instituciones, 'tratamientos'=>$tratamientos, 'acomps'=>$acomps, 'motivos'=>$motivos);
       if(!is_null($state)){
         $params[$state]= $msg;
       }
@@ -41,13 +43,12 @@ class AttentionController extends MainController{
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
         if($this->checkToken('atencion_new')){
-          //recordar que falta el $_POST de la institución
-          $this->prepareData(array('motivo', 'articulacion', 'fecha_consulta', 'internacion', 'diag', 'obs', 'trat', 'acomp'));
+          $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'fecha_consulta', 'internacion', 'diag', 'obs', 'trat', 'acomp'));
           $err= $this->isValidForm($_POST['fecha_consulta']);
           $id_paciente= $_POST['id_paciente'];
           if(empty($err)){
             $repo= new AttentionRepository();
-            $repo->newAttention($id_paciente, $_POST['motivo'], $_POST['articulacion'], $_POST['fecha_consulta'], $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
+            $repo->newAttention($id_paciente, $_POST['derivacion'], $_POST['motivo'], $_POST['articulacion'], $_POST['fecha_consulta'], $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
             $this->viewAttentionsList('success', 'Atención agregada', $id_paciente);
           }else {
             $this->viewAttentionsList('error', $err, $id_paciente);
@@ -69,7 +70,7 @@ class AttentionController extends MainController{
     $this::$twig->show('report.html');
   }
 
-  public function viewAttentionsBy($result){
+  public function viewAttentionsBy($result){//engloba lo común a AttentionsByReason y ByGenre
     $dataPoints=array();
     foreach($result as $row){
         array_push($dataPoints, array('y'=> $row->porcentaje, 'label'=> $row->nombre, 'cant'=> $row->cant));
@@ -87,9 +88,20 @@ class AttentionController extends MainController{
     $this->viewAttentionsBy($repo->getAtencionesPorGenero());
   }
 
-  public function viewAttentionsByLocation(){
+  public function viewAttentionsByLocation(){//utiliza la Api de localidades 
     $repo= new AttentionRepository();
-    $this->viewAttentionsBy($repo->getAtencionesPorLocalidad());
+    $result= $repo->getAtencionesPorLocalidad();
+    $localidades=json_decode(@file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad'), true);
+    $loc_array=array();
+    foreach ($localidades as $key => $value) { //creo un array que me sirve para pasarle el nombre a los dataPoints
+      $loc_array[$value['id']] = $value['nombre'];
+    }
+    $dataPoints=array();
+    foreach($result as $row){
+        $loc_nombre= $row->id == 0 ? 'Sin localidad asignada' : $loc_array[$row->id];
+        array_push($dataPoints, array('y'=> $row->porcentaje, 'label'=> $loc_nombre, 'cant'=> $row->cant));
+    }
+    echo json_encode($dataPoints, JSON_NUMERIC_CHECK);
   }
 
 

@@ -1,5 +1,6 @@
 {% extends 'base_template.html' %} {% block title %}Reportes{% endblock %}
 {% block content %}
+
 <section class="section">
   <div class="container is-fluid">
     <div class="has-text-centered">
@@ -15,10 +16,10 @@
     <div id="chartContainer" style="height: 400px; width: 100%;"></div>
 </section>
 
-<section class="section">
+<div id="content">
     <div class="columns is-centered">
       <div class="column is-narrow">
-        <table id="tabla" class="table is-bordered is-fullwidth">
+        <table id="tabla" class="table is-bordered">
           <thead>
             <tr>
             </tr>
@@ -28,11 +29,16 @@
         </table>
       </div>
     </div>
-</section>
+</div>
+
+<div id="editor"></div>
+<div id="button-box" class="box has-text-centered">
+</div>
 
 {% endblock %}
 
 {% block my_js %}
-<script type="text/javascript" src="web/assets/canvasJS/jquery.canvasjs.min.js"></script>
+<script src="web/assets/canvasJS/jquery.canvasjs.min.js"></script>
 <script src="web/assets/js/reports.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 {% endblock %}

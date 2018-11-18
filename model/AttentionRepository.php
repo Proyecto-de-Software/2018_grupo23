@@ -28,23 +28,6 @@ class AttentionRepository extends Connection{
     return $query->fetchall();
   }
 
-  //después hay que agregar como parámetro la institución(APi)
-  function newAttention($id_p, $motivo, $art, $fecha, $internacion, $diag, $obs, $trat, $acomp){
-    $query= $this->conn->prepare("INSERT INTO consulta(paciente_id, fecha, motivo_id, derivacion_id, articulacion_con_instituciones,
-                                  internacion, diagnostico, observaciones, tratamiento_farmacologico_id, acompanamiento_id)
-                                  VALUES(:paciente_id, :fecha, :motivo_id, NULL, :art_con_inst_id, :inter, :diag, :obsr, :trat_id, :acomp_id)");
-    $query->bindParam(":paciente_id", $id_p);
-    $query->bindParam(":fecha", $fecha);
-    $query->bindParam(":motivo_id", $motivo);
-    $query->bindParam(":art_con_inst_id", $art);
-    $query->bindParam(":inter", $internacion);
-    $query->bindParam(":diag", $diag);
-    $query->bindParam(":obsr", $obs);
-    $query->bindParam(":trat_id", $trat);
-    $query->bindParam(":acomp_id", $acomp);
-    $query->execute();
-  }
-
   /*reportes*/
   public function getAtencionesPorMotivo(){
     $query = $this->conn->prepare("SELECT mc.nombre as nombre, (SELECT COUNT(consulta.motivo_id) * 100 / COUNT(c.id) FROM consulta AS c) AS porcentaje, COUNT(consulta.motivo_id) as cant
@@ -62,12 +45,29 @@ class AttentionRepository extends Connection{
     return $query->fetchAll(PDO::FETCH_OBJ);
   }
 
-  public function getAtencionesPorLocalidad(){
-    $query = $this->conn->prepare("SELECT p.localidad_id as nombre, (SELECT COUNT(paciente.localidad_id) * 100 / COUNT(c.id) FROM paciente INNER JOIN consulta c ON c.paciente_id=paciente.id) AS porcentaje, COUNT(p.localidad_id) as cant
+  public function getAtencionesPorLocalidad(){//localidad del paciente, no de la institución
+    $query= $this->conn->prepare("SELECT p.localidad_id as id, (SELECT COUNT(paciente.localidad_id) * 100 / COUNT(c.id) FROM paciente INNER JOIN consulta c ON c.paciente_id=paciente.id) AS porcentaje, COUNT(p.localidad_id) as cant
                                     FROM consulta INNER JOIN paciente p ON p.id=consulta.paciente_id
                                     GROUP BY p.localidad_id");
     $query->execute();
     return $query->fetchAll(PDO::FETCH_OBJ);
+  }
+
+  function newAttention($id_p, $derivacion, $motivo, $art, $fecha, $internacion, $diag, $obs, $trat, $acomp){
+    $query= $this->conn->prepare("INSERT INTO consulta(paciente_id, fecha, motivo_id, derivacion_id, articulacion_con_instituciones,
+                                  internacion, diagnostico, observaciones, tratamiento_farmacologico_id, acompanamiento_id)
+                                  VALUES(:paciente_id, :fecha, :motivo_id, :derivacion_id, :art_con_inst_id, :inter, :diag, :obsr, :trat_id, :acomp_id)");
+    $query->bindParam(":paciente_id", $id_p);
+    $query->bindParam(":fecha", $fecha);
+    $query->bindParam(":motivo_id", $motivo);
+    $query->bindParam(":derivacion_id", $derivacion);
+    $query->bindParam(":art_con_inst_id", $art);
+    $query->bindParam(":inter", $internacion);
+    $query->bindParam(":diag", $diag);
+    $query->bindParam(":obsr", $obs);
+    $query->bindParam(":trat_id", $trat);
+    $query->bindParam(":acomp_id", $acomp);
+    $query->execute();
   }
 
 }

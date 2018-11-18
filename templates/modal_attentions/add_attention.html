@@ -38,8 +38,10 @@
                 <label class="label">Derivación</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="derivacion " id="derivacion">
-                      <option value="">Acá va acceso a la API de instituciones</option>
+                    <select name="derivacion" id="derivacion">
+                      {% for instit in instituciones %}
+                        <option value="{{instit.id}}">{{instit.nombre}}</option>
+                      {% endfor %}
                     </select>
                   </div>
                 </div>
