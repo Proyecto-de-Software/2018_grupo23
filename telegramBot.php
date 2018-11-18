@@ -25,9 +25,9 @@ partir de la región sanitaria indicada por parámetro.';
     }
     sendMessage($chatId,$response);
     break;
-  case '/region-sanitaria':
+  case '/instituciones-region-sanitaria':
     if(!empty($message[1])){
-      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/index.php/instituciones/region-sanitaria'.$message[1]);
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/index.php/instituciones/region-sanitaria/'.$message[1]);
     }
     else{
       $reponse='Te faltó indicar la region sanitaria';
