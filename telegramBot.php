@@ -19,15 +19,15 @@ partir de la región sanitaria indicada por parámetro.';
     break;
   case '/instituciones':
     if(empty($message[1])){
-      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/instituciones');
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/index.php/instituciones');
     }else {
-      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/instituciones/'.$message[1]);
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/index.php/instituciones/'.$message[1]);
     }
     sendMessage($chatId,$response);
     break;
   case '/region-sanitaria':
     if(!empty($message[1])){
-      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/instituciones/region-sanitaria'.$message[1]);
+      $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api/index.php/instituciones/region-sanitaria'.$message[1]);
     }
     else{
       $reponse='Te faltó indicar la region sanitaria';
