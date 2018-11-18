@@ -7,7 +7,6 @@ require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
 require_once('controller/ConfigController.php');
 require_once('controller/AttentionController.php');
-require_once('controller/APIController.php');
 
 class Dispatcher{
   static function home(){
