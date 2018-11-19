@@ -1,6 +1,5 @@
 window.onload = function() { //funcion que evita el resubmit de un mismo form
-  id_paciente= $('#id_paciente').val();
-  history.replaceState("", "", "./?action=atencion_index&id_paciente="+id_paciente);
+  history.replaceState("", "", "./?action=atencion_index");
 };
 
 $('#showAddAttention').on("click", function() {

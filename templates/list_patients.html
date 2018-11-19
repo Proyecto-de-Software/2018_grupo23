@@ -55,7 +55,10 @@
               <button class="button_d button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>
               {% endif %}
               {% if 'atencion_index' in permisos %}
-                <a href="./?action=atencion_index&id_paciente={{paciente.id}}" class="button_atts button is-success" title="Ver atenciones">Ver atenciones</a>
+              <form action="./?action=atencion_index" method="post">
+                <input name="id_paciente" value="{{paciente.id}}" hidden>
+                <button type="submit" class="button_atts button is-success" title="Ver atenciones">Ver atenciones</button>
+              </form>
               {% endif %}
             </td>
 

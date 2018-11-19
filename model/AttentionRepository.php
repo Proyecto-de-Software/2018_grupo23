@@ -30,7 +30,7 @@ class AttentionRepository extends Connection{
 
   /*reportes*/
   public function getAtencionesPorMotivo(){
-    $query = $this->conn->prepare("SELECT mc.nombre as nombre, (SELECT COUNT(consulta.motivo_id) * 100 / COUNT(c.id) FROM consulta AS c) AS porcentaje, COUNT(consulta.motivo_id) as cant
+    $query = $this->conn->prepare("SELECT mc.nombre as nombre, COUNT(consulta.motivo_id) as cant, (SELECT COUNT(*) FROM consulta) as total_atenciones
                                     FROM consulta INNER JOIN motivo_consulta mc ON consulta.motivo_id=mc.id
                                     GROUP BY consulta.motivo_id");
     $query->execute();
@@ -38,7 +38,7 @@ class AttentionRepository extends Connection{
   }
 
   public function getAtencionesPorGenero(){
-    $query = $this->conn->prepare("SELECT g.nombre as nombre, (SELECT COUNT(paciente.genero_id) * 100 / COUNT(c.id) FROM paciente INNER JOIN consulta c ON c.paciente_id=paciente.id) AS porcentaje, COUNT(p.genero_id) as cant
+    $query = $this->conn->prepare("SELECT g.nombre as nombre, COUNT(p.genero_id) as cant, (SELECT COUNT(*) FROM consulta) as total_atenciones
                                     FROM consulta INNER JOIN paciente p ON consulta.paciente_id=p.id INNER JOIN genero g ON p.genero_id=g.id
                                     GROUP BY p.genero_id");
     $query->execute();
@@ -46,7 +46,7 @@ class AttentionRepository extends Connection{
   }
 
   public function getAtencionesPorLocalidad(){//localidad del paciente, no de la institución
-    $query= $this->conn->prepare("SELECT p.localidad_id as id, (SELECT COUNT(paciente.localidad_id) * 100 / COUNT(c.id) FROM paciente INNER JOIN consulta c ON c.paciente_id=paciente.id) AS porcentaje, COUNT(p.localidad_id) as cant
+    $query= $this->conn->prepare("SELECT p.localidad_id as id, COUNT(p.localidad_id) as cant, (SELECT COUNT(*) FROM consulta) as total_atenciones
                                     FROM consulta INNER JOIN paciente p ON p.id=consulta.paciente_id
                                     GROUP BY p.localidad_id");
     $query->execute();

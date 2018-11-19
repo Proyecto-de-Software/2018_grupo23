@@ -14,10 +14,12 @@
           <div class="columns">
             <div class="column">
 
+              <input name="id_paciente" value="{{id_paciente}}" hidden>
+
               <div class="field">
                 <label class="label">Fecha de la consulta*</label>
                 <div class="control">
-                  <input id="fecha_consulta" type="date" title="fecha de la consulta" class="input is-boxed" name="fecha_consulta" required>
+                  <input id="fecha_consulta" type="date" min="{{fecha_hoy}}" title="fecha de la consulta" class="input is-boxed" name="fecha_consulta" required>
                 </div>
               </div>
 
@@ -25,7 +27,7 @@
                 <label class="label">Motivo*</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="motivo" id="motivo">
+                    <select name="motivo" id="motivo" required>
                       {% for motivo in motivos %}
                         <option value="{{motivo.id}}">{{motivo.nombre}}</option>
                       {% endfor %}
@@ -59,7 +61,7 @@
                 <label class="label">Requiere internación</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="internacion" id="internacion">
+                    <select name="internacion" id="internacion" required>
                       <option value="1">Si</option>
                       <option value="0">No</option>
                     </select>

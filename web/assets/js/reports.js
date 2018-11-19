@@ -33,12 +33,21 @@ $(document).ready(function(){
   		method: "GET",
       dataType: "json",
       success: function(data){
+        chartContainerInit();
         showPieChart(data, "Atenciones por localidad del paciente" );
         refreshTableData(data, "Localidad");
         }
       });
     });
 });
+
+function chartContainerInit(){
+  var styles = {
+      heigth : "400px",
+      width: "100%",
+    };
+    $('#chartContainer').css( styles );
+}
 
 function refreshTableData(data, tableTitle){
   $('#tabla thead tr').empty();
@@ -70,25 +79,6 @@ function showPieChart(data, titleText){
        });
    chart.render();
 };
-//
-// $("#button-box").on('click', '#pdf', function(){
-//   var doc = new jsPDF('p', 'in', 'letter');
-//   var source = $('#content').html();
-//   var specialElementHandlers = {
-//     '#bypassme': function(element, renderer) {
-//       return true;
-//     }
-//   };
-//   doc.fromHTML(
-//     source, // HTML string or DOM elem ref.
-//     20, // x coord
-//     100, // y coord
-//     {
-//       'width': 7.5, // max width of content on PDF
-//       'elementHandlers': specialElementHandlers
-//     });
-//   doc.save('reporte.pdf');
-// });
 
 $("#button-box").on('click', '#pdf', function(){
     var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
