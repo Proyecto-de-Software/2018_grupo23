@@ -21,9 +21,12 @@ partir de la región sanitaria indicada por parámetro.';
     if(empty($message[1])){
       $response="Las instituciones son: ";
       $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones'),true);
-      for($data=0;$data<count($json);$data++){
-        $response.=$json[$data]['nombre'];
-        $response.=$json[$data]['telefono'];
+      foreach($json as $data => $val)
+    {
+        foreach($val as $key=>$value){
+            $value=array_values($value);
+          $response.= 'Nombre: ' . $value[1] . ' Direccion: ' . $value[3] . '<br/>';
+        }
       }
     }else {
       $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/'.$message[1]);
