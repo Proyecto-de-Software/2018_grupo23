@@ -39,7 +39,18 @@ partir de la región sanitaria indicada por parámetro.';
       $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/'.$message[1]));
       if(!empty($json)){
         sendMessage($chatId,"La institución es: ");
-        parseMessage($json);
+        foreach ($json as $key => $jsons) {
+          $response="";
+          foreach($jsons as $key => $value) {
+              if($key=='nombre'){
+                   $response.='Nombre: '.$value.' ';
+              }
+              if($key=='telefono'){
+                   $response.='Telefono: '.$value.' ';
+              }
+            }
+          sendMessage($chatId,$response);
+        }
       }
       else{
         sendMessage($chatId,"No se encontró una instutición con ese ID de region sanitaria");
