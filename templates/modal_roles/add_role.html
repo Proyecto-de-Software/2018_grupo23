@@ -61,6 +61,17 @@
               </div>
             </div>
           </div>
+          <h5 class="h5 has-text-weight-semibold">Atenciones</h5>
+          <div id="att_perms_div" class="field">
+            <div class="control">
+              <div id="att_perms_box">
+                {% for key, value in permisos_roles %}
+                  <label>{{ key }}</label>
+                  <input name="rol_perms[]" class="styled" type="checkbox" value="atencion_{{ value }}">
+                {% endfor %}
+              </div>
+            </div>
+          </div>
           <p>* campos obligatorios</p>
       </section>
       <footer class="modal-card-foot">

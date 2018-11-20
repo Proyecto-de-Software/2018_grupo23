@@ -78,12 +78,14 @@ $('#tabla').on("click",".button_edit",function(){
           $('#user_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', true);
           $('#rol_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', true);
           $('#config_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', true);
+          $('#att_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', true);
         }
         else{
           $('#pacient_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', false);
           $('#user_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', false);
           $('#rol_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', false);
           $('#config_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', false);
+          $('#att_perms_box input[value="' + item.permiso.toString() + '"]').prop('checked', false);
         }
       });
       hideLoading();
