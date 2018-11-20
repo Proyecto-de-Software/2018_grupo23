@@ -26,12 +26,12 @@ class APIController{
 
   function list_institution($id){
     $db=new APIRepository;
-    echo json_encode(empty($db->getInstitutionByID($id))?'No se encontraron instituciones con ese ID':$db->getInstitutionByID($id));
+    echo json_encode($db->getInstitutionByID($id));
   }
 
   function list_institution_by_RS($id){
     $db=new APIRepository;
-    echo json_encode(empty($db->getInstitutionByRSID($id))?'No se encontraron instituciones con ese ID de region sanitaria':$db->getInstitutionByRSID($id));
+    echo json_encode(empty($db->getInstitutionByRSID($id));
   }
 
 
