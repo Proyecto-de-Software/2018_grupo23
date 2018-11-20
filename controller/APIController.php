@@ -31,7 +31,7 @@ class APIController{
 
   function list_institution_by_RS($id){
     $db=new APIRepository;
-    echo json_encode(empty($db->getInstitutionByRSID($id));
+    echo json_encode(empty($db->getInstitutionByRSID($id)));
   }
 
 
