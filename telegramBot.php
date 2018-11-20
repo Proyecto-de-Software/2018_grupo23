@@ -30,8 +30,9 @@ partir de la región sanitaria indicada por parámetro.';
 			           $response.='Telefono: '.$value.' ';
 		        }
           }
+      }
     }
-    }else {
+    else {
       $response=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/'.$message[1]);
     }
     sendMessage($chatId,$response);
