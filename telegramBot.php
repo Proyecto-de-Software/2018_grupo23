@@ -21,35 +21,13 @@ partir de la región sanitaria indicada por parámetro.';
     if(empty($message[1])){
       sendMessage($chatId,"Las instituciones son: ");
       $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones'));
-      foreach ($json as $key => $jsons) {
-        $response="";
-        foreach($jsons as $key => $value) {
-		        if($key=='nombre'){
-			           $response.='Nombre: '.$value.' ';
-		        }
-		        if($key=='telefono'){
-			           $response.='Telefono: '.$value.' ';
-		        }
-          }
-        sendMessage($chatId,$response);
-      }
+      parseMessage($json);
     }
     else {
       $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/'.$message[1]));
       if(!empty($json)){
         sendMessage($chatId,"La institución es: ");
-        foreach ($json as $key => $jsons) {
-          $response="";
-          foreach($jsons as $key => $value) {
-  		        if($key=='nombre'){
-  			           $response.='Nombre: '.$value.' ';
-  		        }
-  		        if($key=='telefono'){
-  			           $response.='Telefono: '.$value.' ';
-  		        }
-            }
-          sendMessage($chatId,$response);
-        }
+        parseMessage($json);
       }
       else{
         sendMessage($chatId,"No se encontró una instutición con ese ID");
@@ -58,21 +36,10 @@ partir de la región sanitaria indicada por parámetro.';
     break;
   case '/instituciones-region-sanitaria':
     if(!empty($message[1])){
-      $json=file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/'.$message[1]);
+      $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/'.$message[1]));
       if(!empty($json)){
         sendMessage($chatId,"La institución es: ");
-        foreach ($json as $key => $jsons) {
-          $response="";
-          foreach($jsons as $key => $value) {
-  		        if($key=='nombre'){
-  			           $response.='Nombre: '.$value.' ';
-  		        }
-  		        if($key=='telefono'){
-  			           $response.='Telefono: '.$value.' ';
-  		        }
-            }
-          sendMessage($chatId,$response);
-        }
+        parseMessage($json);
       }
       else{
         sendMessage($chatId,"No se encontró una instutición con ese ID de region sanitaria");
@@ -91,4 +58,19 @@ partir de la región sanitaria indicada por parámetro.';
 function sendMessage($chatId,$response){
 $url=$GLOBALS[website].'/sendMessage?chat_id='.$chatId.'&parse_mode=HTML&text='.urlencode($response);
 file_get_contents($url);
+}
+
+function parseMessage($json){
+  foreach ($json as $key => $jsons) {
+    $response="";
+    foreach($jsons as $key => $value) {
+        if($key=='nombre'){
+             $response.='Nombre: '.$value.' ';
+        }
+        if($key=='telefono'){
+             $response.='Telefono: '.$value.' ';
+        }
+      }
+    sendMessage($chatId,$response);
+  }
 }
