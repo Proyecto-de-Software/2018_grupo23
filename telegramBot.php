@@ -20,7 +20,7 @@ partir de la región sanitaria indicada por parámetro.';
   case '/instituciones':
     if(empty($message[1])){
       $response="Las instituciones son: ";
-      $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones'),true);
+      $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones'));
       foreach ($json as $key => $jsons) {
         foreach($jsons as $key => $value) {
 		        if($key=='nombre'){
