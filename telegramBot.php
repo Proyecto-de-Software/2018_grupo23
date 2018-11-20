@@ -35,15 +35,17 @@ partir de la región sanitaria indicada por parámetro.';
     else {
       $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/'.$message[1]));
       if(!empty($json)){
-        $response="La institución es:"
-        foreach($json as $key => $value) {
-		        if($key=='nombre'){
-			           $response.='Nombre: '.$value.' ';
-		        }
-		        if($key=='telefono'){
-			           $response.='Telefono: '.$value.' ';
-		        }
-          }
+        $response="La institución es: ";
+        foreach ($json as $key => $jsons) {
+          foreach($jsons as $key => $value) {
+  		        if($key=='nombre'){
+  			           $response.='Nombre: '.$value.' ';
+  		        }
+  		        if($key=='telefono'){
+  			           $response.='Telefono: '.$value.' ';
+  		        }
+            }
+        }
       }
       else{
         $response="No se encontró una instutición con ese ID";
