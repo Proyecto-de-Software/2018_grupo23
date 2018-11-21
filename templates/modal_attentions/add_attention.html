@@ -41,6 +41,7 @@
                 <div class="control">
                   <div class="select is-boxed">
                     <select name="derivacion" id="derivacion">
+                      <option value="">Sin derivación</option>
                       {% for instit in instituciones %}
                         <option value="{{instit.id}}">{{instit.nombre}}</option>
                       {% endfor %}

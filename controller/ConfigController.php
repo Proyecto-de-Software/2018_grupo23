@@ -89,7 +89,8 @@ class ConfigController extends MainController {
   }
 
   public function viewRole(){
-    if(AppController::getInstance()->checkPermissions($_GET['action'])){
+    $app_contr= AppController::getInstance();
+    if( $app_contr->checkPermissions('rol_show') || $app_contr->checkPermissions('rol_update') ){
       $_GET['action']='';
       $config_repo=new ConfigRepository();
       $rol_id=$_POST['id'];

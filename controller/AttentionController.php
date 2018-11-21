@@ -15,8 +15,7 @@ class AttentionController extends MainController{
         $tratamientos= $repo->getTratamientos();
         $acomps= $repo->getAcompanamientos();
         $motivos= $repo->getMotivosDeConsulta();
-        $api_repo= new APIRepository();
-        $instituciones= $api_repo->getAllInstitutions();
+        $instituciones= json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones'));
         $params = array('permisos'=>$_SESSION['permissions'], 'id_paciente'=>$_POST['id_paciente'], 'fecha_hoy'=>date('Y-m-d'), 'instituciones'=> $instituciones, 'tratamientos'=>$tratamientos, 'acomps'=>$acomps, 'motivos'=>$motivos);
         if(!is_null($state)){
           $params[$state]= $msg;
@@ -34,8 +33,7 @@ class AttentionController extends MainController{
   function isValidForm($fecha, $derivacion, $motivo, $art, $internacion, $diag, $obs, $trat, $acomp){
     $err='';
     if($this->postElementsCheck(array('fecha_consulta', 'motivo', 'internacion', 'diag'))){
-      $api_repo= new APIRepository();
-      $instituciones= $api_repo->getAllInstitutions();
+      $instituciones= json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones'), True);
       $att_repo= new AttentionRepository();
       $motivos= $att_repo->getMotivosDeConsulta();
       $tratamientos= $att_repo->getTratamientos();
@@ -59,7 +57,7 @@ class AttentionController extends MainController{
           $err.= 'error con acompañamiento: la opción ingresada no es válida; ';
         }
       }
-      // if ( ($internacion != '0') || ($internacion != '1') ){
+      // if ( ($internacion != 0) || ($internacion != 1) ){
       //   $err.= 'error con internacion: la opción ingresada no es válida; ';
       // }
     }else {

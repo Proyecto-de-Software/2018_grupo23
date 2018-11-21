@@ -44,7 +44,8 @@ class UserController extends MainController{
   }
 
   public function viewUser(){
-    // if(AppController::getInstance()->checkPermissions($_GET['action'])){
+    $app_contr= AppController::getInstance();
+    if( $app_contr->checkPermissions('usuario_show') || $app_contr->checkPermissions('usuario_update') ){
       $_GET['action']='';
       $user_repo=new UserRepository();
       $user_id=$_POST["id"];
@@ -57,9 +58,9 @@ class UserController extends MainController{
       else{
         $this->viewUsersList('error', 'Se produjo un error');
       }
-    // }else{
-    //   $this->redirectHome();
-    // }
+    }else{
+      $this->redirectHome();
+    }
   }
 
   public function viewUsersList($state=NULL, $msg=""){
