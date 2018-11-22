@@ -15,7 +15,7 @@ require_once('core/Connection.php');
       $query = $this->conn->prepare("INSERT INTO paciente (apellido,nombre,fecha_nac,lugar_nac,localidad_id,region_sanitaria_id,
       domicilio,genero_id,tiene_documento,tipo_doc_id,numero,tel,nro_carpeta,obra_social_id,partido_id)
       VALUES(:apellido,:nombre,:dob,:dobplace,:localidad,:region_sanitaria,:domicilio,:genero,:doccheck,
-      :tipo_documento,:numero_documento,:telefono,:numero_carpeta,:obra_social,:partido)");
+      :tipo_documento,:numero_documento,:telefono,:numero_carpeta,:obra_social,:partido);SELECT SCOPE_IDENTITY()");
       $query->bindParam(":apellido",$apellido);
       $query->bindParam(":nombre",$nombre);
       $query->bindParam(":dob",$dob);
@@ -38,6 +38,8 @@ require_once('core/Connection.php');
       $query->bindParam(":obra_social",$obra_social);
       $query->bindParam(":partido",$partido);
       $query->execute();
+      $last_id =$this->conn->lastInsertId();
+      return $last_id;
       }
     /* End of create functions */
 

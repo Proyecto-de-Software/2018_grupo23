@@ -25,7 +25,7 @@ partir de la región sanitaria indicada por parámetro.';
         $response="";
         foreach($jsons as $key => $value) {
 		        if($key=='nombre'){
-			           $response.='Nombre: '.$value.' ';
+			           $response.=' '.$value.' ';
 		        }
 		        if($key=='telefono'){
 			           $response.='Telefono: '.$value.' ';
@@ -42,7 +42,7 @@ partir de la región sanitaria indicada por parámetro.';
           $response="";
           foreach($jsons as $key => $value) {
   		        if($key=='nombre'){
-  			           $response.='Nombre: '.$value.' ';
+  			           $response.=' '.$value.' ';
   		        }
   		        if($key=='telefono'){
   			           $response.='Telefono: '.$value.' ';
@@ -52,7 +52,7 @@ partir de la región sanitaria indicada por parámetro.';
         }
       }
       else{
-        sendMessage($chatId,"No se encontró una instutición con ese ID");
+        sendMessage($chatId,"No se encontró una institución con ese ID");
       }
     }
     break;
@@ -65,7 +65,7 @@ partir de la región sanitaria indicada por parámetro.';
           $response="";
           foreach($jsons as $key => $value) {
   		        if($key=='nombre'){
-  			           $response.='Nombre: '.$value.' ';
+  			           $response.=' '.$value.' ';
   		        }
   		        if($key=='telefono'){
   			           $response.='Telefono: '.$value.' ';

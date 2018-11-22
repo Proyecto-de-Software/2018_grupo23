@@ -68,8 +68,8 @@ class PatientController extends MainController{
 
   function addNN(){
     $query=new PatientRepository();
-    $query->newPatient('NN','NN',2018-12-31,'NN',0,0,'',1,0,1,1111111,0,0,0,0);
-    $this->viewPatientList('success','El paciente ha sido agregado exitosamente');
+    $user=$query->newPatient('NN','NN',2018-12-31,'NN',0,0,'',1,0,1,1111111,0,0,0,0);
+    $this->viewPatientList('success','El paciente ha sido agregado exitosamente con numero de historia clinica: '.$user);
   }
 
   function checkDoc($type,$num){
