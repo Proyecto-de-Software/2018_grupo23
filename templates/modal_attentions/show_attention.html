@@ -1,24 +1,22 @@
-<div class="modal" id="addAttention">
+<div class="modal" id="showAttention">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <div id="p_title">
-        <p class="modal-card-title">Agregar atención</p>
+      <div id="a_title">
+        <p class="modal-card-title">Ver atención</p>
       </div>
       <button class="modal-close" aria-label="close">Cerrar</button>
     </header>
     <section class="modal-card-body">
-      <form action="?action=atencion_new" id="formAddAttention" method="POST">
-        <input type="hidden" name="token" value="{{ form_token('atencion_new') }}">
         <div class="box">
           <div class="columns">
             <div class="column">
 
               <div class="field">
-                <label class="label">Motivo*</label>
+                <label class="label">Motivo</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="motivo" id="motivo" required>
+                    <select name="motivo" id="motivo" readonly>
                       {% for motivo in motivos %}
                         <option value="{{motivo.id}}">{{motivo.nombre}}</option>
                       {% endfor %}
@@ -31,7 +29,7 @@
                 <label class="label">Derivación</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="derivacion" id="derivacion">
+                    <select name="derivacion" id="derivacion" readonly>
                       <option value="">Sin derivación</option>
                       {% for instit in instituciones %}
                         <option value="{{instit.id}}">{{instit.nombre}}</option>
@@ -44,16 +42,14 @@
               <div class="field">
                 <label class="label">Articulación con otras instituciones</label>
                 <div class="control">
-                  <textarea id="articulacion" type="text" class="textarea" name="articulacion" rows="2"></textarea>
-                  <p class="help">Por ej: Hablé con Juan Carlos para coordinar la derivación del paciente XXX</p>
+                  <textarea id="articulacion" type="text" class="textarea" name="articulacion" rows="2"readonly></textarea>
                 </div>
               </div>
-
               <div class="field">
                 <label class="label">Requiere internación</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="internacion" id="internacion" required>
+                    <select name="internacion" id="internacion" readonly>
                       <option value="1">Si</option>
                       <option value="0">No</option>
                     </select>
@@ -64,14 +60,14 @@
               <div class="field">
                 <label class="label">Diagnóstico*</label>
                 <div class="control">
-                  <textarea id="diag" class="textarea" type="text" name="diag" rows="2" required></textarea>
+                  <textarea id="diag" class="textarea" type="text" name="diag" rows="2" readonly></textarea>
                 </div>
               </div>
 
               <div class="field">
                 <label class="label">Observaciones</label>
                 <div class="control">
-                  <textarea id="obs" class="textarea" type="text" name="obs" rows="2"></textarea>
+                  <textarea id="obs" class="textarea" type="text" name="obs" rows="2"readonly></textarea>
                 </div>
               </div>
 
@@ -79,7 +75,7 @@
                 <label class="label">Tratamiento farmacológico</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="trat" id="trat">
+                    <select name="trat" id="trat" readonly>
                       {% for tratamiento in tratamientos %}
                         <option value="{{tratamiento.id}}">{{tratamiento.nombre}}</option>
                       {% endfor %}
@@ -92,7 +88,7 @@
                 <label class="label">Acompañamiento</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="acomp" id="acomp">
+                    <select name="acomp" id="acomp" readonly>
                       {% for acomp in acomps %}
                         <option value="{{acomp.id}}">{{acomp.nombre}}</option>
                       {% endfor %}
@@ -101,15 +97,7 @@
                 </div>
               </div>
 
-          <!-- input para pasar el id al editar -->
-          <input id="id_paciente" name="id_paciente" value="{{id_paciente}}" hidden>
-          <p>* campos obligatorios</p>
         </div>
     </section>
-    <footer class="modal-card-foot">
-      <button type="submit" id="attention_save" class="button is-primary">Agregar</button>
-      <button type="button" class="button is-text" id="cancel">Cancelar</button>
-    </form>
-    </footer>
   </div>
 </div>

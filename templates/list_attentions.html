@@ -17,13 +17,66 @@
   </div>
 </section>
 
-<!---- DataTables ----------------------------------------------------->
-<!-- Acá va todo lo de DataTables Mariannnn -->
-<!---- fin DataTables -------------------------------------------------->
+<!-- DataTables ----------------------------------------------------->
+<section class="section">
+  <div class="container is-fluid">
+    <div class="box has-text-centered">
+      <table class="table display responsive no-wrap" id="tabla" data-page-length={{page_config.paginado}}>
+        <thead>
+          <tr>
+            <th id="th_fecha" alt="Fecha">Fecha</th>
+            <th id="th_motivo" alt="Motivo">Motivo</th>
+            <th id="th_internacion" alt="internacion">Internacion</th>
+            <th id="th_derivacion" alt="Derivación">Derivación</th>
+            <th id="th_a" alt="acciones" data-priority="-1">Acciones</th>
 
-<!---- modals ----------------------------------------------------->
+          </tr>
+        </thead>
+        <tbody>
+          {% for atencion in atenciones %}
+          <tr>
+            <td headers="th_fecha">{{atencion.fecha}}</td>
+            <td headers="th_motivo">{{atencion.motivo}}</td>
+            <td headers="th_internacion">
+              {% if atencion.internación == 1 %}
+              {{ "Si" }}
+              {% else %}
+              {{ "No" }}
+              {% endif %}
+            </td>
+            <td headers="th_derivacion">
+              {% if atencion.derivacion_id %}
+              {{ "Si" }}
+              {% else %}
+              {{ "No" }}
+              {% endif %}
+            </td>
+            <td headers="th_a">
+              {% if 'atencion_show' in permisos %}
+              <button class="button_v button is-info" title="Ver"><i class="far fa-eye"></i></button>
+              {% endif %}
+              <input class="a_id" value="{{atencion.id}}" hidden>
+              {% if 'atencion_update' in permisos %}
+              <button class="button_e button is-info" title="Editar"><i class="far fa-edit"></i></button>
+              {% endif %}
+              {% if 'atencion_destroy' in permisos %}
+              <button class="button_d button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>
+              {% endif %}
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</section>
+<!-- fin DataTables -------------------------------------------------->
+
+<!-- modals ----------------------------------------------------->
 {% include "modal_attentions/add_attention.html" %}
-<!---- fin modals -------------------------------------------------->
+<!-- fin modals -------------------------------------------------->
 {% endblock %}
 
 {% block my_js %}

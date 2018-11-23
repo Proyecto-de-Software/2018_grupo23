@@ -10,6 +10,21 @@ class AttentionRepository extends Connection{
     parent::__construct();
   }
 
+  function getAtencionesFromPaciente($id){
+    $query= $this->conn->prepare("SELECT c.id,c.fecha,mc.nombre as motivo, c.derivacion_id, c.internacion from consulta c INNER JOIN motivo_consulta mc ON mc.id = c.motivo_id WHERE paciente_id = :id");
+    $query->bindParam(":id", $id);
+    $query->execute();
+    return $query->fetchall();
+  }
+
+  function getAtencionFromId($id){
+    $query= $this->conn->prepare("SELECT * FROM consulta WHERE id = :id");
+    $query->bindParam(":id", $id);
+    $query->execute();
+    return $query->fetchall();
+  }
+
+
   function getTratamientos(){
     $query= $this->conn->prepare("SELECT * FROM tratamiento_farmacologico");
     $query->execute();
@@ -54,6 +69,7 @@ class AttentionRepository extends Connection{
   }
 
   function newAttention($id_p, $derivacion, $motivo, $art, $fecha, $internacion, $diag, $obs, $trat, $acomp){
+    $derivacion = ($derivacion != '') ? $derivacion : NULL;
     $query= $this->conn->prepare("INSERT INTO consulta(paciente_id, fecha, motivo_id, derivacion_id, articulacion_con_instituciones,
                                   internacion, diagnostico, observaciones, tratamiento_farmacologico_id, acompanamiento_id)
                                   VALUES(:paciente_id, :fecha, :motivo_id, :derivacion_id, :art_con_inst_id, :inter, :diag, :obsr, :trat_id, :acomp_id)");

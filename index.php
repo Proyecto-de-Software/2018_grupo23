@@ -16,7 +16,7 @@ DEFINE('DS', DIRECTORY_SEPARATOR); //separador para multiples OS
 session_start();
 
 $action=isset($_GET['action'])? $_GET['action'] :'home'; /* si el action esta seteado asigno el valor del get al action y sino es home */
-
+//Dispatcher::$action();
 try{
 if(ConfigController::getInstance()->getConfigParameters()['estado'] == "habilitado"){
   Dispatcher::$action();

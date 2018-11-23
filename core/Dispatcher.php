@@ -58,6 +58,10 @@ class Dispatcher{
     AttentionController::getInstance()->addAttention();
   }
 
+  static function atencion_show(){
+    AttentionController::getInstance()->getAttentionJSON();
+  }
+
   static function configuracion_index(){
     ConfigController::getInstance()->viewSystemConfig();
   }

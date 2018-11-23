@@ -34,15 +34,15 @@
         $ok = ($i < $i_max);
         while($ok && $i < $i_max){
           $key = $elements[$i++];
-          $ok = (isset($_POST[$key]) && !empty($_POST[$key]));
+          $ok = (isset($_POST[$key]) && (!empty($_POST[$key]) || is_numeric($_POST[$key])));
         }
-        //para debugear
+        // //para debugear
         //
         //   if(!$ok){
         //   echo($elements[--$i]);
         //   die();
-        // }
-        //
+        //}
+
         return $ok;
       }
 
