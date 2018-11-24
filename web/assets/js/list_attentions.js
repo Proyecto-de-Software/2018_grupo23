@@ -25,10 +25,22 @@ $('.modal-close, #cancel').on("click", function() {
   $('#formAddAttention')[0].reset();
   $('[name=token]').val(token);
 });
-$(document).ready(function() {
-$('#tabla').on("click",".button_v",function(){
+
+function fillModal(a,modaltag){
+  $(modaltag+', #motivo').val(a[0].motivo_id);
+  $(modaltag+', #derivacion').val(a[0].derivacion_id);
+  $(modaltag+', #articulacion').val(a[0].articulacion_con_instituciones);
+  $(modaltag+', #diag').val(a[0].diagnostico);
+  $(modaltag+', #obs').val(a[0].observaciones);
+  $(modaltag+', #trat').val(a[0].tratamiento_farmacologico_id);
+  $(modaltag+', #acomp').val(a[0].acompanamiento_id)
+  //agregar el input escondido
+  $(modaltag).addClass('is-active');
+}
+function getUserDataForModal(esto,modaltag){
   showLoading();
-  var id_atencion = $(this).closest('tr').find('.a_id').val();
+  var id_atencion = $(esto).closest('tr').find('.a_id').val();
+  console.log(id_atencion);
   $.ajax({
       method: "POST",
       url: "./?action=atencion_show",
@@ -40,21 +52,23 @@ $('#tabla').on("click",".button_v",function(){
       if (isJsonString(atencion)) {
         var a = JSON.parse(atencion);
         console.log(a);
-        $('#viewAttention, #motivo').val(a[0].motivo_id);
-        $('#viewAttention, #derivacion').val(a[0].derivacion_id);
-        $('#viewAttention, #articulacion').val(a[0].articulacion_con_instituciones);
-        $('#viewAttention, #diag').val(a[0].diagnostico);
-        $('#viewAttention, #obs').val(a[0].observaciones);
-        $('#viewAttention, #trat').val(a[0].tratamiento_farmacologico_id);
-        $('#viewAttention, #acomp').val(a[0].acompanamiento_id)
-        $('#viewAttention').addClass('is-active');
+        fillModal(a,modaltag);
       } else {
         showNotAvailable();
       }
       hideLoading();
     });
+}
+$(document).ready(function() {
+$('#tabla').on("click",".button_v",function(){
+  getUserDataForModal($(this),'#viewAttention');
 });
+
 $('.modal-close, #close').on("click", function() {
   $('#viewAttention').removeClass('is-active');
+});
+
+$('#tabla').on("click",".button_e",function(){
+  getUserDataForModal($(this),'#viewEditAttention');
 });
 });
