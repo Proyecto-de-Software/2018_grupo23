@@ -1,4 +1,4 @@
-<div class="modal" id="showAttention">
+<div class="modal" id="viewAttention">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
@@ -16,7 +16,7 @@
                 <label class="label">Motivo</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="motivo" id="motivo" readonly>
+                    <select name="motivo" id="motivo" disabled>
                       {% for motivo in motivos %}
                         <option value="{{motivo.id}}">{{motivo.nombre}}</option>
                       {% endfor %}
@@ -29,7 +29,7 @@
                 <label class="label">Derivación</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="derivacion" id="derivacion" readonly>
+                    <select name="derivacion" id="derivacion" disabled>
                       <option value="">Sin derivación</option>
                       {% for instit in instituciones %}
                         <option value="{{instit.id}}">{{instit.nombre}}</option>
@@ -49,7 +49,7 @@
                 <label class="label">Requiere internación</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="internacion" id="internacion" readonly>
+                    <select name="internacion" id="internacion" disabled>
                       <option value="1">Si</option>
                       <option value="0">No</option>
                     </select>
@@ -75,7 +75,7 @@
                 <label class="label">Tratamiento farmacológico</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="trat" id="trat" readonly>
+                    <select name="trat" id="trat" disabled>
                       {% for tratamiento in tratamientos %}
                         <option value="{{tratamiento.id}}">{{tratamiento.nombre}}</option>
                       {% endfor %}
@@ -88,7 +88,7 @@
                 <label class="label">Acompañamiento</label>
                 <div class="control">
                   <div class="select is-boxed">
-                    <select name="acomp" id="acomp" readonly>
+                    <select name="acomp" id="acomp" disabled>
                       {% for acomp in acomps %}
                         <option value="{{acomp.id}}">{{acomp.nombre}}</option>
                       {% endfor %}
@@ -99,5 +99,10 @@
 
         </div>
     </section>
+    <footer class="modal-card-foot">
+        <button class="button is-text" id="close">Cerrar</button>
+    </footer>
   </div>
+</div>
+</div>
 </div>

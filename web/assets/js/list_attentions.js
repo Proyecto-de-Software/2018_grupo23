@@ -25,7 +25,7 @@ $('.modal-close, #cancel').on("click", function() {
   $('#formAddAttention')[0].reset();
   $('[name=token]').val(token);
 });
-
+$(document).ready(function() {
 $('#tabla').on("click",".button_v",function(){
   showLoading();
   var id_atencion = $(this).closest('tr').find('.a_id').val();
@@ -40,10 +40,21 @@ $('#tabla').on("click",".button_v",function(){
       if (isJsonString(atencion)) {
         var a = JSON.parse(atencion);
         console.log(a);
-        // agregar todo lo que tiene el modal
+        $('#viewAttention, #motivo').val(a[0].motivo_id);
+        $('#viewAttention, #derivacion').val(a[0].derivacion_id);
+        $('#viewAttention, #articulacion').val(a[0].articulacion_con_instituciones);
+        $('#viewAttention, #diag').val(a[0].diagnostico);
+        $('#viewAttention, #obs').val(a[0].observaciones);
+        $('#viewAttention, #trat').val(a[0].tratamiento_farmacologico_id);
+        $('#viewAttention, #acomp').val(a[0].acompanamiento_id)
+        $('#viewAttention').addClass('is-active');
       } else {
         showNotAvailable();
       }
       hideLoading();
     });
+});
+$('.modal-close, #close').on("click", function() {
+  $('#viewAttention').removeClass('is-active');
+});
 });
