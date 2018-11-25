@@ -5,8 +5,13 @@ $(document).ready(function(){
   		method: "GET",
       dataType: "json",
       success:  function(data){
-        showPieChart(data, "Atenciones por motivo" );
-        refreshTableData(data, "Motivo");
+        if ($.isEmptyObject(data)) {
+          alert("No hay consultas cargadas en el sistema");
+        }
+        else {
+          showPieChart(data, "Atenciones por motivo" );
+          refreshTableData(data, "Motivo");
+        }
         }
     });
   });
@@ -19,8 +24,13 @@ $(document).ready(function(){
   		method: "GET",
       dataType: "json",
       success: function(data){
-        showPieChart(data, "Atenciones por género" );
-        refreshTableData(data, "Género");
+          if ($.isEmptyObject(data)) {
+            alert("No hay consultas cargadas en el sistema");
+          }
+          else {
+            showPieChart(data, "Atenciones por género" );
+            refreshTableData(data, "Género");
+          }
         }
       });
     });
@@ -33,21 +43,17 @@ $(document).ready(function(){
   		method: "GET",
       dataType: "json",
       success: function(data){
-        chartContainerInit();
-        showPieChart(data, "Atenciones por localidad del paciente" );
-        refreshTableData(data, "Localidad");
+          if ($.isEmptyObject(data)) {
+            alert("No hay consultas cargadas en el sistema");
+          }
+          else {
+            showPieChart(data, "Atenciones por localidad del paciente" );
+            refreshTableData(data, "Localidad");
+          }
         }
       });
     });
 });
-
-function chartContainerInit(){
-  var styles = {
-      heigth : "400px",
-      width: "100%",
-    };
-    $('#chartContainer').css( styles );
-}
 
 function refreshTableData(data, tableTitle){
   $('#tabla thead tr').empty();

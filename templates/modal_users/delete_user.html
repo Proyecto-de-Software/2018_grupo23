@@ -12,6 +12,7 @@
     </section>
     <footer class="modal-card-foot">
       <form action="/?action=usuario_destroy" id="deleteUserForm" method="POST">
+        <input id="token" type="hidden" name="token" value="{{ form_token('usuario_destroy') }}">
         <input name=id_user id="usuario_destroy" hidden>
         <button type="submit" class="button is-danger">Aceptar</button>
       </form>
