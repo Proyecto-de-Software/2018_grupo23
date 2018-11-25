@@ -78,7 +78,7 @@ class AttentionController extends MainController{
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions('atencion_new')){
         if($this->checkToken('atencion_new')){
-          $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'internacion', 'diag', 'obs', 'trat', 'acomp'));
+          $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'internacion', 'diag', 'obs', 'trat', 'acomp','id_paciente'));
           if($this->postElementsCheck(array('motivo', 'internacion', 'diag'))){
             $err= $this->isValidForm($_POST['derivacion'], $_POST['motivo'], $_POST['articulacion'], $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
             $id_paciente= $_POST['id_paciente'];
@@ -101,12 +101,12 @@ class AttentionController extends MainController{
     }
   }
 
-  
+
   function editAttention(){
     if(!is_null(AppController::getInstance()->getUser())){
       if(AppController::getInstance()->checkPermissions('atencion_update')){
         if($this->checkToken('atencion_update')){
-          $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'internacion', 'diag', 'obs', 'trat', 'acomp'));
+          $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'internacion', 'diag', 'obs', 'trat', 'acomp','id_paciente'));
           if($this->postElementsCheck(array('motivo', 'internacion', 'diag'))){
             $err= $this->isValidForm($_POST['derivacion'], $_POST['motivo'], $_POST['articulacion'], $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
             $id= $_POST['id_at'];
@@ -127,6 +127,20 @@ class AttentionController extends MainController{
     }else {
       $this->redirectHome();
     }
+  }
+
+  function deleteAttention(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      if(AppController::getInstance()->checkPermissions('atencion_destroy')){
+        if($this->checkToken('atencion_delete')){
+          if($this->postElementsCheck(array('id','id_paciente'))){
+            $repo= new AttentionRepository();
+            $repo->deleteAttention($_POST['id']);
+            $this->viewAttentionsList('success', 'Atencion eliminada');
+          }
+          }
+        }
+        }
   }
 
   function getAttentionJSON(){

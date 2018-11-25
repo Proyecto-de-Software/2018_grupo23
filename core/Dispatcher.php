@@ -66,6 +66,10 @@ class Dispatcher{
     AttentionController::getInstance()->editAttention();
   }
 
+  static function attention_destroy(){
+    AttentionController::getInstance()->deleteAttention();
+  }
+
   static function configuracion_index(){
     ConfigController::getInstance()->viewSystemConfig();
   }

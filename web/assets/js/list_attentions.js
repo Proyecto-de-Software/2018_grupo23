@@ -21,9 +21,9 @@ $('#showAddAttention').on("click", function() {
 $('.modal-close, #cancel').on("click", function() {
   $('#addAttention').removeClass('is-active');
   $('#formAddAttention').attr('action', './?action=atencion_new');
-  token = $('[name=tokenAdd]').val();
+  token = $('#tokenAdd').val();
   $('#formAddAttention')[0].reset();
-  $('[name=tokenAdd]').val(token);
+  $('#tokenAdd').val(token);
 });
 
 function fillModal(a,modaltag){
@@ -71,11 +71,33 @@ $('.modal-close, #close').on("click", function() {
 });
 
 
-$('.modal-close, #close').on("click", function() {
+$('.modal-close, #cancel').on("click", function() {
   $('#editAttention').removeClass('is-active');
+  $('#formEditAttention').attr('action', './?action=atencion_update');
+  token = $('#tokenEdit').val();
+  $('#formEditAttention')[0].reset();
+  $('#tokenEdit').val(token);
 });
 
 $('#tabla').on("click",".button_e",function(){
   getUserDataForModal($(this),'#editAttention');
 });
+
+$('#tabla').on("click", ".button_d", function() {
+  $("#deleteAttention").addClass('is-active');
+  var id_at = $(this).closest('tr').find('.a_id').val();
+  $('#a_destroy').val(id_at);
+
+});
+
+$('.modal-close, #cancel').on("click", function() {
+  $('#deleteAttention').removeClass('is-active');
+});
+
+$('#tabla').on("click",".button_d",function(){
+    var id_at = $(this).closest('tr').find('.a_id').val();
+    $('#deleteAttention, #a_destroy').val(id_at);
+    $('#deleteAttention').addClass('is-active');
+});
+
 });

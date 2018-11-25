@@ -102,4 +102,9 @@ class AttentionRepository extends Connection{
 
   }
 
+  function deleteAttention($id){
+    $query= $this->conn->prepare("DELETE FROM consulta WHERE id = :id");
+    $query->bindParam(":id", $id);
+    $query->execute();
+  }
 }

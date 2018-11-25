@@ -1,0 +1,24 @@
+<div class="modal" id="deleteAttention">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Borrar atencion</p>
+      <button class="modal-close" aria-label="close">Cerrar</button>
+    </header>
+    <section class="modal-card-body">
+      <div class="box">
+        <p>¿Estás seguro que deseas borrar la atencion?</p>
+        <p>No podrá ser recuperada</p>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <form action="/?action=attention_destroy" id="formDeleteAttention" method="POST">
+        <input name="id" id="a_destroy" value="" type="hidden">
+        <input name="id_paciente" id="id_paciente" value="{{ id_paciente }}" type="hidden">
+        <input type="hidden" name="token" value="{{ form_token('atencion_delete') }}">
+        <button type="submit" class="button is-success">Borrar</button>
+      </form>
+      <button class="button" id="cancel">Cancelar</button>
+    </footer>
+  </div>
+</div>
