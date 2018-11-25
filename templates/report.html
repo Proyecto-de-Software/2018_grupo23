@@ -1,4 +1,8 @@
 {% extends 'base_template.html' %} {% block title %}Reportes{% endblock %}
+{% block my_css %}
+  <link rel="stylesheet" href="/web/css/report.css">
+{% endblock %}
+
 {% block content %}
 
 <section class="section">
@@ -13,8 +17,8 @@
 </section>
 
 <section class="section">
-    <div id="chartContainer" style="height: 400px; width: 100%;"></div>
     <div id="content">
+      <div id="chartContainer"></div>
         <div class="columns is-centered">
           <div class="column is-narrow">
             <table id="tabla" class="table is-bordered">
