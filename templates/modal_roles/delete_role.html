@@ -11,6 +11,7 @@
     </section>
     <footer class="modal-card-foot">
       <form action="/?action=rol_destroy" id="deleteRoleForm" method="POST">
+        <input id="token" type="hidden" name="token" value="{{ form_token('rol_destroy') }}">
         <input name=id_rol id="rol_destroy" hidden>
         <button type="submit" class="button is-danger">Aceptar</button>
       </form>

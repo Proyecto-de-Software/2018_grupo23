@@ -162,6 +162,7 @@ class UserController extends MainController{
 
   public function deleteUser(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      if($this->checkToken('usuario_destroy')){
       if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){
         $user_repo= new UserRepository();
         $user_repo->removeUser($_POST['id_user']);
@@ -170,8 +171,12 @@ class UserController extends MainController{
         $this->viewUsersList('error', 'Se produjo un error: no puedes eliminar a ese usuario');
       }
     }else {
+      $this->viewUsersList('error','No deberías estar haciendo esto.');
+    }
+    }else {
       $this->redirectHome();
     }
+
   }
 
   public function updateUser(){
@@ -224,17 +229,21 @@ class UserController extends MainController{
     if(!is_null(AppController::getInstance()->getUser())){
       $_GET['action']='usuario_index';
       if(AppController::getInstance()->checkPermissions('usuario_update')){
-        if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){//no es él mismo...
-          $user_repo= new UserRepository();
-          $state= $user_repo->blockUser($_POST['id_user']);
-          if($state == 1){
-            $this->viewUsersList('success', 'El usuario fue bloqueado');
-          }else {
-            $this->viewUsersList('success', 'El usuario fue desbloqueado');
-          }
+        if($this->checkToken('usuario_block')){
+          if($_POST['id_user'] != AppController::getInstance()->getUserData()['id']){//no es él mismo...
+            $user_repo= new UserRepository();
+            $state= $user_repo->blockUser($_POST['id_user']);
+            if($state == 1){
+              $this->viewUsersList('success', 'El usuario fue bloqueado');
+            }else {
+              $this->viewUsersList('success', 'El usuario fue desbloqueado');
+            }
         }else {
           $this->viewUsersList('error', 'Se produjo un error: no puedes bloquear a ese usuario');
         }
+      }else {
+          $this->viewUsersList('error','No deberías estar haciendo esto.');
+      }
       }else {
         $this->viewUsersList('error', 'Se produjo un error: no tienes permiso para realizar esa acción');
       }

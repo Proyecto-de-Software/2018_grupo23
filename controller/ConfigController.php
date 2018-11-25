@@ -171,6 +171,7 @@ class ConfigController extends MainController {
 
   public function deleteRole(){
     if(!is_null(AppController::getInstance()->getUser())){
+      if($this->checkToken('rol_destroy')){
       if(AppController::getInstance()->checkPermissions($_GET['action'])){
           $config_repo= new ConfigRepository();
           if(empty($config_repo->existsUsersWithRole($_POST["id_rol"]))){
@@ -182,6 +183,9 @@ class ConfigController extends MainController {
       }else {
         $this->redirectHome();
       }
+    }else {
+      $this->viewRolesConfig('success', 'No deberías estar haciendo esto');
+    }
     }else {
       $this->redirectHome();
     }
