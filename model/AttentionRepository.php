@@ -86,4 +86,20 @@ class AttentionRepository extends Connection{
     $query->execute();
   }
 
+  function updateAttention($id, $derivacion, $motivo, $art, $fecha, $internacion, $diag, $obs, $trat, $acomp){
+    $derivacion = ($derivacion != '') ? $derivacion : NULL;
+    $query= $this->conn->prepare("UPDATE consulta SET motivo_id = :motivo_id, derivacion_id = :derivacion_id,  articulacion_con_instituciones = :art_con_inst_id, internacion = :inter, diagnostico = :diag, observaciones = :obsr,  tratamiento_farmacologico_id = :trat_id, acompanamiento_id = :acomp_id WHERE id = :id");
+    $query->bindParam(":id", $id);
+    $query->bindParam(":motivo_id", $motivo);
+    $query->bindParam(":derivacion_id", $derivacion);
+    $query->bindParam(":art_con_inst_id", $art);
+    $query->bindParam(":inter", $internacion);
+    $query->bindParam(":diag", $diag);
+    $query->bindParam(":obsr", $obs);
+    $query->bindParam(":trat_id", $trat);
+    $query->bindParam(":acomp_id", $acomp);
+    $query->execute();
+
+  }
+
 }

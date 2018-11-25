@@ -76,7 +76,7 @@ class AttentionController extends MainController{
 
   function addAttention(){
     if(!is_null(AppController::getInstance()->getUser())){
-      if(AppController::getInstance()->checkPermissions($_GET['action'])){
+      if(AppController::getInstance()->checkPermissions('atencion_new')){
         if($this->checkToken('atencion_new')){
           $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'internacion', 'diag', 'obs', 'trat', 'acomp'));
           if($this->postElementsCheck(array('motivo', 'internacion', 'diag'))){
@@ -86,6 +86,34 @@ class AttentionController extends MainController{
               $repo= new AttentionRepository();
               $repo->newAttention($id_paciente, $_POST['derivacion'], $_POST['motivo'], $_POST['articulacion'], Date('Y-m-d'), $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
               $this->viewAttentionsList('success', 'Atención agregada');
+            }else {
+              $this->viewAttentionsList('error', $err);
+            }
+          }else{$this->viewAttentionsList('error', 'Se produjo un error: faltó completar alguno/s de los datos.');}
+        }else {
+          $this->viewAttentionsList('error', 'Error con la validación del Token');
+        }
+      }else {
+        $this->viewAttentionsList('error', 'Se produjo un error: no tienes permiso para realizar esa acción');
+      }
+    }else {
+      $this->redirectHome();
+    }
+  }
+
+  
+  function editAttention(){
+    if(!is_null(AppController::getInstance()->getUser())){
+      if(AppController::getInstance()->checkPermissions('atencion_update')){
+        if($this->checkToken('atencion_update')){
+          $this->prepareData(array('motivo', 'derivacion', 'articulacion', 'internacion', 'diag', 'obs', 'trat', 'acomp'));
+          if($this->postElementsCheck(array('motivo', 'internacion', 'diag'))){
+            $err= $this->isValidForm($_POST['derivacion'], $_POST['motivo'], $_POST['articulacion'], $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
+            $id= $_POST['id_at'];
+            if(empty($err)){
+              $repo= new AttentionRepository();
+              $repo->updateAttention($id, $_POST['derivacion'], $_POST['motivo'], $_POST['articulacion'], Date('Y-m-d'), $_POST['internacion'], $_POST['diag'], $_POST['obs'], $_POST['trat'], $_POST['acomp']);
+              $this->viewAttentionsList('success', 'Atención actualizada');
             }else {
               $this->viewAttentionsList('error', $err);
             }

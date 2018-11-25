@@ -21,20 +21,21 @@ $('#showAddAttention').on("click", function() {
 $('.modal-close, #cancel').on("click", function() {
   $('#addAttention').removeClass('is-active');
   $('#formAddAttention').attr('action', './?action=atencion_new');
-  token = $('[name=token]').val();
+  token = $('[name=tokenAdd]').val();
   $('#formAddAttention')[0].reset();
-  $('[name=token]').val(token);
+  $('[name=tokenAdd]').val(token);
 });
 
 function fillModal(a,modaltag){
   $(modaltag+', #motivo').val(a[0].motivo_id);
   $(modaltag+', #derivacion').val(a[0].derivacion_id);
   $(modaltag+', #articulacion').val(a[0].articulacion_con_instituciones);
+  $(modaltag+', #internacion').val(a[0].internacion);
   $(modaltag+', #diag').val(a[0].diagnostico);
   $(modaltag+', #obs').val(a[0].observaciones);
   $(modaltag+', #trat').val(a[0].tratamiento_farmacologico_id);
-  $(modaltag+', #acomp').val(a[0].acompanamiento_id)
-  //agregar el input escondido
+  $(modaltag+', #acomp').val(a[0].acompanamiento_id);
+  $(modaltag+', #id_at').val(a[0].id);
   $(modaltag).addClass('is-active');
 }
 function getUserDataForModal(esto,modaltag){
@@ -51,7 +52,7 @@ function getUserDataForModal(esto,modaltag){
     .done(function(atencion) {
       if (isJsonString(atencion)) {
         var a = JSON.parse(atencion);
-        console.log(a);
+        console.log(a[0].id);
         fillModal(a,modaltag);
       } else {
         showNotAvailable();
@@ -64,11 +65,17 @@ $('#tabla').on("click",".button_v",function(){
   getUserDataForModal($(this),'#viewAttention');
 });
 
+
 $('.modal-close, #close').on("click", function() {
   $('#viewAttention').removeClass('is-active');
 });
 
+
+$('.modal-close, #close').on("click", function() {
+  $('#editAttention').removeClass('is-active');
+});
+
 $('#tabla').on("click",".button_e",function(){
-  getUserDataForModal($(this),'#viewEditAttention');
+  getUserDataForModal($(this),'#editAttention');
 });
 });

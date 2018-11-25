@@ -17,7 +17,7 @@
   </div>
 </section>
 
-<!-- DataTables ----------------------------------------------------->
+<!-- DataTables -->
 <section class="section">
   <div class="container is-fluid">
     <div class="box has-text-centered">
@@ -38,7 +38,7 @@
             <td headers="th_fecha">{{atencion.fecha}}</td>
             <td headers="th_motivo">{{atencion.motivo}}</td>
             <td headers="th_internacion">
-              {% if atencion.internación == 1 %}
+              {% if atencion.internacion == 1 %}
               {{ "Si" }}
               {% else %}
               {{ "No" }}
@@ -72,13 +72,14 @@
     </div>
   </div>
 </section>
-<!-- fin DataTables -------------------------------------------------->
+<!-- fin DataTables -->
 
-<!-- modals ----------------------------------------------------->
+<!-- modals -->
 {% include "modal_attentions/show_attention.html" %}
 {% include "modal_attentions/add_attention.html" %}
+{% include "modal_attentions/edit_attention.html" %}
 
-<!-- fin modals -------------------------------------------------->
+<!-- fin modals -->
 {% endblock %}
 
 {% block my_js %}
