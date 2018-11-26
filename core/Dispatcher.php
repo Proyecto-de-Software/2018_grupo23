@@ -70,6 +70,10 @@ class Dispatcher{
     AttentionController::getInstance()->deleteAttention();
   }
 
+  static function getUserDerivations(){
+    AttentionController::getInstance()->getDerivationsJSON();
+  }
+  
   static function configuracion_index(){
     ConfigController::getInstance()->viewSystemConfig();
   }

@@ -13,13 +13,23 @@
 <section class="section">
   <div class="container">
     <div class="level">
+      <div class="level-left"></div>
+        <div class="level-right">
+          <div class="level-item">
+            <p id="tituloDeri">Lugares a los que fue derivado el paciente:<p>
+            </div>
+          </div>
+    </div>
+    <div class="level">
       {% if 'atencion_new' in permisos %}
         <!--pregunto si tiene los permisos para agregar atenciones -->
         <div class="level-left">
           <button id="showAddAttention" class="button is-info">Agregar atención</button>
         </div>
       {% endif %}
+
       <div id="map" class="level-left">
+
 
       </div>
     </div>

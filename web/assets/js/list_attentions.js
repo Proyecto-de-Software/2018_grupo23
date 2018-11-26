@@ -56,7 +56,6 @@ function getUserDataForModal(esto,modaltag){
     .done(function(atencion) {
       if (isJsonString(atencion)) {
         var a = JSON.parse(atencion);
-        console.log(a[0].id);
         fillModal(a,modaltag);
       } else {
         showNotAvailable();
@@ -65,9 +64,36 @@ function getUserDataForModal(esto,modaltag){
     });
 }
 $(document).ready(function() {
-  var map = L.map('map',{ zoomControl:false }).setView([-34.93621,-57.97242],15);
-  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>', maxZoom: 18}).addTo(map);
-  L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
+  var map = L.map('map',{ zoomControl:false }).setView([-34.9213561,-57.9545116],11);
+  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
+  //L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
+
+
+  var id_patient = $("#addAttention").find('#id_paciente').val();
+  $.ajax({
+      method: "POST",
+      url: "./?action=getUserDerivations",
+      data: {
+        id: id_patient
+      }
+    })
+    .done(function(instituciones) {
+      if (isJsonString(instituciones)) {
+        var a = JSON.parse(instituciones);
+        if(a[0]){
+          $.each(a,function(i,v){
+            L.marker(JSON.parse(v.coordenadas),{draggable: false, title: v.nombre, title: v.nombre}).addTo(map);
+          });
+        }else{
+          $('#tituloDeri').text("-El paciente no tiene derivaciones-");
+        }
+      } else {
+        showNotAvailable();
+      }
+    });
+
+
+
 $('#tabla').on("click",".button_v",function(){
   getUserDataForModal($(this),'#viewAttention');
 });

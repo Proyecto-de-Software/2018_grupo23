@@ -156,6 +156,19 @@ class AttentionController extends MainController{
 
   }
 
+  function getDerivationsJSON(){
+    if(AppController::getInstance()->getUser()){
+      if( AppController::getInstance()->checkPermissions('atencion_show')){
+        if(isset($_POST['id']) && !empty($_POST['id'])){
+          $query = new AttentionRepository();
+          $derivations = $query->getDerivacionesFromId($_POST['id']);
+          echo json_encode($derivations);
+        }else {$this->redirectHome();}
+      }else {$this->redirectHome();}
+    }else {$this->redirectHome();}
+
+  }
+
 
   /*reportes*/
 

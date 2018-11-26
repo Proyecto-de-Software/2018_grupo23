@@ -24,6 +24,13 @@ class AttentionRepository extends Connection{
     return $query->fetchall();
   }
 
+  function getDerivacionesFromId($id){
+    $query= $this->conn->prepare("SELECT DISTINCT i.* FROM `consulta` c INNER JOIN institucion i ON c.derivacion_id = i.id WHERE c.paciente_id = :id");
+    $query->bindParam(":id", $id);
+    $query->execute();
+    return $query->fetchall();
+  }
+
 
   function getTratamientos(){
     $query= $this->conn->prepare("SELECT * FROM tratamiento_farmacologico");
