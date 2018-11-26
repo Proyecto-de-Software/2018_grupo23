@@ -205,7 +205,8 @@ $(document).ready(function() {
   });
 
   $('#tabla').on("click", ".button_a", function() {
-    $("#formAte").submit();
+    //$("#formAte").submit();
+    $(this).closest('tr').find('form').submit();
     });
 
 });
