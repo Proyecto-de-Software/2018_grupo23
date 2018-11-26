@@ -68,6 +68,15 @@ $('#tabla').on("click",".button_v",function(){
 
 $('.modal-close, #close').on("click", function() {
   $('#viewAttention').removeClass('is-active');
+  $('#viewAttention, #motivo').val("1");
+  $('#viewAttention, #derivacion').val("");
+  $('#viewAttention, #articulacion').val("");
+  $('#viewAttention, #internacion').val("1");
+  $('#viewAttention, #diag').val("");
+  $('#viewAttention, #obs').val("");
+  $('#viewAttention, #trat').val("1");
+  $('#viewAttention, #acomp').val("1");
+  $('#viewAttention, #id_at').val("");
 });
 
 
@@ -83,12 +92,6 @@ $('#tabla').on("click",".button_e",function(){
   getUserDataForModal($(this),'#editAttention');
 });
 
-$('#tabla').on("click", ".button_d", function() {
-  $("#deleteAttention").addClass('is-active');
-  var id_at = $(this).closest('tr').find('.a_id').val();
-  $('#a_destroy').val(id_at);
-
-});
 
 $('.modal-close, #cancel').on("click", function() {
   $('#deleteAttention').removeClass('is-active');
