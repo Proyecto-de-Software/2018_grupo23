@@ -17,6 +17,10 @@ $('#showAddAttention').on("click", function() {
   $('#addAttention').addClass('is-active');
 });
 
+$('#showMap').on("click", function() {
+  $('#modalMap').addClass('is-active');
+});
+
 //cerrar form add
 $('.modal-close, #cancel').on("click", function() {
   $('#addAttention').removeClass('is-active');
@@ -61,6 +65,9 @@ function getUserDataForModal(esto,modaltag){
     });
 }
 $(document).ready(function() {
+  var map = L.map('map',{ zoomControl:false }).setView([-34.93621,-57.97242],15);
+  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>', maxZoom: 18}).addTo(map);
+  L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
 $('#tabla').on("click",".button_v",function(){
   getUserDataForModal($(this),'#viewAttention');
 });
