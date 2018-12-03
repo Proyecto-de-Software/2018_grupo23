@@ -138,6 +138,12 @@ require_once('core/Connection.php');
       $query->bindParam(":id",$id);
       $query->execute();
     }
+
+    function removePatientAttentions($id){
+      $query=$this->conn->prepare("DELETE FROM consulta WHERE paciente_id=:id");
+      $query->bindParam(":id",$id);
+      $query->execute();
+    }
     /* End of delete functions */
   }
 

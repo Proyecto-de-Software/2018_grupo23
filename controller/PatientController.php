@@ -162,6 +162,7 @@ class PatientController extends MainController{
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
       if($this->checkToken('paciente_destroy')){
         $query=new PatientRepository();
+        $query->removePatientAttentions($_POST['id_paciente']);
         $query->removePatient($_POST['id_paciente']);
         $this->viewPatientList('success','El paciente ha sido eliminado exitosamente');
       }else {
