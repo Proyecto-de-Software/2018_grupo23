@@ -1,7 +1,14 @@
+.modal {z-index: 1500}
+.navbar.is-fixed-bottom, .navbar.is-fixed-top{z-index: 1300}
 #formAddAttention #derivacion {
   width:300px;
 }
 
 #formAddAttention #derivacion select:focus {
   width:300px;
+}
+
+#map {
+  width: 40%;
+  height: 200px;
 }

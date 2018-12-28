@@ -51,15 +51,17 @@
               {% if 'paciente_update' in permisos %}
               <button class="button_e button is-info" title="Editar"><i class="far fa-edit"></i></button>
               {% endif %}
+              {% if 'atencion_index' in permisos %}
+
+                <button type="button" class="button_a button_atts button is-info" title="Ver atenciones"><i class="fas fa-stethoscope"></i></button>
+
+              {% endif %}
               {% if 'paciente_destroy' in permisos %}
               <button class="button_d button is-danger" title="Eliminar"><i class="far fa-trash-alt"></i></button>
               {% endif %}
-              {% if 'atencion_index' in permisos %}
-              <form action="./?action=atencion_index" method="post">
-                <input name="id_paciente" value="{{paciente.id}}" hidden>
-                <button type="submit" class="button_atts button is-success" title="Ver atenciones">Ver atenciones</button>
-              </form>
-              {% endif %}
+              <form id="formAte" action="./?action=atencion_index" method="post">
+                <input name="id_paciente" value="{{paciente.id}}" type="hidden">
+            </form>
             </td>
 
           </tr>

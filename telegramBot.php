@@ -12,10 +12,10 @@ $message=$update['message']['text'];
 $message=explode(" ",$message);
 switch ($message[0]) {
   case '/ayuda':
-    $response='escribiendo /instituciones  Devolverá un listado de Instituciones disponibles /n ';
-    $response.='escribiendo /instituciones/region-sanitaria: region-sanitaria: Devolverá un listado de Instituciones a
-partir de la región sanitaria indicada por parámetro.';
-    sendMessage($chatId,$response);
+    sendMessage($chatId,'escribiendo /instituciones  Devolverá un listado de Instituciones disponibles');
+    sendMessage($chatId,'escribiendo /instituciones-region-sanitaria {id region} Devolverá un listado de Instituciones a
+    partir de la región sanitaria indicada por parámetro');
+    sendMessage($chatId,'escrbiendo /instituciones {id institución} Devolverá la institución con ese id');
     break;
   case '/instituciones':
     if(empty($message[1])){
@@ -60,7 +60,7 @@ partir de la región sanitaria indicada por parámetro.';
     if(!empty($message[1])){
       $json=json_decode(file_get_contents('https://grupo23.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/'.$message[1]));
       if(!empty($json)){
-        sendMessage($chatId,"La institución es: ");
+        sendMessage($chatId,"Las instituciones son: ");
         foreach ($json as $key => $jsons) {
           $response="";
           foreach($jsons as $key => $value) {

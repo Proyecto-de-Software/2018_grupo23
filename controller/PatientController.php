@@ -67,9 +67,14 @@ class PatientController extends MainController{
   }
 
   function addNN(){
-    $query=new PatientRepository();
-    $user=$query->newPatient('NN','NN',2018-12-31,'NN',0,0,'',1,0,1,1111111,0,0,0,0);
-    $this->viewPatientList('success','El paciente ha sido agregado exitosamente con numero de historia clinica: '.$user);
+    if($this->checkToken('paciente_new')){
+      $query=new PatientRepository();
+      $user=$query->newPatient('NN','NN',2018-12-31,'NN',0,0,'',1,0,1,1111111,0,0,0,0);
+      $this->viewPatientList('success','El paciente ha sido agregado exitosamente con numero de historia clinica: '.$user);
+    }
+    else {
+      $this->viewPatientList('error','No deberías estar haciendo esto.');
+    }
   }
 
   function checkDoc($type,$num){
@@ -155,9 +160,14 @@ class PatientController extends MainController{
 
   function deletePatient(){
     if(AppController::getInstance()->checkPermissions($_GET['action'])){
-      $query=new PatientRepository();
-      $query->removePatient($_POST['id_paciente']);
-      $this->viewPatientList('success','El paciente ha sido eliminado exitosamente');
+      if($this->checkToken('paciente_destroy')){
+        $query=new PatientRepository();
+        $query->removePatientAttentions($_POST['id_paciente']);
+        $query->removePatient($_POST['id_paciente']);
+        $this->viewPatientList('success','El paciente ha sido eliminado exitosamente');
+      }else {
+        $this->viewPatientList('error','No deberías estar haciendo esto.');
+      }
     }else {
       $this->viewPatientList('error','No tienes permisos para eliminar pacientes.');
     }

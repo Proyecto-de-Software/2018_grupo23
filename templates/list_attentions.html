@@ -2,10 +2,24 @@
 {% block my_css %}
   <link rel="stylesheet" type="text/css" href="web/assets/dataTables/datatables.min.css" />
   <link rel="stylesheet" href="/web/css/attentions.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+     integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+     crossorigin=""/>
+     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+    integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+    crossorigin=""></script>
 {% endblock %}
 {% block content %}
 <section class="section">
   <div class="container">
+    <div class="level">
+      <div class="level-left"></div>
+        <div class="level-right">
+          <div class="level-item">
+            <p id="tituloDeri">Lugares a los que fue derivado el paciente:<p>
+            </div>
+          </div>
+    </div>
     <div class="level">
       {% if 'atencion_new' in permisos %}
         <!--pregunto si tiene los permisos para agregar atenciones -->
@@ -13,6 +27,11 @@
           <button id="showAddAttention" class="button is-info">Agregar atención</button>
         </div>
       {% endif %}
+
+      <div id="map" class="level-left">
+
+
+      </div>
     </div>
   </div>
 </section>
@@ -72,13 +91,15 @@
     </div>
   </div>
 </section>
+
+
 <!-- fin DataTables -->
 
 <!-- modals -->
 {% include "modal_attentions/show_attention.html" %}
 {% include "modal_attentions/add_attention.html" %}
 {% include "modal_attentions/edit_attention.html" %}
-
+{% include "modal_attentions/delete_attention.html" %}
 <!-- fin modals -->
 {% endblock %}
 

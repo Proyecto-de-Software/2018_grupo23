@@ -13,6 +13,7 @@
     </section>
     <footer class="modal-card-foot">
       <form action="?action=paciente_new" method="POST">
+        <input type="hidden" name="token" value="{{ form_token('paciente_new') }}">
         <input value="True" name="addNN" hidden>
         <button type="submit" class="button is-info">Agregar NN</button>
       </form>

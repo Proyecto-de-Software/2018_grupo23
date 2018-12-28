@@ -8,6 +8,7 @@
     </section>
     <footer class="modal-card-foot">
       <form action="/?action=usuario_block" id="blockUserForm" method="POST">
+        <input id="token" type="hidden" name="token" value="{{ form_token('usuario_block') }}">
         <input name=id_user id="usuario_block" hidden>
         <button type="submit" class="button is-danger">Aceptar</button>
       </form>

@@ -204,13 +204,9 @@ $(document).ready(function() {
     $('#formDeletePatient')[0].reset();
   });
 
+  $('#tabla').on("click", ".button_a", function() {
+    //$("#formAte").submit();
+    $(this).closest('tr').find('form').submit();
+    });
 
 });
-/*
-          $.ajax({
-            method: "POST",
-            url: "./?action=view_patient",
-            data: { id: id_paciente}
-          })
-            .done(function(paciente){
-            }); */

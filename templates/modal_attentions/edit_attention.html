@@ -9,7 +9,7 @@
     </header>
     <section class="modal-card-body">
       <form action="?action=atencion_update" id="formEditAttention" method="POST">
-        <input type="hidden" name="token" value="{{ form_token('atencion_update') }}">
+        <input type="hidden" name="token" id="tokenEdit" value="{{ form_token('atencion_update') }}">
         <div class="box">
           <div class="columns">
             <div class="column">
@@ -109,7 +109,7 @@
     </section>
     <footer class="modal-card-foot">
       <button type="submit" id="attention_save" class="button is-primary">Aceptar</button>
-      <button type="button" class="button is-text" id="close">Cancelar</button>
+      <button type="button" class="button is-text" id="cancel">Cancelar</button>
     </form>
     </footer>
   </div>
