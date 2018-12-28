@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Institucion{% endblock %}
+
+{% block body %}
+    <h1>Institucion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ institucion.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ institucion.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Director</th>
+                <td>{{ institucion.director }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ institucion.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Region_sanitaria_id</th>
+                <td>{{ institucion.regionSanitariaId }}</td>
+            </tr>
+            <tr>
+                <th>Coordenadas</th>
+                <td>{{ institucion.coordenadas }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('institucion_index') }}">back to list</a>
+
+    <a href="{{ path('institucion_edit', {'id': institucion.id}) }}">edit</a>
+
+    {{ include('institucion/_delete_form.html.twig') }}
+{% endblock %}

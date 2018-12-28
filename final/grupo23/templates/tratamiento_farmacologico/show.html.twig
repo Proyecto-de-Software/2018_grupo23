@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TratamientoFarmacologico{% endblock %}
+
+{% block body %}
+    <h1>TratamientoFarmacologico</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tratamiento_farmacologico.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ tratamiento_farmacologico.nombre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tratamiento_farmacologico_index') }}">back to list</a>
+
+    <a href="{{ path('tratamiento_farmacologico_edit', {'id': tratamiento_farmacologico.id}) }}">edit</a>
+
+    {{ include('tratamiento_farmacologico/_delete_form.html.twig') }}
+{% endblock %}

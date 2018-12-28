@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TratamientoFarmacologico index{% endblock %}
+
+{% block body %}
+    <h1>TratamientoFarmacologico index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tratamiento_farmacologico in tratamiento_farmacologicos %}
+            <tr>
+                <td>{{ tratamiento_farmacologico.id }}</td>
+                <td>{{ tratamiento_farmacologico.nombre }}</td>
+                <td>
+                    <a href="{{ path('tratamiento_farmacologico_show', {'id': tratamiento_farmacologico.id}) }}">show</a>
+                    <a href="{{ path('tratamiento_farmacologico_edit', {'id': tratamiento_farmacologico.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('tratamiento_farmacologico_new') }}">Create new</a>
+{% endblock %}

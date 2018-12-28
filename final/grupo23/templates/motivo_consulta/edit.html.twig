@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MotivoConsulta{% endblock %}
+
+{% block body %}
+    <h1>Edit MotivoConsulta</h1>
+
+    {{ include('motivo_consulta/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('motivo_consulta_index') }}">back to list</a>
+
+    {{ include('motivo_consulta/_delete_form.html.twig') }}
+{% endblock %}

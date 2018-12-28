@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acompanamiento index{% endblock %}
+
+{% block body %}
+    <h1>Acompanamiento index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for acompanamiento in acompanamientos %}
+            <tr>
+                <td>{{ acompanamiento.id }}</td>
+                <td>{{ acompanamiento.nombre }}</td>
+                <td>
+                    <a href="{{ path('acompanamiento_show', {'id': acompanamiento.id}) }}">show</a>
+                    <a href="{{ path('acompanamiento_edit', {'id': acompanamiento.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('acompanamiento_new') }}">Create new</a>
+{% endblock %}

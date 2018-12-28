@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New TratamientoFarmacologico{% endblock %}
+
+{% block body %}
+    <h1>Create new TratamientoFarmacologico</h1>
+
+    {{ include('tratamiento_farmacologico/_form.html.twig') }}
+
+    <a href="{{ path('tratamiento_farmacologico_index') }}">back to list</a>
+{% endblock %}

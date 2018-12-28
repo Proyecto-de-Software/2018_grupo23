@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MotivoConsulta{% endblock %}
+
+{% block body %}
+    <h1>MotivoConsulta</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ motivo_consultum.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ motivo_consultum.nombre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('motivo_consulta_index') }}">back to list</a>
+
+    <a href="{{ path('motivo_consulta_edit', {'id': motivo_consultum.id}) }}">edit</a>
+
+    {{ include('motivo_consulta/_delete_form.html.twig') }}
+{% endblock %}
