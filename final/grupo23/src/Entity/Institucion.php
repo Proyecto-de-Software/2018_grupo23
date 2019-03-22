@@ -1,52 +1,70 @@
 <?php
 
-namespace App\Entity;
 
+namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\InstitucionRepository")
+ * Institucion
+ *
+ * @ORM\Table(name="institucion", indexes={@ORM\Index(name="FK_institucion_region_sanitaria_id", columns={"region_sanitaria_id"}), @ORM\Index(name="FK_tipo_institucion_id", columns={"tipo_institucion_id"})})
+ * @ORM\Entity
  */
 class Institucion
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="director", type="string", length=255, nullable=false)
      */
     private $director;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=false)
      */
     private $telefono;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="region_sanitaria_id", type="integer", nullable=false)
      */
-    private $region_sanitaria_id;
+    private $regionSanitariaId;
 
-    
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="coordenadas", type="string", length=50, nullable=false)
      */
     private $coordenadas;
 
     /**
+     * @var \TipoInstitucion
+     *
      * @ORM\ManyToOne(targetEntity="TipoInstitucion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipo_institucion_id", referencedColumnName="id")
+     * })
      */
-
-    private $tipo;
+    private $tipoInstitucion;
 
     public function getId(): ?int
     {
@@ -91,17 +109,16 @@ class Institucion
 
     public function getRegionSanitariaId(): ?int
     {
-        return $this->region_sanitaria_id;
+        return $this->regionSanitariaId;
     }
 
-    public function setRegionSanitariaId(int $region_sanitaria_id): self
+    public function setRegionSanitariaId(int $regionSanitariaId): self
     {
-        $this->region_sanitaria_id = $region_sanitaria_id;
+        $this->regionSanitariaId = $regionSanitariaId;
 
         return $this;
     }
 
-    
     public function getCoordenadas(): ?string
     {
         return $this->coordenadas;
@@ -113,17 +130,18 @@ class Institucion
 
         return $this;
     }
-    
-    public function getTipo()
+
+    public function getTipoInstitucion(): ?TipoInstitucion
     {
-        return $this->tipo;
+        return $this->tipoInstitucion;
     }
 
-    public function setAcompanamiento($tipo): self
+    public function setTipoInstitucion(?TipoInstitucion $tipoInstitucion): self
     {
-        $this->tipo = $tipo;
+        $this->tipoInstitucion = $tipoInstitucion;
 
         return $this;
     }
+
 
 }

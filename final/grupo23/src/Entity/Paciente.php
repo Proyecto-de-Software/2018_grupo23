@@ -1,103 +1,133 @@
 <?php
 
-namespace App\Entity;
 
+namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PacienteRepository")
+ * Paciente
+ *
+ * @ORM\Table(name="paciente", indexes={@ORM\Index(name="FK_genero_id", columns={"genero_id"})})
+ * @ORM\Entity
  */
 class Paciente
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="apellido", type="string", length=255, nullable=false)
      */
     private $apellido;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
     /**
-     * @ORM\Column(type="date")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_nac", type="date", nullable=false)
      */
-    private $fecha_nac;
+    private $fechaNac;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
+     *
+     * @ORM\Column(name="lugar_nac", type="string", length=128, nullable=true)
      */
-    private $lugar_nac;
+    private $lugarNac;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="localidad_id", type="integer", nullable=false)
      */
-    private $localidad_id;
+    private $localidadId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="region_sanitaria_id", type="integer", nullable=false)
      */
-    private $region_sanitaria_id;
+    private $regionSanitariaId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="domicilio", type="string", length=255, nullable=false)
      */
     private $domicilio;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @var bool
+     *
+     * @ORM\Column(name="tiene_documento", type="boolean", nullable=false, options={"default"="1"})
      */
-    private $tiene_documento;
+    private $tieneDocumento = '1';
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="tipo_doc_id", type="integer", nullable=false)
      */
-    private $tipo_doc_id;
+    private $tipoDocId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="numero", type="integer", nullable=false)
      */
     private $numero;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="tel", type="string", length=255, nullable=false)
      */
     private $tel;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
+     *
+     * @ORM\Column(name="nro_carpeta", type="integer", nullable=true)
      */
-    private $nro_carpeta;
+    private $nroCarpeta;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="obra_social_id", type="integer", nullable=false)
      */
-    private $obra_social_id;
+    private $obraSocialId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="partido_id", type="integer", nullable=false)
      */
-    private $partido_id;
+    private $partidoId;
 
     /**
+     * @var \Genero
+     *
      * @ORM\ManyToOne(targetEntity="Genero")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="genero_id", referencedColumnName="id")
+     * })
      */
-
     private $genero;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Consulta", mappedBy="paciente")
-     */
-
-    private $consultas;
-
 
     public function getId(): ?int
     {
@@ -130,48 +160,48 @@ class Paciente
 
     public function getFechaNac(): ?\DateTimeInterface
     {
-        return $this->fecha_nac;
+        return $this->fechaNac;
     }
 
-    public function setFechaNac(\DateTimeInterface $fecha_nac): self
+    public function setFechaNac(\DateTimeInterface $fechaNac): self
     {
-        $this->fecha_nac = $fecha_nac;
+        $this->fechaNac = $fechaNac;
 
         return $this;
     }
 
     public function getLugarNac(): ?string
     {
-        return $this->lugar_nac;
+        return $this->lugarNac;
     }
 
-    public function setLugarNac(?string $lugar_nac): self
+    public function setLugarNac(?string $lugarNac): self
     {
-        $this->lugar_nac = $lugar_nac;
+        $this->lugarNac = $lugarNac;
 
         return $this;
     }
 
     public function getLocalidadId(): ?int
     {
-        return $this->localidad_id;
+        return $this->localidadId;
     }
 
-    public function setLocalidadId(int $localidad_id): self
+    public function setLocalidadId(int $localidadId): self
     {
-        $this->localidad_id = $localidad_id;
+        $this->localidadId = $localidadId;
 
         return $this;
     }
 
     public function getRegionSanitariaId(): ?int
     {
-        return $this->region_sanitaria_id;
+        return $this->regionSanitariaId;
     }
 
-    public function setRegionSanitariaId(int $region_sanitaria_id): self
+    public function setRegionSanitariaId(int $regionSanitariaId): self
     {
-        $this->region_sanitaria_id = $region_sanitaria_id;
+        $this->regionSanitariaId = $regionSanitariaId;
 
         return $this;
     }
@@ -190,24 +220,24 @@ class Paciente
 
     public function getTieneDocumento(): ?bool
     {
-        return $this->tiene_documento;
+        return $this->tieneDocumento;
     }
 
-    public function setTieneDocumento(bool $tiene_documento): self
+    public function setTieneDocumento(bool $tieneDocumento): self
     {
-        $this->tiene_documento = $tiene_documento;
+        $this->tieneDocumento = $tieneDocumento;
 
         return $this;
     }
 
     public function getTipoDocId(): ?int
     {
-        return $this->tipo_doc_id;
+        return $this->tipoDocId;
     }
 
-    public function setTipoDocId(int $tipo_doc_id): self
+    public function setTipoDocId(int $tipoDocId): self
     {
-        $this->tipo_doc_id = $tipo_doc_id;
+        $this->tipoDocId = $tipoDocId;
 
         return $this;
     }
@@ -238,36 +268,36 @@ class Paciente
 
     public function getNroCarpeta(): ?int
     {
-        return $this->nro_carpeta;
+        return $this->nroCarpeta;
     }
 
-    public function setNroCarpeta(?int $nro_carpeta): self
+    public function setNroCarpeta(?int $nroCarpeta): self
     {
-        $this->nro_carpeta = $nro_carpeta;
+        $this->nroCarpeta = $nroCarpeta;
 
         return $this;
     }
 
     public function getObraSocialId(): ?int
     {
-        return $this->obra_social_id;
+        return $this->obraSocialId;
     }
 
-    public function setObraSocialId(int $obra_social_id): self
+    public function setObraSocialId(int $obraSocialId): self
     {
-        $this->obra_social_id = $obra_social_id;
+        $this->obraSocialId = $obraSocialId;
 
         return $this;
     }
 
     public function getPartidoId(): ?int
     {
-        return $this->partido_id;
+        return $this->partidoId;
     }
 
-    public function setPartidoId(int $partido_id): self
+    public function setPartidoId(int $partidoId): self
     {
-        $this->partido_id = $partido_id;
+        $this->partidoId = $partidoId;
 
         return $this;
     }
@@ -277,22 +307,12 @@ class Paciente
         return $this->genero;
     }
 
-    public function setGenero($genero): self
+    public function setGenero(?Genero $genero): self
     {
         $this->genero = $genero;
 
         return $this;
     }
 
-    public function getConsultas()
-    {
-        return $this->consultas;
-    }
 
-    public function setConsultas($consultas): self
-    {
-        $this->consultas = $consultas;
-
-        return $this;
-    }
 }

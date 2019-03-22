@@ -3,24 +3,51 @@
 namespace App\Controller;
 
 use App\Entity\Configuracion;
-use App\Form\ConfiguracionType;
-use App\Repository\ConfiguracionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations\Get;
+
+use Symfony\Component\Serializer\SerializerInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\FOSRestController;
+
 
 /**
  * @Route("/configuracion")
  */
 class ConfiguracionController extends AbstractController
 {
+
+    /** @var SerializerInterface */
+    private $serializer;
+
+
+    /**
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+
     /**
      * @Route("/", name="configuracion_index", methods={"GET"})
      */
-    public function index(ConfiguracionRepository $configuracionRepository): Response
+    public function index(): JsonResponse
     {
-        return $this->render('configuracion/index.html.twig', ['configuracions' => $configuracionRepository->findAll()]);
+        $config = $this->getDoctrine()
+            ->getRepository(Configuracion::class)
+            ->findAll();
+        $response = $this->serializer->serialize($config, 'json');
+        return new JsonResponse($response);
     }
 
     /**
@@ -29,7 +56,7 @@ class ConfiguracionController extends AbstractController
     public function new(Request $request): Response
     {
         $configuracion = new Configuracion();
-        $form = $this->createForm(ConfiguracionType::class, $configuracion);
+        $form = $this->createForm(Configuracion1Type::class, $configuracion);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,7 +78,9 @@ class ConfiguracionController extends AbstractController
      */
     public function show(Configuracion $configuracion): Response
     {
-        return $this->render('configuracion/show.html.twig', ['configuracion' => $configuracion]);
+        return $this->render('configuracion/show.html.twig', [
+            'configuracion' => $configuracion,
+        ]);
     }
 
     /**
@@ -59,13 +88,15 @@ class ConfiguracionController extends AbstractController
      */
     public function edit(Request $request, Configuracion $configuracion): Response
     {
-        $form = $this->createForm(ConfiguracionType::class, $configuracion);
+        $form = $this->createForm(Configuracion1Type::class, $configuracion);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('configuracion_index', ['id' => $configuracion->getId()]);
+            return $this->redirectToRoute('configuracion_index', [
+                'id' => $configuracion->getId(),
+            ]);
         }
 
         return $this->render('configuracion/edit.html.twig', [

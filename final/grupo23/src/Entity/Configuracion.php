@@ -2,27 +2,38 @@
 
 namespace App\Entity;
 
+
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ConfiguracionRepository")
+ * Configuracion
+ *
+ * @ORM\Table(name="configuracion")
+ * @ORM\Entity
  */
 class Configuracion
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="variable", type="string", length=255, nullable=false)
      */
     private $variable;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="valor", type="string", length=255, nullable=false)
      */
     private $valor;
 
@@ -54,4 +65,6 @@ class Configuracion
 
         return $this;
     }
+
+
 }

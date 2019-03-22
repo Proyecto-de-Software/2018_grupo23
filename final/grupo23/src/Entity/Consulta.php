@@ -4,73 +4,107 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ConsultaRepository")
+ * Consulta
+ *
+ * @ORM\Table(name="consulta", indexes={@ORM\Index(name="FK_acompanamiento_id", columns={"acompanamiento_id"}), @ORM\Index(name="FK_derivacion_id", columns={"derivacion_id"}), @ORM\Index(name="FK_paciente_id", columns={"paciente_id"}), @ORM\Index(name="FK_tratamiento_farmacologico_id", columns={"tratamiento_farmacologico_id"}), @ORM\Index(name="FK_motivo_id", columns={"motivo_id"})})
+ * @ORM\Entity
  */
 class Consulta
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=false)
      */
     private $fecha;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
+     *
+     * @ORM\Column(name="articulacion_con_instituciones", type="string", length=255, nullable=true)
      */
-    private $articulacion_con_instituciones;
+    private $articulacionConInstituciones;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @var bool
+     *
+     * @ORM\Column(name="internacion", type="boolean", nullable=false)
      */
-    private $internacion;
+    private $internacion = '0';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
+     *
+     * @ORM\Column(name="diagnostico", type="string", length=255, nullable=true)
      */
     private $diagnostico;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string|null
+     *
+     * @ORM\Column(name="observaciones", type="string", length=255, nullable=true)
      */
     private $observaciones;
 
-     /**
-     * @ORM\ManyToOne(targetEntity="Paciente",inversedBy="consultas")
+    /**
+     * @var \Acompanamiento
+     *
+     * @ORM\ManyToOne(targetEntity="Acompanamiento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="acompanamiento_id", referencedColumnName="id")
+     * })
      */
-
-    private $paciente;
+    private $acompanamiento;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MotivoConsulta")
-     */
-
-    private $motivo;
-
-    /**
+     * @var \Institucion
+     *
      * @ORM\ManyToOne(targetEntity="Institucion")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="derivacion_id", referencedColumnName="id")
+     * })
      */
-
     private $derivacion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TratamientoFarmacologico")
+     * @var \MotivoConsulta
+     *
+     * @ORM\ManyToOne(targetEntity="MotivoConsulta")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="motivo_id", referencedColumnName="id")
+     * })
      */
-
-    private $tratamiento_farmacologico;
+    private $motivo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acompanamiento")
+     * @var \Paciente
+     *
+     * @ORM\ManyToOne(targetEntity="Paciente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="paciente_id", referencedColumnName="id")
+     * })
      */
+    private $paciente;
 
-    private $acompanamiento;
+    /**
+     * @var \TratamientoFarmacologico
+     *
+     * @ORM\ManyToOne(targetEntity="TratamientoFarmacologico")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tratamiento_farmacologico_id", referencedColumnName="id")
+     * })
+     */
+    private $tratamientoFarmacologico;
 
     public function getId(): ?int
     {
@@ -91,12 +125,12 @@ class Consulta
 
     public function getArticulacionConInstituciones(): ?string
     {
-        return $this->articulacion_con_instituciones;
+        return $this->articulacionConInstituciones;
     }
 
-    public function setArticulacionConInstituciones(?string $articulacion_con_instituciones): self
+    public function setArticulacionConInstituciones(?string $articulacionConInstituciones): self
     {
-        $this->articulacion_con_instituciones = $articulacion_con_instituciones;
+        $this->articulacionConInstituciones = $articulacionConInstituciones;
 
         return $this;
     }
@@ -137,64 +171,65 @@ class Consulta
         return $this;
     }
 
-    
-    public function getPaciente()
+    public function getAcompanamiento(): ?Acompanamiento
     {
-        return $this->paciente;
+        return $this->acompanamiento;
     }
 
-    public function setPaciente($paciente): self
+    public function setAcompanamiento(?Acompanamiento $acompanamiento): self
     {
-        $this->paciente = $paciente;
+        $this->acompanamiento = $acompanamiento;
 
         return $this;
     }
 
-    public function getMotivo()
-    {
-        return $this->motivo;
-    }
-
-    public function setMotivo($motivo): self
-    {
-        $this->motivo = $motivo;
-
-        return $this;
-    }
-
-    public function getDerivacion()
+    public function getDerivacion(): ?Institucion
     {
         return $this->derivacion;
     }
 
-    public function setDerivacion($derivacion): self
+    public function setDerivacion(?Institucion $derivacion): self
     {
         $this->derivacion = $derivacion;
 
         return $this;
     }
 
-    public function getTratamientoFarmacologico()
+    public function getMotivo(): ?MotivoConsulta
     {
-        return $this->tratamiento_farmacologico;
+        return $this->motivo;
     }
 
-    public function setTratamientoFarmacologico($tratamiento_farmacologico): self
+    public function setMotivo(?MotivoConsulta $motivo): self
     {
-        $this->tratamiento_farmacologico = $tratamiento_farmacologico;
+        $this->motivo = $motivo;
 
         return $this;
     }
 
-    public function getAcompanamiento()
+    public function getPaciente(): ?Paciente
     {
-        return $this->acompanamiento;
+        return $this->paciente;
     }
 
-    public function setAcompanamiento($acompanamiento): self
+    public function setPaciente(?Paciente $paciente): self
     {
-        $this->acompanamiento = $acompanamiento;
+        $this->paciente = $paciente;
 
         return $this;
     }
+
+    public function getTratamientoFarmacologico(): ?TratamientoFarmacologico
+    {
+        return $this->tratamientoFarmacologico;
+    }
+
+    public function setTratamientoFarmacologico(?TratamientoFarmacologico $tratamientoFarmacologico): self
+    {
+        $this->tratamientoFarmacologico = $tratamientoFarmacologico;
+
+        return $this;
+    }
+
+
 }

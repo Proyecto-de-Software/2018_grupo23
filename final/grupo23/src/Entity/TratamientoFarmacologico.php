@@ -1,23 +1,30 @@
 <?php
 
-namespace App\Entity;
 
+namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TratamientoFarmacologicoRepository")
+ * TratamientoFarmacologico
+ *
+ * @ORM\Table(name="tratamiento_farmacologico")
+ * @ORM\Entity
  */
 class TratamientoFarmacologico
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
@@ -37,4 +44,6 @@ class TratamientoFarmacologico
 
         return $this;
     }
+
+
 }
