@@ -22,12 +22,14 @@ window.axios = axios
 // import MainComponent from './components/MainComponent.vue'
 import Home from './components/Home.vue';
 import Login from './components/Login.vue';
+import Config from './components/Config.vue';
 import PatientIndex from './components/Patients/PatientIndex.vue';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login},
   { path: '/paciente', component: PatientIndex},
+  { path: '/config', component: Config},
   // { path: '/lugar1', component: MainComponent},
   // { path: '/lugar2', component: TestSubmit},
   { path: '*', redirect: '/' }
@@ -65,7 +67,7 @@ const methods = [
         axios.defaults.headers.common['Authorization'] = token;
     } else {
         axios.defaults.headers.common['Authorization'] = null;
-        /*if setting null does not remove `Authorization` header then try     
+        /*if setting null does not remove `Authorization` header then try
           delete axios.defaults.headers.common['Authorization'];
         */
     }
@@ -78,5 +80,3 @@ new Vue({
   router,
   methods
 }).$mount('#app')
-
-

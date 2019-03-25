@@ -28,7 +28,7 @@
                             <router-link class="navbar-item" to="reportes">Reportes</router-link>
                             <hr class="navbar-divider">
                             <router-link class="navbar-item" to="roles_y_permisos">Roles y permisos</router-link>
-                            <router-link class="navbar-item" to="configuracion">Configuración</router-link>
+                            <router-link class="navbar-item" to="config">Configuración</router-link>
                         </div>
 
                     </div>

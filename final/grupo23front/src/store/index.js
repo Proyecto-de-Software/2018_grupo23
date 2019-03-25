@@ -4,6 +4,7 @@ import VuexPersist from 'vuex-persist'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import UserModule from './modules/UserModule'
+import ConfigModule from './modules/ConfigModule'
 
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
@@ -19,30 +20,12 @@ const VuexPer = new VuexPersist({
 
 export default new Vuex.Store(
     {
-      modules: {
-        UserModule
-      },
-        state: {
-            config: null
+        modules: {
+          UserModule,
+          ConfigModule
         },
-        actions: {
-          loadConfig({ commit }) {
-            axios
-              .get('http://localhost:8000/configuracion')
-              .then(r => r.data)
-              .then(config => {commit('SET_CONFIG', config)})
-          },
-        },
-        mutations: {
-          SET_CONFIG (state, config) {
-            state.config = config
-          }
-        },
-
         store: {
           plugins: [VuexPer.plugin]
         }
     }
 );
-
-
