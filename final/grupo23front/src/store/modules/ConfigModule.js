@@ -1,6 +1,6 @@
 export default {
   state: {
-    config: []
+    config: {}
   },
   getters: {
     config:state => {
@@ -9,8 +9,10 @@ export default {
   },
   mutations: {
     setConfig: (state, config) => {
-      state.config = config;
-    },
+      for (var i = 0; i < config.length; i++) {
+         state.config[config[i].variable] = config[i].valor;
+      }
+    }
   },
   actions: {
     loadConfig({ commit }) {
@@ -18,8 +20,8 @@ export default {
         commit('setConfig', JSON.parse(response.data))//haciendo el parse me queda un array de objetos y se lo paso a la mutation setConfig
       })
     },
-    saveConfig({ commit }, config) {
-      console.log(config)// acá con axios hay que hacer el POSTRequest a la api
-    },
+    saveConfig({ state }, config) {
+      axios.post('http://localhost:8000/configuracion/new', state.config);
+    }
   }
 }

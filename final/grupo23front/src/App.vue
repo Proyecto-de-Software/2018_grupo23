@@ -26,7 +26,7 @@ export default {
     return {
     }
   },
-  mounted() { //esto se ejecuta cuando se carga este componente, y ejecuta la 'action' loadConfig del vueXStore
+  created() { 
       this.$store.dispatch('loadConfig')
   },
   components: {

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="box">
       <h4 class="title is-4">Configuración general del sistema</h4>
       <div class="columns">
@@ -107,28 +106,21 @@
       <button type="submit" class="button is-success" @click="saveConfig">Guardar cambios</button> <!--el @( es la que va ) es lo mismo que poner v-on-->
       <button type="button" class="button is-light">Cancelar</button><!--este botón debería llevarte de vuelta a la home, no sé como aún-->
     </div>
-
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   export default {
     name: 'Config',
-    data() {
-      return {
-        config: {} //este obj se crea dinamicamente con la hook property created y es el que se utiliza para hacer el two-way binding
-      }
-    },
     methods: {
-      saveConfig() { //esto le manda al vueXStore de config la config y el store debería ocuparse de enviárselo a la api
-        this.$store.dispatch('saveConfig', this.config);
+      saveConfig() {
+        this.$store.dispatch('saveConfig');
       }
     },
-    created() {
-      var storeConfig = this.$store.getters.config;
-      for (var i = 0; i < storeConfig.length; i++) {
-         this.config[storeConfig[i].variable] = storeConfig[i].valor;
-      }
+    computed: { ...mapGetters([
+                  'config'
+                ])
     }
   }
 </script>

@@ -22,7 +22,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 /**
  * @Route("/configuracion")
  */
-class ConfiguracionController extends AbstractController
+class ConfiguracionController extends FOSRestController
 {
 
     /** @var SerializerInterface */
@@ -43,9 +43,7 @@ class ConfiguracionController extends AbstractController
      */
     public function index(): JsonResponse
     {
-        $config = $this->getDoctrine()
-            ->getRepository(Configuracion::class)
-            ->findAll();
+        $config = $this->getDoctrine()->getRepository(Configuracion::class)->findAll();
         $response = $this->serializer->serialize($config, 'json');
         return new JsonResponse($response);
     }
@@ -55,22 +53,23 @@ class ConfiguracionController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $configuracion = new Configuracion();
-        $form = $this->createForm(Configuracion1Type::class, $configuracion);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($configuracion);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('configuracion_index');
-        }
-
-        return $this->render('configuracion/new.html.twig', [
-            'configuracion' => $configuracion,
-            'form' => $form->createView(),
-        ]);
+        $data = $request->getContent();
+        // $titulo = $request->request->get('titulo');
+        // $email = $request->request->get('email');
+        // $descripcion = $request->request->get('descripcion');
+        // $estado = $request->request->get('estado');
+        // $paginado = $request->request->get('paginado');
+        // $columna_uno = $request->request->get('columna_uno');
+        // $columna_dos = $request->request->get('columna_dos');
+        // $columna_tres = $request->request->get('columna_tres');
+        // $titulo_col_uno = $request->request->get('titulo_col_uno');
+        // $titulo_col_dos = $request->request->get('titulo_col_dos');
+        // $titulo_col_tres = $request->request->get('titulo_col_tres');
+        // $config = new Configuracion();
+        // $entityManager = $this->getDoctrine()->getManager();
+        // $entityManager->persist($configuracion);
+        // $entityManager->flush();
+        return new Response($data);
     }
 
     /**

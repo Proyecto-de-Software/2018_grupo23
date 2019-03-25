@@ -2,8 +2,10 @@
   <div>
     <footer class="footer">
       <div class="content has-text-centered">
-          <p class="level-item"><strong></strong></p>
-          <p class="level-item">Contacto: </p>
+          <p class="level-item"><strong>{{ config.titulo }}</strong></p>
+          <p class="level-item">{{ config.descripcion }}</p>
+          <p class="level-item">Contacto: {{ config.email }}</p>
+          <p class="level-item">v 2.0</p>
       </div>
     </footer>
   </div>
@@ -13,9 +15,9 @@
   import {  mapGetters } from 'vuex'
   export default {
     name: 'Footer',
-    // computed: mapGetters([
-    //             'title'
-    //           ])
+    computed: mapGetters([
+                'config'
+              ])
   }
 </script>
 
