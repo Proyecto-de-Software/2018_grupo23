@@ -103,7 +103,7 @@
       </div>
     </div>
     <div class="field is-grouped is-grouped-centered">
-      <button type="submit" class="button is-success" @click="saveConfig">Guardar cambios</button> <!--el @( es la que va ) es lo mismo que poner v-on-->
+      <button type="submit" class="button is-success" @click="submit">Guardar cambios</button> <!--el @( es la que va ) es lo mismo que poner v-on-->
       <button type="button" class="button is-light">Cancelar</button><!--este botón debería llevarte de vuelta a la home, no sé como aún-->
     </div>
   </div>
@@ -114,7 +114,7 @@
   export default {
     name: 'Config',
     methods: {
-      saveConfig() {
+      submit() {
         this.$store.dispatch('saveConfig');
       }
     },

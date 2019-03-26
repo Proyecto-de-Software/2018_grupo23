@@ -54,22 +54,29 @@ class ConfiguracionController extends FOSRestController
     public function new(Request $request): Response
     {
         $data = $request->getContent();
-        // $titulo = $request->request->get('titulo');
-        // $email = $request->request->get('email');
-        // $descripcion = $request->request->get('descripcion');
-        // $estado = $request->request->get('estado');
-        // $paginado = $request->request->get('paginado');
-        // $columna_uno = $request->request->get('columna_uno');
-        // $columna_dos = $request->request->get('columna_dos');
-        // $columna_tres = $request->request->get('columna_tres');
-        // $titulo_col_uno = $request->request->get('titulo_col_uno');
-        // $titulo_col_dos = $request->request->get('titulo_col_dos');
-        // $titulo_col_tres = $request->request->get('titulo_col_tres');
-        // $config = new Configuracion();
-        // $entityManager = $this->getDoctrine()->getManager();
-        // $entityManager->persist($configuracion);
-        // $entityManager->flush();
-        return new Response($data);
+        $configArray = json_decode($data, true);
+        $conn = $this->getDoctrine()->getManager()->getConnection();
+        $sql = "
+                UPDATE configuracion
+                   SET valor = CASE variable
+                                 WHEN 'titulo' THEN :titulo
+                                 WHEN 'email' THEN :email
+                                 WHEN 'descripcion' THEN :descripcion
+                                 WHEN 'paginado' THEN :paginado
+                                 WHEN 'estado' THEN :estado
+                                 WHEN 'columna_uno' THEN :columna_uno
+                                 WHEN 'columna_dos' THEN :columna_dos
+                                 WHEN 'columna_tres' THEN :columna_tres
+                                 WHEN 'titulo_col_uno' THEN :titulo_col_uno
+                                 WHEN 'titulo_col_dos' THEN :titulo_col_dos
+                                 WHEN 'titulo_col_tres' THEN :titulo_col_tres
+                               END";
+        $query = $conn->prepare($sql);
+        $query->execute( ['titulo' => $configArray['titulo'], 'email' => $configArray['email'], 'descripcion' => $configArray['descripcion'],
+                          'paginado' => $configArray['paginado'], 'estado' => $configArray['estado'], 'columna_uno' => $configArray['columna_uno'],
+                          'columna_dos' => $configArray['columna_dos'], 'columna_tres' => $configArray['columna_tres'], 'titulo_col_uno' => $configArray['titulo_col_uno'],
+                          'titulo_col_dos' => $configArray['titulo_col_dos'], 'titulo_col_tres' => $configArray['titulo_col_tres'] ]);
+        return new Response("Qué bueno, pude ejecutar la consulta, la concha bien de su madre!");
     }
 
     /**
@@ -83,7 +90,7 @@ class ConfiguracionController extends FOSRestController
     }
 
     /**
-     * @Route("/{id}/edit", name="configuracion_edit", methods={"GET","POST"})
+     * @Route("/{id?}/edit", name="configuracion_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Configuracion $configuracion): Response
     {
