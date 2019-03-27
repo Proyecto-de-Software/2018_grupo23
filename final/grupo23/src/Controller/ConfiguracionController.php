@@ -55,28 +55,14 @@ class ConfiguracionController extends FOSRestController
     {
         $data = $request->getContent();
         $configArray = json_decode($data, true);
-        $conn = $this->getDoctrine()->getManager()->getConnection();
-        $sql = "
-                UPDATE configuracion
-                   SET valor = CASE variable
-                                 WHEN 'titulo' THEN :titulo
-                                 WHEN 'email' THEN :email
-                                 WHEN 'descripcion' THEN :descripcion
-                                 WHEN 'paginado' THEN :paginado
-                                 WHEN 'estado' THEN :estado
-                                 WHEN 'columna_uno' THEN :columna_uno
-                                 WHEN 'columna_dos' THEN :columna_dos
-                                 WHEN 'columna_tres' THEN :columna_tres
-                                 WHEN 'titulo_col_uno' THEN :titulo_col_uno
-                                 WHEN 'titulo_col_dos' THEN :titulo_col_dos
-                                 WHEN 'titulo_col_tres' THEN :titulo_col_tres
-                               END";
-        $query = $conn->prepare($sql);
-        $query->execute( ['titulo' => $configArray['titulo'], 'email' => $configArray['email'], 'descripcion' => $configArray['descripcion'],
-                          'paginado' => $configArray['paginado'], 'estado' => $configArray['estado'], 'columna_uno' => $configArray['columna_uno'],
-                          'columna_dos' => $configArray['columna_dos'], 'columna_tres' => $configArray['columna_tres'], 'titulo_col_uno' => $configArray['titulo_col_uno'],
-                          'titulo_col_dos' => $configArray['titulo_col_dos'], 'titulo_col_tres' => $configArray['titulo_col_tres'] ]);
-        return new Response("Qué bueno, pude ejecutar la consulta, la concha bien de su madre!");
+        $em = $this->getDoctrine()->getManager();
+        foreach ($configArray as $key => $value) {
+          $row = $em->getRepository(Configuracion::class)->findOneBy(array('variable' => $key));
+          $row->setValor($value);
+          $em->persist($row);
+        }
+        $em->flush();
+        return new Response('exito');
     }
 
     /**

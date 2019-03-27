@@ -26,7 +26,7 @@ export default {
     return {
     }
   },
-  created() { 
+  created() {
       this.$store.dispatch('loadConfig')
   },
   components: {

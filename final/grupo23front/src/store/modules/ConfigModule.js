@@ -24,7 +24,7 @@ export default {
     saveConfig({ state }, config) {
       var configJSON = JSON.stringify(state.config);
       axios.post('http://localhost:8000/configuracion/new', configJSON).then((response) => {
-        alert(response.data)
+        console.log(response.data)
       })
     }
   }
