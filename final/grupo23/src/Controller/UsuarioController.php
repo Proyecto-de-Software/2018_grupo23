@@ -39,14 +39,20 @@ class UsuarioController extends FOSRestController
     {
         $this->serializer = $serializer;
     }
+
     /**
      * @Route("/", name="usuario_index", methods={"GET"})
      */
-    public function index(UsuarioRepository $usuarioRepository): Response
+    public function index(UsuarioRepository $usuarioRepository): JsonResponse
     {
-        return $this->render('usuario/index.html.twig', [
-            'usuarios' => $usuarioRepository->findAll(),
-        ]);
+      $users = $this->getDoctrine()->getRepository(Usuario::class)->findAll();
+      $data = $this->serializer->serialize($users, 'json',[
+              'circular_reference_handler' => function ($object) { //Meneja la busqueda ciclica por la bd
+                  return $object->getId();
+              },
+              'ignored_attributes' => array('usuario','rol') // Evita que se loopeen los datos entre las entidades
+          ]);
+      return new JsonResponse($data);
     }
 
     /**
@@ -84,12 +90,12 @@ class UsuarioController extends FOSRestController
         //]);
         //$entityManager = $this->getDoctrine()->getManager();
         //$usuario = $entityManager->getRepository("App\Entity\Usuario")->findBy(array("id"=>1));
-        
+
         //$normalizer = new ObjectNormalizer();
         //$normalizer->setIgnoredAttributes(array('roles','usuario','permiso'));
         //$encoder = new JsonEncoder();
         //$serializer = new Serializer(array($normalizer),array($encoder));
-        
+
         $data = $this->serializer->serialize($usuario, 'json',[
                 'circular_reference_handler' => function ($object) { //Meneja la busqueda ciclica por la bd
                     return $object->getId();
@@ -98,7 +104,7 @@ class UsuarioController extends FOSRestController
             ]);
         return new JsonResponse($data);
     }
-    
+
 
     /**
      * @Route("/{id}/edit", name="usuario_edit", methods={"GET","POST"})

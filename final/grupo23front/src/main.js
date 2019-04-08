@@ -24,12 +24,14 @@ import Home from './components/Home.vue';
 import Login from './components/Login.vue';
 import Config from './components/Config.vue';
 import PatientIndex from './components/Patients/PatientIndex.vue';
+import UserIndex from './components/Users/UserIndex.vue';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/login', component: Login},
   { path: '/paciente', component: PatientIndex},
   { path: '/config', component: Config},
+  { path: '/usuario', component: UserIndex},
   // { path: '/lugar1', component: MainComponent},
   // { path: '/lugar2', component: TestSubmit},
   { path: '*', redirect: '/' }
