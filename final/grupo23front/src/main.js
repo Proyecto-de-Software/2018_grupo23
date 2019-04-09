@@ -66,7 +66,7 @@ const methods = [
   (function() {
     var token = localStorage.getItem('token');
     if (token) {
-        axios.defaults.headers.common['Authorization'] = token;
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     } else {
         axios.defaults.headers.common['Authorization'] = null;
         /*if setting null does not remove `Authorization` header then try
