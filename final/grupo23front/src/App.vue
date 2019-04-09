@@ -26,9 +26,7 @@ export default {
     return {
     }
   },
-  created() {
-      this.$store.dispatch('loadConfig')
-  },
+
   components: {
     AppNavbar: Navbar, //les puse nombre precedido por App para que cuando uses el tag no se confunda con alguno de HTML
     AppFooter: Footer //por este de Footer sobre todo...

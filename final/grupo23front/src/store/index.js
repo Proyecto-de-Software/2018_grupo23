@@ -18,7 +18,7 @@ const VuexPer = new VuexPersist({
 //Calculo que es para que no tengas que estar pasando paràmetros entre componentes todo el tiempo.
 //Se me ocurrió usarlo para la config de la app. Se usa Vuex en combinación con axios.
 
-export default new Vuex.Store(
+ const store = new Vuex.Store(
     {
         modules: {
           UserModule,
@@ -29,3 +29,5 @@ export default new Vuex.Store(
         }
     }
 );
+
+export default store;

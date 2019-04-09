@@ -7,7 +7,7 @@
         <div class="column">
           <article>
             <div class="content box">
-              <h2 class="h2">{{ config.titulo_col_uno}}</h2>
+              <h2 class="h2" >{{titulo}}</h2>
               {{ config.columna_uno }}
             </div>
           </article>
@@ -41,7 +41,17 @@ export default {
   name: 'Home',
   computed: mapGetters([
               'config'
-            ])
+            ]),
+
+    data: function () { //de esta forma cada uso de la variable es independiente, si no se pone funcion es compartido entre todoos
+    return {
+      titulo: this.$store.getters.config['titulo_col_uno'],
+    }
+  },
+
+
 }
+
+
 
 </script>

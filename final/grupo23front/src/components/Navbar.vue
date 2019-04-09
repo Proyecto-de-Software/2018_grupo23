@@ -57,13 +57,13 @@
 </template>
 
 <script>
+
 import { mapGetters, mapActions } from 'vuex';
   export default {
        computed: {
     ...mapGetters([
       'jwt',
-      'jwtSubject',
-      'jwtIssuer'
+      'config'
     ])
   },
     data() {
@@ -72,8 +72,22 @@ import { mapGetters, mapActions } from 'vuex';
       }
     },
     methods: {
-    }
+      ...mapActions([
+      `loadConfig`,
+      'setConfig'
+    ]),
+
+    created: [
+      /*(function(){
+        this.$store.dispatch('loadConfiguracion');
+      })()*/
+    ]
+          
+    },
+
+
   }
+  
 </script>
 
 <style>
