@@ -24,7 +24,7 @@
 
                         <a class="navbar-link">Administración</a>
                         <div class="navbar-dropdown">
-                            <router-link class="navbar-item" to="usuarios">Usuarios</router-link>
+                            <router-link class="navbar-item" to="/usuario">Usuarios</router-link>
                             <router-link class="navbar-item" to="reportes">Reportes</router-link>
                             <hr class="navbar-divider">
                             <router-link class="navbar-item" to="roles_y_permisos">Roles y permisos</router-link>
@@ -57,39 +57,21 @@
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from 'vuex';
-  export default {
-       computed: {
+export default {
+  data() {
+    return {
+
+    }
+  },
+  computed: {
     ...mapGetters([
       'jwt',
       'config'
     ])
   },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-      ...mapActions([
-      `loadConfig`,
-      'setConfig'
-    ]),
-
-    created: [
-      /*(function(){
-        this.$store.dispatch('loadConfiguracion');
-      })()*/
-    ]
-          
-    },
-
-
+  created() {
+    this.$store.dispatch('loadConfig');
   }
-  
+}
 </script>
-
-<style>
-
-</style>

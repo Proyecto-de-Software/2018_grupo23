@@ -7,24 +7,24 @@
         <div class="column">
           <article>
             <div class="content box">
-              <h2 class="h2" >{{titulo}}</h2>
-              {{ config.columna_uno }}
+              <h2 class="h2" >{{ colOneTitle }}</h2>
+              {{ colOneBody }}
             </div>
           </article>
         </div>
           <div class="column">
             <article>
               <div class="content box">
-                <h2 class="h2">{{ config.titulo_col_dos}}</h2>
-                {{ config.columna_dos }}
+                <h2 class="h2">{{ colTwoTitle }}</h2>
+                {{ colTwoBody }}
               </div>
             </article>
           </div>
           <div class="column">
             <article>
               <div class="content box">
-                <h2 class="h2">{{ config.titulo_col_tres}}</h2>
-                {{ config.columna_tres }}
+                <h2 class="h2">{{ colThreeTitle }}</h2>
+                {{ colThreeBody }}
               </div>
             </article>
           </div>
@@ -42,16 +42,15 @@ export default {
   computed: mapGetters([
               'config'
             ]),
-
-    data: function () { //de esta forma cada uso de la variable es independiente, si no se pone funcion es compartido entre todoos
-    return {
-      titulo: this.$store.getters.config['titulo_col_uno'],
+            data: function () { //de esta forma cada uso de la variable es independiente, si no se pone funcion es compartido entre todoos
+              return {
+                colOneTitle: this.$store.getters.config['titulo_col_uno'],
+                colTwoTitle: this.$store.getters.config['titulo_col_dos'],
+                colThreeTitle: this.$store.getters.config['titulo_col_tres'],
+                colOneBody: this.$store.getters.config['columna_uno'],
+                colTwoBody: this.$store.getters.config['columna_dos'],
+                colThreeBody: this.$store.getters.config['columna_tres'],
+              }
+            }
     }
-  },
-
-
-}
-
-
-
 </script>
