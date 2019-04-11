@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue';
 import VueSweetalert2 from 'vue-sweetalert2';
+import VueGoodTable from 'vue-good-table';
 import store from './store'
 
 // require ('./assets/materialize/css/materialize.css')
@@ -10,9 +11,11 @@ require ('../node_modules/bulma/css/bulma.css')
 
 import axios from 'axios'
 import swal from 'sweetalert2'
+import 'vue-good-table/dist/vue-good-table.css'
 
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
+Vue.use(VueGoodTable);
 
 
 Vue.config.productionTip = false

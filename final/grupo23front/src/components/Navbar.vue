@@ -24,7 +24,7 @@
 
                         <a class="navbar-link">Administración</a>
                         <div class="navbar-dropdown">
-                            <router-link class="navbar-item" to="usuarios">Usuarios</router-link>
+                            <router-link class="navbar-item" to="/usuario">Usuarios</router-link>
                             <router-link class="navbar-item" to="reportes">Reportes</router-link>
                             <hr class="navbar-divider">
                             <router-link class="navbar-item" to="roles_y_permisos">Roles y permisos</router-link>
@@ -57,28 +57,19 @@
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from 'vuex';
+export default {
+  data() {
+    return {
 
-  export default {
-       computed: {
+    }
+  },
+  computed: {
     ...mapGetters([
       'jwt'
     ])
   },
-  /*beforMounted : [
-    ( function() {
-      axios.get('http://localhost:8000/configuracion/').then((response) => {
-        var datos = JSON.parse(response.data);
-       for (var i = 0; i < datos.length; i++) { //queda algo del tipo { titulo: "Hospital...", email: email@gmail.com...}
-       this.$root.global.configuracion[datos[i].variable] = datos[i].valor;
-    } }
-   )})()]*/
   }
   
   
 </script>
-
-<style>
-
-</style>

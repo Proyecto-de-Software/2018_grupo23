@@ -15,7 +15,7 @@
           <div class="column">
             <article>
               <div class="content box">
-                <h2 class="h2">{{ config.titulo_col_dos}}</h2>
+                <h2 class="h2">{{ config.titulo_col_dos }}</h2>
                 {{ config.columna_dos }}
               </div>
             </article>
@@ -23,7 +23,7 @@
           <div class="column">
             <article>
               <div class="content box">
-                <h2 class="h2">{{ config.titulo_col_tres}}</h2>
+                <h2 class="h2">{{ config.titulo_col_tres }}</h2>
                 {{ config.columna_tres }}
               </div>
             </article>

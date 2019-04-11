@@ -23,7 +23,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
- * @Route("/api/usuario")
+ * @Route("/usuario")
  */
 class UsuarioController extends FOSRestController
 {
