@@ -59,34 +59,23 @@
 <script>
 
 import { mapGetters, mapActions } from 'vuex';
+
   export default {
        computed: {
     ...mapGetters([
-      'jwt',
-      'config'
+      'jwt'
     ])
   },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-      ...mapActions([
-      `loadConfig`,
-      'setConfig'
-    ]),
-
-    created: [
-      /*(function(){
-        this.$store.dispatch('loadConfiguracion');
-      })()*/
-    ]
-          
-    },
-
-
+  /*beforMounted : [
+    ( function() {
+      axios.get('http://localhost:8000/configuracion/').then((response) => {
+        var datos = JSON.parse(response.data);
+       for (var i = 0; i < datos.length; i++) { //queda algo del tipo { titulo: "Hospital...", email: email@gmail.com...}
+       this.$root.global.configuracion[datos[i].variable] = datos[i].valor;
+    } }
+   )})()]*/
   }
+  
   
 </script>
 

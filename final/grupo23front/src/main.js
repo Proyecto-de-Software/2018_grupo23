@@ -14,6 +14,7 @@ import swal from 'sweetalert2'
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
 
+
 Vue.config.productionTip = false
 window.axios = axios
 
@@ -42,7 +43,27 @@ const router = new VueRouter({
   routes
 })
 
-
+const data = {
+  
+  info: '',
+  bloqueo: true
+  
+}
+ const computed = {
+  config : { get: function () {
+    var datos =JSON.parse(this.info);
+    var resp = {}
+    for (var i = 0; i < datos.length; i++) { //queda algo del tipo { titulo: "Hospital...", email: email@gmail.com...}
+       resp[datos[i].variable] = datos[i].valor;
+    }
+    return resp;
+  },
+  set: function(dato){
+      data.info = dato;
+  }
+  }
+}
+  
 const methods = [
   window.axios.interceptors.response.use(function (response) {  //metodo para redirigir a login cuando la sesion expira, siempre y cuando no este en el login
     return response;
@@ -69,16 +90,25 @@ const methods = [
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     } else {
         axios.defaults.headers.common['Authorization'] = null;
-        /*if setting null does not remove `Authorization` header then try
-          delete axios.defaults.headers.common['Authorization'];
-        */
+
     }
 })()
+
 ]
 
 new Vue({
   render: h => h(App),
   store,
   router,
-  methods
+  methods,
+  data,
+  computed,
+  mounted(){
+    this.bloqueo = true;
+    axios.get('http://localhost:8000/configuracion/').then((response) => {
+      this.info = response.data;
+      this.bloqueo = false;
+      })
+  }
+
 }).$mount('#app')

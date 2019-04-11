@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!cargando">
     <section class="section is-hidden-touch">
     </section>
     <section class="section">
@@ -7,7 +7,7 @@
         <div class="column">
           <article>
             <div class="content box">
-              <h2 class="h2" >{{titulo}}</h2>
+              <h2 class="h2" >{{config.titulo_col_uno}}</h2>
               {{ config.columna_uno }}
             </div>
           </article>
@@ -36,22 +36,19 @@
 </template>
 
 <script>
-import {  mapGetters } from 'vuex'
+import axios from 'axios';
 export default {
   name: 'Home',
-  computed: mapGetters([
-              'config'
-            ]),
 
-    data: function () { //de esta forma cada uso de la variable es independiente, si no se pone funcion es compartido entre todoos
-    return {
-      titulo: this.$store.getters.config['titulo_col_uno'],
-    }
-  },
-
+    computed : {
+          cargando: function(){
+      return this.$root.bloqueo
+          },
+          config: function(){
+            return this.$root.config
+          }},
 
 }
-
 
 
 </script>

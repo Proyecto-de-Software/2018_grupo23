@@ -4,7 +4,7 @@ import VuexPersist from 'vuex-persist'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import UserModule from './modules/UserModule'
-import ConfigModule from './modules/ConfigModule'
+//import ConfigModule from './modules/ConfigModule'
 
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
@@ -21,8 +21,7 @@ const VuexPer = new VuexPersist({
  const store = new Vuex.Store(
     {
         modules: {
-          UserModule,
-          ConfigModule
+          UserModule
         },
         store: {
           plugins: [VuexPer.plugin]

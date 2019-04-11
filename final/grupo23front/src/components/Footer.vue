@@ -1,7 +1,7 @@
 <template>
   <div>
     <footer class="footer">
-      <div class="content has-text-centered">
+      <div class="content has-text-centered" v-if="!cargando">
           <p class="level-item"><strong>{{ config.titulo }}</strong></p>
           <p class="level-item">{{ config.descripcion }}</p>
           <p class="level-item">Contacto: {{ config.email }}</p>
@@ -12,12 +12,15 @@
 </template>
 
 <script>
-  import {  mapGetters } from 'vuex'
   export default {
     name: 'Footer',
-    computed: mapGetters([
-                'config'
-              ])
+        computed : {
+          cargando: function(){
+      return this.$root.bloqueo
+          },
+          config: function(){
+            return this.$root.config
+          }},
   }
 </script>
 
