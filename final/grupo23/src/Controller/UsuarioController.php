@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Usuario;
+use App\Entity\Role;
 use App\Form\UsuarioType;
 use App\Repository\UsuarioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +44,7 @@ class UsuarioController extends FOSRestController
     /**
      * @Route("/", name="usuario_index", methods={"GET"})
      */
-    public function index(UsuarioRepository $usuarioRepository): JsonResponse
+    public function index(): JsonResponse
     {
       $users = $this->getDoctrine()->getRepository(Usuario::class)->findAll();
       $data = $this->serializer->serialize($users, 'json',[
@@ -60,22 +61,25 @@ class UsuarioController extends FOSRestController
      */
     public function new(Request $request): Response
     {
-        $usuario = new Usuario();
-        $form = $this->createForm(UsuarioType::class, $usuario);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($usuario);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('usuario_index');
-        }
-
-        return $this->render('usuario/new.html.twig', [
-            'usuario' => $usuario,
-            'form' => $form->createView(),
-        ]);
+      $dataJson = $request->getContent();
+      $data = json_decode($dataJson, true);
+      $entityManager = $this->getDoctrine()->getManager();
+      $user = new Usuario();
+      $user->setFirstName($data['firstName']);
+      $user->setLastName($data['lastName']);
+      $user->setUsername($data['username']);
+      $user->setEmail($data['email']);
+      $user->setPassword($data['password']);
+      // $user_roles = array();
+      // foreach ($data['roles'] as $roleString) {
+      //   $role = new Role();
+      //   $role->setNombre($roleString);
+      //   array_push($user_roles, $role);
+      // };
+      // $user->setRoles($user_roles);
+      $entityManager->persist($user);
+      $entityManager->flush();
+      return new Response(var_dump($data));
     }
 
     /**

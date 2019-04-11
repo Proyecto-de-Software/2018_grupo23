@@ -16,7 +16,7 @@
             :search-options="{ enabled: true}"
             styleClass="vgt-table bordered">
             <div slot="table-actions">
-                <modal v-show="showModal" @close="showModal = false"></modal>
+                <modal v-show="showModal" @close="showModal = false" @userAdded="loadUsers(); showModal = false;"></modal>
                 <button type="button"
                     class="button is-info"
                     @click="showModal = true">Agregar Usuario</button>
@@ -79,17 +79,20 @@ export default {
     };
   },
   created() {
-    axios
-      .get('http://localhost:8000/usuario')
-      .then(response => {
-        this.users = JSON.parse(response.data);
-        this.isLoading = false
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    this.loadUsers();
   },
   methods: {
+    loadUsers() {
+      axios
+        .get('http://localhost:8000/usuario/')
+        .then(response => {
+          this.users = JSON.parse(response.data);
+          this.isLoading = false
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     roles(user) {
       return user.roles.map(rol => rol.nombre).join(', ');
     },

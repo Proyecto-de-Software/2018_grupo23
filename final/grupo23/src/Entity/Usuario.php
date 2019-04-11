@@ -38,7 +38,7 @@ class Usuario implements UserInterface
      *     @ORM\JoinColumn(name="rol_id", referencedColumnName="id")
      *   }
      * )
-     * 
+     *
      */
     private $roles;
 
@@ -138,6 +138,13 @@ class Usuario implements UserInterface
     public function getUsername(): string
     {
         return (string) $this->email;
+    }
+
+    public function setUsername(string $username): self
+    {
+      $this->username = $username;
+
+      return $this;
     }
 
     /**
