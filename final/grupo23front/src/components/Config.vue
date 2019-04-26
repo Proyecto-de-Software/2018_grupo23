@@ -103,24 +103,36 @@
       </div>
     </div>
     <div class="field is-grouped is-grouped-centered">
-      <button type="submit" class="button is-success" @click="submit">Guardar cambios</button> <!--el @( es la que va ) es lo mismo que poner v-on-->
-      <button type="button" class="button is-light">Cancelar</button><!--este botón debería llevarte de vuelta a la home, no sé como aún-->
+      <button type="submit" class="button is-success" @click="submit">Guardar cambios</button>
+      <button type="button" class="button is-light" @click="cancel">Cancelar</button>
     </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   export default {
     name: 'Config',
-    methods: {
-      submit() {
-        this.$store.dispatch('saveConfig');
+    computed : {
+      cargando: function(){
+        return this.$root.bloqueo
+      },
+      config: function(){
+        return this.$root.config
       }
     },
-    computed: { ...mapGetters([
-                  'config'
-                ])
+    methods: {
+      submit() {
+        var configJSON = JSON.stringify(this.$root.config);
+        axios
+         .post('http://localhost:8000/configuracion/new', configJSON)
+         .then((response) => {
+                  console.log(response.data);
+                  this.$router.push('/');
+         })
+      },
+      cancel() {
+        this.$router.push('/')
+      }
     }
   }
 </script>

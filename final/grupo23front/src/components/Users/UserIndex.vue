@@ -1,33 +1,36 @@
 <template>
   <div class="box">
     <section class="section">
-      <div class="container">
+      <div class="container" ref="container">
           <div v-if="isLoading">
             <h1 class="title">Cargando datos...</h1>
           </div>
-          <div v-else class="container">
+          <div v-else>
             <vue-good-table
             :columns="columns"
             :rows="users"
             :lineNumbers="true"
-            :defaultSortBy="{field: 'age', type: 'asec'}"
+            :defaultSortBy="{field: 'lastName', type: 'asec'}"
             :globalSearch="true"
             :paginate="true"
             :search-options="{ enabled: true}"
             styleClass="vgt-table bordered">
             <div slot="table-actions">
-                <modal v-show="showModal" @close="showModal = false" @userAdded="loadUsers(); showModal = false;"></modal>
-                <button type="button"
-                    class="button is-info"
-                    @click="showModal = true">Agregar Usuario</button>
+              <button type="button" class="button is-info" @click="showAddUserModal(null, 'Agregar Usuario')">Agregar Usuario</button>
             </div>
             <template slot="table-row" slot-scope="props">
               <span v-if="props.column.field == 'acciones'">
-                <button class="button_view button is-info" title="Ver">Ver</button>
-                <button class="button_edit button is-info" title="Editar">Editar</button>
-                <!-- <button class="button_block button is-danger" title="Bloquear">Bloquear</i></button>
-                <button class="button_unblock button is-info" title="Desbloquear"></i></button> -->
-                <button class="button_delete button is-danger" title="Eliminar">Eliminar</i></button>
+
+                <button type="button" class="button is-info" title="Editar" @click="showAddUserModal(props.row, 'Editar Usuario')">Editar</button>
+                <button type="button" class="button is-info" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
+
+                <span v-if="props.row.activo == 1">
+                  <button class="button_block button is-danger" title="Bloquear">Bloquear</button>
+                </span>
+                <span v-else>
+                  <button class="button_unblock button is-info" title="Desbloquear">Desbloquear</button>
+                </span>
+                <button class="button_delete button is-danger" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
               </span>
             </template>
             </vue-good-table>
@@ -39,14 +42,18 @@
 
 <script>
 import axios from 'axios';
-import Modal from './Modal.vue';
+import Vue from 'vue';
+import AddUserModal from './AddUserModal.vue';
+import ViewUserModal from './ViewUserModal.vue';
+import swal from 'sweetalert2';
 export default {
   name: 'UserIndex',
-  data(){
+  components: { AddUserModal, ViewUserModal },
+  data() {
     return {
       users: null,
       isLoading: true,
-      showModal: false,
+      appRoles: [],
       columns: [
         {
           label: 'Apellido',
@@ -56,7 +63,6 @@ export default {
         {
           label: 'Nombre',
           field: 'firstName',
-          html: false,
           filterable: true,
         },
         {
@@ -65,24 +71,25 @@ export default {
         },
         {
           label: 'Roles',
-          field: this.roles
+          field: this.userRoles
         },
         {
           label: 'Estado',
-          field: this.active
+          field: this.userIsActive
         },
         {
           label: 'Acciones',
           field: 'acciones',
-        }
+        },
       ],
     };
   },
   created() {
     this.loadUsers();
+    this.loadRoles()
   },
   methods: {
-    loadUsers() {
+    loadUsers: function() {
       axios
         .get('http://localhost:8000/usuario/')
         .then(response => {
@@ -93,13 +100,64 @@ export default {
           console.log(error)
         })
     },
-    roles(user) {
+    loadRoles() {
+      axios
+        .get('http://localhost:8000/role/')
+        .then(response => {
+          this.appRoles = JSON.parse(response.data);
+          this.isLoading = false
+        })
+        .catch(error => {
+          this.error = error
+        })
+    },
+    deleteUser(userId) {
+      swal.fire({
+        title: 'Estás seguro?',
+        text: "No podrá revertirlo!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar'
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete('http://localhost:8000/usuario/' + userId)
+            .then(response => {
+              swal.fire(
+                response.data['msg'],
+              )
+              this.loadUsers()
+            })
+            .catch(error => {
+              console.log(error)
+          });
+        }
+      })
+    },
+    showAddUserModal(userData, modalTitle) {
+      var ComponentClass = Vue.extend(AddUserModal);
+      var instance = new ComponentClass({
+        propsData: { user: userData, roles: this.appRoles, loadUsers: this.loadUsers, title: modalTitle}
+      })
+      instance.$mount()
+      this.$refs.container.appendChild(instance.$el)
+    },
+    showViewUserModal(row) {
+      var ComponentClass = Vue.extend(ViewUserModal);
+      var instance = new ComponentClass({
+        propsData: { user: row }
+      })
+      instance.$mount()
+      this.$refs.container.appendChild(instance.$el)
+    },
+    userRoles(user) {
       return user.roles.map(rol => rol.nombre).join(', ');
     },
-    active(user) {
-      return user.activo == 1 ? 'Si' : 'No'
+    userIsActive(user) {
+      return user.activo == 1 ? 'Activo' : 'Inactivo'
     },
-  },
-  components: { Modal }
+  }
 };
 </script>

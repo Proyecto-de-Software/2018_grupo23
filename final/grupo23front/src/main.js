@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import App from './App.vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
+import VeeValidate from 'vee-validate';
 import store from './store'
 
 // require ('./assets/materialize/css/materialize.css')
@@ -16,7 +17,7 @@ import 'vue-good-table/dist/vue-good-table.css'
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
 Vue.use(VueGoodTable);
-
+Vue.use(VeeValidate);
 
 Vue.config.productionTip = false
 window.axios = axios
@@ -47,26 +48,26 @@ const router = new VueRouter({
 })
 
 const data = {
-  
   info: '',
   bloqueo: true
-  
 }
- const computed = {
-  config : { get: function () {
-    var datos =JSON.parse(this.info);
-    var resp = {}
-    for (var i = 0; i < datos.length; i++) { //queda algo del tipo { titulo: "Hospital...", email: email@gmail.com...}
-       resp[datos[i].variable] = datos[i].valor;
+
+const computed = {
+  config : {
+    get: function () {
+      var datos = JSON.parse(this.info);
+      var resp = {};
+      for (var i = 0; i < datos.length; i++) { //queda algo del tipo { titulo: "Hospital...", email: email@gmail.com...}
+         resp[datos[i].variable] = datos[i].valor;
+      }
+      return resp;
+    },
+    set: function(dato){
+        data.info = dato;
     }
-    return resp;
-  },
-  set: function(dato){
-      data.info = dato;
-  }
   }
 }
-  
+
 const methods = [
   window.axios.interceptors.response.use(function (response) {  //metodo para redirigir a login cuando la sesion expira, siempre y cuando no este en el login
     return response;

@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <h3 class="title">Agregar Usuario</h3>
+          <h3 class="title">{{ title }}</h3>
         </header>
           <section class="modal-card-body">
             <div v-if="isLoading">
@@ -14,25 +14,28 @@
                 <div class="field">
                   <label class="label">Apellido*</label>
                   <div class="control">
-                    <input id="apellido" type="text" class="input" v-model="userForm.lastName" required>
+                    <input id="apellido" type="text" class="input" v-model="userForm.lastName">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Nombre*</label>
                   <div class="control">
-                    <input id="nombre" type="text" class="input" v-model="userForm.firstName" required>
+                    <input id="nombre" type="text" class="input" v-model="userForm.firstName">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Email*</label>
                   <div class="control">
-                    <input type="email" class="input" placeholder="ejemplo@ejemplo.com"  v-model="userForm.email" required>
+                    <input type="text" class="input" name="email" v-model="userForm.email" placeholder="ejemplo@gmail.com">
+                    <!-- <ul>
+                      <li v-for="error in errors.collect('email')">{{ error }}</li>
+                    </ul> -->
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Nombre de usuario*</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="userForm.username" required>
+                    <input type="text" class="input" v-model="userForm.username" :readonly="isReadOnly">
                   </div>
                   <p class="help">Debe tener entre 6 y 20 caracteres</p>
                 </div>
@@ -48,14 +51,14 @@
                 <div class="field">
                   <label class="label">Contraseña*</label>
                   <div class="control">
-                    <input id="password" type="password" class="input" v-model="userForm.password" required>
+                    <input id="password" type="password" class="input" v-model="userForm.password">
                   </div>
                   <p class="help">Debe tener entre 8 y 20 caracteres</p>
                 </div>
                 <div class="field">
                   <label class="label">Confirmar contraseña*</label>
                   <div class="control">
-                    <input id="re_password" type="password" class="input" v-model="userForm.re_password" required>
+                    <input id="re_password" type="password" class="input" v-model="userForm.re_password">
                   </div>
                 </div>
                 <p>* campos obligatorios</p>
@@ -64,9 +67,9 @@
           </section>
         <footer class="modal-card-foot">
           <button type="button" class="button is-success" @click="submit">Aceptar</button>
-          <button type="button" class="button is-text" @click="$emit('close')">Cancelar</button>
+          <button type="button" class="button is-text" @click="close">Cancelar</button>
         </footer>
-        <button class="modal-close" @click="$emit('close')"></button>
+        <button class="modal-close" @click="close"></button>
       </div>
     </div>
   </div>
@@ -74,12 +77,17 @@
 
 <script>
 export default {
-  name: 'Modal',
+  name: 'AddUserModal',
+  props: {
+    loadUsers: Function,
+    roles: Array,
+    user: Object,
+    title: String
+  },
   data() {
     return {
-      roles: null,
-      isLoading: true,
-      error: '',
+      isLoading: false,
+      isReadOnly: false,
       userForm: {
         lastName: '',
         firstName: '',
@@ -91,27 +99,30 @@ export default {
       }
     }
   },
+  created() {
+    if (this.user != null) { //estoy en edición
+      this.userForm.lastName = this.user.lastName;
+      this.userForm.firstName = this.user.firstName;
+      this.userForm.email = this.user.email;
+      this.userForm.username = this.user.username;
+      this.userForm.password = this.user.password;
+      this.userForm.re_password = this.user.password;
+      this.userForm.roles = this.user.roles;
+    }
+  },
   methods: {
-    loadRoles() {
-      axios
-        .get('http://localhost:8000/role/')
-        .then(response => {
-          this.roles = JSON.parse(response.data);
-          this.isLoading = false
-        })
-        .catch(error => {
-          this.error = error
-        })
+    close() {
+      this.$destroy();
+      this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
       axios
       .post('http://localhost:8000/usuario/new', this.userForm)
-      .then(response => this.$emit('userAdded')) //acá debería hacer un forceUpdate o de alguna manera que UserIndex vuelva a cargar la tabla
+      .then(response => { console.log(response.data);
+                          this.loadUsers();
+                          this.close() })
       .catch(error => console.log(error))
     }
-  },
-  created() { //carga los roles para el form desde la Api
-    this.loadRoles();
   }
 }
 </script>

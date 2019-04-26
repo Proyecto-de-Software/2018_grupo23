@@ -6,22 +6,22 @@ use App\Entity\Usuario;
 use App\Entity\Role;
 use App\Form\UsuarioType;
 use App\Repository\UsuarioRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
-
-use Symfony\Component\Serializer\SerializerInterface;
-
-
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route("/usuario")
@@ -65,21 +65,20 @@ class UsuarioController extends FOSRestController
       $data = json_decode($dataJson, true);
       $entityManager = $this->getDoctrine()->getManager();
       $user = new Usuario();
-      $user->setFirstName($data['firstName']);
-      $user->setLastName($data['lastName']);
-      $user->setUsername($data['username']);
-      $user->setEmail($data['email']);
-      $user->setPassword($data['password']);
+      $user->setFirstName(strval($data['firstName']));
+      $user->setLastName(strval($data['lastName']));
+      $user->setUsername(strval($data['username']));
+      $user->setEmail(strval($data['email']));
+      $user->setPassword(strval($data['password']));
       // $user_roles = array();
-      // foreach ($data['roles'] as $roleString) {
-      //   $role = new Role();
-      //   $role->setNombre($roleString);
+      // foreach ((array)$data['roles'] as $roleString) {
+      //   $role = $entityManager->getRepository(Role::Class)->findBy(array('nombre' => $roleString));
       //   array_push($user_roles, $role);
       // };
       // $user->setRoles($user_roles);
       $entityManager->persist($user);
       $entityManager->flush();
-      return new Response(var_dump($data));
+      return new Response('Usuario agregado');
     }
 
     /**
@@ -135,14 +134,17 @@ class UsuarioController extends FOSRestController
     /**
      * @Route("/{id}", name="usuario_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Usuario $usuario): Response
+    public function delete(Request $request, Usuario $usuario): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$usuario->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($usuario);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('usuario_index');
+      if ( true ) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($usuario);
+        $entityManager->flush();
+        return new JsonResponse(array("msg" => 'Usuario eliminado'));
+      }else {
+        return new JsonResponse(array("msg" => 'El usuario no pudo ser eliminado'));
+      }
     }
+
+
 }
