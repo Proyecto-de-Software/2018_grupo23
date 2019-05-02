@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert2';
 export default {
   name: 'AddUserModal',
   props: {
@@ -118,7 +119,11 @@ export default {
     submit() {
       axios
       .post('http://localhost:8000/usuario/new', this.userForm)
-      .then(response => { console.log(response.data);
+      .then(response => { swal.fire(
+                            'El usuario fue agregado',
+                            '',
+                            'success'
+                          );
                           this.loadUsers();
                           this.close() })
       .catch(error => console.log(error))

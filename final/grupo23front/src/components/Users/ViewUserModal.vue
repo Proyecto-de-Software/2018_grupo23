@@ -6,19 +6,30 @@
           <h3 class="title">Ver Usuario</h3>
         </header>
           <section class="modal-card-body">
-
-              <h4 class="title is-5">Nombre</h4>
-              <p class="subtitle is-6">{{ user.firstName + ' ' + user.lastName }}</p>
-
-              <h4 class="title is-5">Email</h4>
-              <p class="subtitle is-6">{{ user.email }}</p>
-
-              <h4 class="title is-5">Nombre de usuario</h4>
-              <p class="subtitle is-6">{{ user.username }}</p>
-
-              <h4 class="title is-5">Roles</h4>
-              <p class="subtitle is-6">{{ roles() }}</p>
-
+              <div class="text-box">
+                <h4 class="title is-5">Nombre</h4>
+                <p class="subtitle is-6">{{ user.firstName + ' ' + user.lastName }}</p>
+              </div>
+              <div class="text-box">
+                <h4 class="title is-5">Email</h4>
+                <p class="subtitle is-6">{{ user.email }}</p>
+              </div>
+              <div class="text-box">
+                <h4 class="title is-5">Nombre de usuario</h4>
+                <p class="subtitle is-6">{{ user.username }}</p>
+              </div>
+              <div class="text-box">
+                <h4 class="title is-5">Roles</h4>
+                <p class="subtitle is-6">{{ roles() }}</p>
+              </div>
+              <div class="text-box">
+                <h4 class="title is-5">Fecha de creación</h4>
+                <p class="subtitle is-6">{{ createdOrUpdatedAt(user.createdAt) }}</p>
+              </div>
+              <div class="">
+                <h4 class="title is-5">Fecha de última actualización</h4>
+                <p class="subtitle is-6">{{ createdOrUpdatedAt(user.updatedAt) }}</p>
+              </div>
           </section>
         <footer class="modal-card-foot">
           <button type="button" class="button is-success" @click="close">Cerrar</button>
@@ -33,7 +44,9 @@
 <script>
 export default {
   name: 'ViewUserModal',
-  props: [ 'user' ],
+  props: {
+    user: Object,
+  },
   methods: {
     close() {
       this.$destroy();
@@ -42,12 +55,17 @@ export default {
     roles() {
       return this.user.roles.map(rol => rol.nombre).join(', ');
     },
+    createdOrUpdatedAt(date) {
+      var localDate= new Date(date);
+      var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+      return (localDate.toLocaleDateString("es-ES", options) + "hs.")
+    }
   }
 }
 </script>
 
-<style>
-  div {
-
+<style scoped>
+  .text-box {
+    margin-bottom: 15px;
   }
 </style>

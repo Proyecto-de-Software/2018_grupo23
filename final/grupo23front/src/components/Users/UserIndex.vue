@@ -7,32 +7,42 @@
           </div>
           <div v-else>
             <vue-good-table
-            :columns="columns"
-            :rows="users"
-            :lineNumbers="true"
-            :defaultSortBy="{field: 'lastName', type: 'asec'}"
-            :globalSearch="true"
-            :paginate="true"
-            :search-options="{ enabled: true}"
-            styleClass="vgt-table bordered">
-            <div slot="table-actions">
-              <button type="button" class="button is-info" @click="showAddUserModal(null, 'Agregar Usuario')">Agregar Usuario</button>
-            </div>
-            <template slot="table-row" slot-scope="props">
-              <span v-if="props.column.field == 'acciones'">
-
-                <button type="button" class="button is-info" title="Editar" @click="showAddUserModal(props.row, 'Editar Usuario')">Editar</button>
-                <button type="button" class="button is-info" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
-
-                <span v-if="props.row.activo == 1">
-                  <button class="button_block button is-danger" title="Bloquear">Bloquear</button>
+              :columns="columns"
+              :rows="users"
+              :lineNumbers="true"
+              :defaultSortBy="{field: 'lastName', type: 'asec'}"
+              :globalSearch="false"
+              :pagination-options="{
+                 enabled: true,
+                 mode: 'records',
+                 perPage: rowsPerPage,
+                 perPageDropdown: [ rowsPerPage ],
+                 position: 'bottom',
+                 dropdownAllowAll: false,
+                 setCurrentPage: 1,
+                 nextLabel: 'siguiente',
+                 prevLabel: 'anterior',
+                 rowsPerPageLabel: 'Usuarios por tabla',
+                 ofLabel: 'de',
+               }"
+              :search-options="{ enabled: true, placeholder: 'Buscar' }"
+               styleClass="vgt-table bordered">
+              <div slot="table-actions">
+                <button type="button" class="button is-info" @click="showAddUserModal(null, 'Agregar Usuario')">Agregar Usuario</button>
+              </div>
+              <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'acciones'">
+                  <button type="button" class="button is-info" title="Editar" @click="showAddUserModal(props.row, 'Editar Usuario')">Editar</button>
+                  <button type="button" class="button is-info" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
+                  <span v-if="props.row.activo == 1">
+                    <button class="button_block button is-danger" title="Bloquear">Bloquear</button>
+                  </span>
+                  <span v-else>
+                    <button class="button_unblock button is-info" title="Desbloquear">Desbloquear</button>
+                  </span>
+                  <button class="button_delete button is-danger" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
                 </span>
-                <span v-else>
-                  <button class="button_unblock button is-info" title="Desbloquear">Desbloquear</button>
-                </span>
-                <button class="button_delete button is-danger" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
-              </span>
-            </template>
+              </template>
             </vue-good-table>
           </div>
       </div>
@@ -56,18 +66,13 @@ export default {
       appRoles: [],
       columns: [
         {
-          label: 'Apellido',
-          field: 'lastName',
-          filterable: true,
+          label: 'Nombre completo',
+          field: this.userCompleteName,
+          filterable: true
         },
         {
-          label: 'Nombre',
-          field: 'firstName',
-          filterable: true,
-        },
-        {
-          label: 'Creado',
-          field: 'createdAt',
+          label: 'Fecha de creación',
+          field: this.userIsCreatedAt
         },
         {
           label: 'Roles',
@@ -113,20 +118,23 @@ export default {
     },
     deleteUser(userId) {
       swal.fire({
-        title: 'Estás seguro?',
+        title: 'Está seguro?',
         text: "No podrá revertirlo!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, eliminar'
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.value) {
           axios
             .delete('http://localhost:8000/usuario/' + userId)
             .then(response => {
               swal.fire(
-                response.data['msg'],
+                'El usuario fue eliminado',
+                '',
+                'success'
               )
               this.loadUsers()
             })
@@ -152,12 +160,25 @@ export default {
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)
     },
+    userCompleteName(user) {
+      return user.lastName + ' ' + user.firstName
+    },
     userRoles(user) {
-      return user.roles.map(rol => rol.nombre).join(', ');
+      return user.roles.length > 0 ? user.roles.map(rol => rol.nombre).join(', ') :'Sin roles asignados';
     },
     userIsActive(user) {
       return user.activo == 1 ? 'Activo' : 'Inactivo'
     },
+    userIsCreatedAt(user) {
+      var created= new Date(user.createdAt);
+      var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+      return (created.toLocaleDateString("es-ES", options) + "hs.")
+    },
+  },
+  computed: {
+    rowsPerPage() {
+      return this.$root.config.paginado
+    }
   }
 };
 </script>
