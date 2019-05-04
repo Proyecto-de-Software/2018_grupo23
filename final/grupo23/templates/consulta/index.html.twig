@@ -1,43 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Consulta index{% endblock %}
+{% block title %}Hello ConsultaController!{% endblock %}
 
 {% block body %}
-    <h1>Consulta index</h1>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fecha</th>
-                <th>Articulacion_con_instituciones</th>
-                <th>Internacion</th>
-                <th>Diagnostico</th>
-                <th>Observaciones</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for consultum in consultas %}
-            <tr>
-                <td>{{ consultum.id }}</td>
-                <td>{{ consultum.fecha ? consultum.fecha|date('Y-m-d') : '' }}</td>
-                <td>{{ consultum.articulacionConInstituciones }}</td>
-                <td>{{ consultum.internacion ? 'Yes' : 'No' }}</td>
-                <td>{{ consultum.diagnostico }}</td>
-                <td>{{ consultum.observaciones }}</td>
-                <td>
-                    <a href="{{ path('consulta_show', {'id': consultum.id}) }}">show</a>
-                    <a href="{{ path('consulta_edit', {'id': consultum.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    <a href="{{ path('consulta_new') }}">Create new</a>
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'D:/Documents/proyecto_final/grupo23/final/grupo23/src/Controller/ConsultaController.php'|file_link(0) }}">src/Controller/ConsultaController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'D:/Documents/proyecto_final/grupo23/final/grupo23/templates/consulta/index.html.twig'|file_link(0) }}">templates/consulta/index.html.twig</a></code></li>
+    </ul>
+</div>
 {% endblock %}

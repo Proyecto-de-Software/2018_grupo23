@@ -30,6 +30,7 @@ import Login from './components/Login.vue';
 import Config from './components/Config.vue';
 import PatientIndex from './components/Patients/PatientIndex.vue';
 import UserIndex from './components/Users/UserIndex.vue';
+import ReportsIndex from './components/Reports/ReportsIndex.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -37,6 +38,7 @@ const routes = [
   { path: '/paciente', component: PatientIndex},
   { path: '/config', component: Config},
   { path: '/usuario', component: UserIndex},
+  { path: '/reportes', component: ReportsIndex },
   // { path: '/lugar1', component: MainComponent},
   // { path: '/lugar2', component: TestSubmit},
   { path: '*', redirect: '/' }

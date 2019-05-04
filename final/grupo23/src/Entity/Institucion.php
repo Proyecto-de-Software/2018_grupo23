@@ -49,12 +49,12 @@ class Institucion
      */
     private $regionSanitariaId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="coordenadas", type="string", length=50, nullable=false)
-     */
-    private $coordenadas;
+    // /**
+    //  * @var string
+    //  *
+    //  * @ORM\Column(name="coordenadas", type="string", length=50, nullable=false)
+    //  */
+    // private $coordenadas;
 
     /**
      * @var \TipoInstitucion
@@ -119,17 +119,17 @@ class Institucion
         return $this;
     }
 
-    public function getCoordenadas(): ?string
-    {
-        return $this->coordenadas;
-    }
-
-    public function setCoordenadas(string $coordenadas): self
-    {
-        $this->coordenadas = $coordenadas;
-
-        return $this;
-    }
+    // public function getCoordenadas(): ?string
+    // {
+    //     return $this->coordenadas;
+    // }
+    //
+    // public function setCoordenadas(string $coordenadas): self
+    // {
+    //     $this->coordenadas = $coordenadas;
+    //
+    //     return $this;
+    // }
 
     public function getTipoInstitucion(): ?TipoInstitucion
     {

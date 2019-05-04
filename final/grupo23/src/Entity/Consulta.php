@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Consulta
  *
  * @ORM\Table(name="consulta", indexes={@ORM\Index(name="FK_acompanamiento_id", columns={"acompanamiento_id"}), @ORM\Index(name="FK_derivacion_id", columns={"derivacion_id"}), @ORM\Index(name="FK_paciente_id", columns={"paciente_id"}), @ORM\Index(name="FK_tratamiento_farmacologico_id", columns={"tratamiento_farmacologico_id"}), @ORM\Index(name="FK_motivo_id", columns={"motivo_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ConsultaRepository")
  */
 class Consulta
 {

@@ -24,7 +24,7 @@
 
                         <a class="navbar-link">Administración</a>
                         <div class="navbar-dropdown">
-                            <router-link class="navbar-item" to="/usuario">Usuarios</router-link>
+                            <router-link class="navbar-item" to="usuario">Usuarios</router-link>
                             <router-link class="navbar-item" to="reportes">Reportes</router-link>
                             <hr class="navbar-divider">
                             <router-link class="navbar-item" to="roles_y_permisos">Roles y permisos</router-link>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -70,6 +70,6 @@ export default {
     ])
   },
   }
-  
-  
+
+
 </script>
