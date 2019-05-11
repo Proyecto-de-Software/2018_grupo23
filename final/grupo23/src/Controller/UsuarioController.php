@@ -6,6 +6,7 @@ use App\Entity\Usuario;
 use App\Entity\Role;
 use App\Form\UsuarioType;
 use App\Repository\UsuarioRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,13 +33,17 @@ class UsuarioController extends FOSRestController
     /** @var SerializerInterface */
     private $serializer;
 
+    /** @var UserPasswordEncoderInterface */
+    private $passEncoder;
 
     /**
      * @param SerializerInterface $serializer
+     * @param UserPasswordEncoderInterface $passEncoder
      */
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(SerializerInterface $serializer, UserPasswordEncoderInterface $passEncoder)
     {
         $this->serializer = $serializer;
+        $this->passEncoder = $passEncoder;
     }
 
     /**
@@ -63,19 +68,19 @@ class UsuarioController extends FOSRestController
     {
       $dataJson = $request->getContent();
       $data = json_decode($dataJson, true);
-      $entityManager = $this->getDoctrine()->getManager();
       $user = new Usuario();
       $user->setFirstName(strval($data['firstName']));
       $user->setLastName(strval($data['lastName']));
       $user->setUsername(strval($data['username']));
       $user->setEmail(strval($data['email']));
-      $user->setPassword(strval($data['password']));
+      $user->setPassword($this->passEncoder->encodePassword($user, strval($data['newPass'])));
       // $user_roles = array();
       // foreach ((array)$data['roles'] as $roleString) {
       //   $role = $entityManager->getRepository(Role::Class)->findBy(array('nombre' => $roleString));
       //   array_push($user_roles, $role);
       // };
       // $user->setRoles($user_roles);
+      $entityManager = $this->getDoctrine()->getManager();
       $entityManager->persist($user);
       $entityManager->flush();
       return new Response('Usuario agregado');
@@ -108,27 +113,43 @@ class UsuarioController extends FOSRestController
         return new JsonResponse($data);
     }
 
-
     /**
      * @Route("/{id}/edit", name="usuario_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Usuario $usuario): Response
+    public function edit(Request $request, Usuario $user): JsonResponse
     {
-        $form = $this->createForm(UsuarioType::class, $usuario);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('usuario_index', [
-                'id' => $usuario->getId(),
-            ]);
+      $dataJson = $request->getContent();
+      $data = json_decode($dataJson, true);
+      $entityManager = $this->getDoctrine()->getManager();
+      $user->setFirstName(strval($data['firstName']));
+      $user->setLastName(strval($data['lastName']));
+      $user->setUsername(strval($data['username']));
+      $user->setEmail(strval($data['email']));
+      if (strval($data['passHasBeenModified'])) {
+        if ( !empty($data['oldPass']) && !empty($data['newPass']) && !empty($data['repeatNewPass']) ) {
+          if ( $data['newPass'] == $data['repeatNewPass'] ) {
+            $encoderService = $this->container->get('security.password_encoder');
+            if ( $encoderService->isPasswordValid($user, strval($data['oldPass'])) ) {
+              $user->setPassword($this->passEncoder->encodePassword($user, strval($data['newPass'])));
+            } else {
+              throw new \Exception("La contraseña actual ingresada no es correcta", 1);
+            }
+          } else {
+            throw new \Exception("Contraseña y repetir contraseña no coinciden", 1);
+          }
+        } else {
+          throw new \Exception("Faltó completar alguno de los campos de contraseña", 1);
         }
-
-        return $this->render('usuario/edit.html.twig', [
-            'usuario' => $usuario,
-            'form' => $form->createView(),
-        ]);
+      }
+      // $user_roles = array();
+      // foreach ((array)$data['roles'] as $roleString) {
+      //   $role = $entityManager->getRepository(Role::Class)->findBy(array('nombre' => $roleString));
+      //   array_push($user_roles, $role);
+      // };
+      // $user->setRoles($user_roles);
+      $entityManager->persist($user);
+      $entityManager->flush();
+      return new JsonResponse($user);
     }
 
     /**
@@ -146,5 +167,18 @@ class UsuarioController extends FOSRestController
       }
     }
 
+    /**
+     * @Route("/{id}/edit_state", name="usuario_edit_state", methods={"GET","POST"})
+     */
+    public function editState(Request $request, Usuario $user): Response
+      {
+        $entityManager = $this->getDoctrine()->getManager();
+        $currentState = $user->getActivo();
+        $newState = ($currentState == 1 ? 0 : 1);
+        $user->setActivo($newState);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new Response('okey');
+      }
 
 }

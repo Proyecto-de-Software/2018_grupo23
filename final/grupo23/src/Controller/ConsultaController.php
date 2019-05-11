@@ -72,26 +72,6 @@ class ConsultaController extends AbstractController
       return new JsonResponse($response);
     }
 
-    //
-    // public function viewAttentionsBy($result){//engloba lo común a AttentionsByReason y ByGenre
-    //   $dataPoints=array();
-    //   foreach($result as $row){
-    //       $porcentaje= ($row->cant * 100 / $row->total_atenciones);
-    //       array_push($dataPoints, array('y'=> $porcentaje, 'label'=> $row->nombre, 'cant'=> $row->cant));
-    //   }
-    //   echo json_encode($dataPoints, JSON_NUMERIC_CHECK);
-    // }
-    //
-    // public function viewAttentionsByReason(){
-    //   $repo= new AttentionRepository();
-    //   $this->viewAttentionsBy($repo->getAtencionesPorMotivo());
-    // }
-    //
-    // public function viewAttentionsByGenre(){
-    //   $repo= new AttentionRepository();
-    //   $this->viewAttentionsBy($repo->getAtencionesPorGenero());
-    // }
-    //
     // public function viewAttentionsByLocation(){//utiliza la Api de localidades
     //   $repo= new AttentionRepository();
     //   $result= $repo->getAtencionesPorLocalidad();

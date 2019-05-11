@@ -5,12 +5,16 @@
       <div class="container is-fluid">
         <div class="has-text-centered">
           <h4 class="title is-4">Gráfico y listado de atenciones agrupadas por:</h4>
-          <button class="button is-info" type="button" @click="getAttentionsBy('motivo')">Motivo</button>
-          <button class="button is-info" type="button" @click="getAttentionsBy('genero')">Género</button>
-          <button class="button is-info" type="button" @click="getAttentionsBy('localidad')">Localidad</button>
+          <button class="button is-info is-spaced" type="button" @click="getAttentionsBy('motivo')">Motivo</button>
+          <button class="button is-info is-spaced" type="button" @click="getAttentionsBy('genero')">Género</button>
+          <button class="button is-info is-spaced" type="button" @click="getAttentionsBy('localidad')">Localidad</button>
         </div>
       </div>
     </section>
+
+    <div class="has-text-centered" v-if="isEmptyData">
+      <h5 class="title is-5">No hay consultas en el sistema</h5>
+    </div>
 
     <div v-if="loaded" class="container" ref="content">
       <div ref="chart-container">
@@ -44,7 +48,6 @@
       <button class="button is-info" type="button" @click="downloadPdf">Descargar</button>
     </div>
 
-
   </div>
 </template>
 
@@ -76,6 +79,7 @@ export default {
             rows: []
           },
           loaded: false,
+          isEmptyData: false
     }
   },
   methods: {
@@ -85,10 +89,14 @@ export default {
        get('http://localhost:8000/consulta/reportes/' + criteriaStr)
        .then(response => {
                            var result = JSON.parse(response.data);
-                           this.tabledata.heading = criteriaStr.charAt(0).toUpperCase() + criteriaStr.slice(1)
-                           this.removeChartAndTableData();
-                           this.addChartAndTableData(result);
-                           this.loaded = true
+                           if (result.length > 0) {
+                             this.tabledata.heading = criteriaStr.charAt(0).toUpperCase() + criteriaStr.slice(1)
+                             this.removeChartAndTableData();
+                             this.addChartAndTableData(result);
+                             this.loaded = true
+                           } else {
+                             this.isEmptyData = true
+                           }
                          }
         )
        .catch(error => console.log(error))
@@ -133,3 +141,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.is-spaced {
+  margin: 10px;
+}
+
+</style>

@@ -28,19 +28,19 @@
               :search-options="{ enabled: true, placeholder: 'Buscar' }"
                styleClass="vgt-table bordered">
               <div slot="table-actions">
-                <button type="button" class="button is-info" @click="showAddUserModal(null, 'Agregar Usuario')">Agregar Usuario</button>
+                <button type="button" class="button is-info" @click="showAddUserModal('Agregar Usuario')">Agregar Usuario</button>
               </div>
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
-                  <button type="button" class="button is-info" title="Editar" @click="showAddUserModal(props.row, 'Editar Usuario')">Editar</button>
-                  <button type="button" class="button is-info" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
+                  <button type="button" class="button is-info is-small is-spaced" title="Editar" @click="showAddUserModal('Editar Usuario', props.row)">Editar</button>
+                  <button type="button" class="button is-info is-small is-spaced" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
                   <span v-if="props.row.activo == 1">
-                    <button class="button_block button is-danger" title="Bloquear">Bloquear</button>
+                    <button class="button_block button is-danger is-small is-spaced" @click="toggleUserState(props.row.id)" title="Bloquear">Bloquear</button>
                   </span>
                   <span v-else>
-                    <button class="button_unblock button is-info" title="Desbloquear">Desbloquear</button>
+                    <button class="button_unblock button is-info is-small is-spaced" @click="toggleUserState(props.row.id)" title="Desbloquear">Desbloquear</button>
                   </span>
-                  <button class="button_delete button is-danger" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
+                  <button class="button_delete button is-danger is-small is-spaced" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
                 </span>
               </template>
             </vue-good-table>
@@ -102,7 +102,7 @@ export default {
           this.isLoading = false
         })
         .catch(error => {
-          console.log(error)
+          swal.fire('Se produjo un error', error.message, 'error')
         })
     },
     loadRoles() {
@@ -113,8 +113,16 @@ export default {
           this.isLoading = false
         })
         .catch(error => {
-          this.error = error
+          console.log(error)
         })
+    },
+    toggleUserState(id) {
+      axios
+        .post('http://localhost:8000/usuario/' + id + '/edit_state')
+        .then(response => { this.loadUsers();
+                            swal.fire('El usuario fue bloqueado', '', 'success')
+                          })
+        .catch(error => console.log(error.message))
     },
     deleteUser(userId) {
       swal.fire({
@@ -131,20 +139,16 @@ export default {
           axios
             .delete('http://localhost:8000/usuario/' + userId)
             .then(response => {
-              swal.fire(
-                'El usuario fue eliminado',
-                '',
-                'success'
-              )
               this.loadUsers()
-            })
+              swal.fire('El usuario fue eliminado', '', 'success')
+              })
             .catch(error => {
-              console.log(error)
+              swal.fire('Se produjo un error', error.message, 'error')
           });
         }
       })
     },
-    showAddUserModal(userData, modalTitle) {
+    showAddUserModal(modalTitle, userData = false) {
       var ComponentClass = Vue.extend(AddUserModal);
       var instance = new ComponentClass({
         propsData: { user: userData, roles: this.appRoles, loadUsers: this.loadUsers, title: modalTitle}
@@ -182,3 +186,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+.is-spaced {
+  margin: 5px;
+}
+
+</style>

@@ -5,14 +5,14 @@
             <router-link class="navbar-item" to="/home" title="Logo Hospital">
                 <img src="../images/logo.png" width="60" height="30" alt="Logo Hospital">
             </router-link>
-            <div class="navbar-burger burger" data-target="nav-acciones">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" @click="burgerIsOpen = !burgerIsOpen" :class="{'is-active': burgerIsOpen}">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
 
-        <div id="nav-acciones" class="navbar-menu">
+        <div class="navbar-menu" :class="{'is-active': burgerIsOpen}">
             <div class="navbar-start">
                 <!-- navbar items izquierda -->
                 <p class="is-hidden-touch navbar-item"></p>
@@ -61,7 +61,7 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-
+      burgerIsOpen: false
     }
   },
   computed: {

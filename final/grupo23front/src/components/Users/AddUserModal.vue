@@ -35,7 +35,7 @@
                 <div class="field">
                   <label class="label">Nombre de usuario*</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="userForm.username" :readonly="isReadOnly">
+                    <input type="text" class="input" v-model="userForm.username">
                   </div>
                   <p class="help">Debe tener entre 6 y 20 caracteres</p>
                 </div>
@@ -48,19 +48,64 @@
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                  <label class="label">Contraseña*</label>
-                  <div class="control">
-                    <input id="password" type="password" class="input" v-model="userForm.password">
+
+                <div v-if="!user">
+                  <div class="field">
+                    <label class="label">Contraseña*</label>
+                    <div class="control">
+                      <input type="password" class="input" v-model="userForm.newPass">
+                    </div>
+                    <p class="help">Debe tener entre 8 y 20 caracteres</p>
                   </div>
-                  <p class="help">Debe tener entre 8 y 20 caracteres</p>
-                </div>
-                <div class="field">
-                  <label class="label">Confirmar contraseña*</label>
-                  <div class="control">
-                    <input id="re_password" type="password" class="input" v-model="userForm.re_password">
+                  <div class="field">
+                    <label class="label">Confirmar contraseña*</label>
+                    <div class="control">
+                      <input type="password" class="input" v-model="userForm.repeatNewPass">
+                    </div>
                   </div>
                 </div>
+
+                <!-- editMode -->
+                <div v-else>
+                  <button type="button" class="button is-info" @click="passInputModal = !passInputModal" v-if="!passInputModal">Modificar contraseña</button>
+                  <div v-if="passInputModal" class="modal is-active">
+                    <div class="modal-background"></div>
+                      <div class="modal-card">
+                        <header class="modal-card-head">
+                          <h3 class="title">Modificar contraseña</h3>
+                        </header>
+                        <section class="modal-card-body">
+                          <form class="form">
+                            <div class="field">
+                              <label class="label">Contraseña actual*</label>
+                              <div class="control">
+                                <input type="password" class="input" v-model="userForm.oldPass">
+                              </div>
+                              <p class="help">Debe tener entre 8 y 20 caracteres</p>
+                            </div>
+                            <div class="field">
+                              <label class="label">Nueva contraseña*</label>
+                              <div class="control">
+                                <input type="password" class="input" v-model="userForm.newPass">
+                              </div>
+                            </div>
+                            <div class="field">
+                              <label class="label">Confirmar nueva contraseña*</label>
+                              <div class="control">
+                                <input type="password" class="input" v-model="userForm.repeatNewPass">
+                              </div>
+                            </div>
+                          </form>
+                        </section>
+                        <footer class="modal-card-foot">
+                          <button type="button" class="button is-success" @click="{ userForm.passHasBeenModified = true; passInputModal = false }">Aceptar</button>
+                          <button type="button" class="button is-text" @click="{ userForm.passHasBeenModified = false; passInputModal = false }">Cancelar</button>
+                        </footer>
+                      </div>
+                  </div>
+                </div>
+                <!--edit-->
+
                 <p>* campos obligatorios</p>
               </form>
             </div>
@@ -82,33 +127,36 @@ export default {
   props: {
     loadUsers: Function,
     roles: Array,
-    user: Object,
+    user: {
+       type: [Object, Boolean],
+       default: false
+    },
     title: String
   },
   data() {
     return {
       isLoading: false,
-      isReadOnly: false,
+      passInputModal: false,
       userForm: {
         lastName: '',
         firstName: '',
         email: '',
         username: '',
-        password: '',
-        re_password: '',
+        oldPass: '',
+        newPass: '',
+        repeatNewPass: '',
+        passHasBeenModified: false,
         roles: []
       }
     }
   },
   created() {
-    if (this.user != null) { //estoy en edición
+    if (this.user) { //edit
       this.userForm.lastName = this.user.lastName;
       this.userForm.firstName = this.user.firstName;
       this.userForm.email = this.user.email;
       this.userForm.username = this.user.username;
-      this.userForm.password = this.user.password;
-      this.userForm.re_password = this.user.password;
-      this.userForm.roles = this.user.roles;
+      this.user.roles.forEach((role) => this.userForm.roles.push(role.nombre))
     }
   },
   methods: {
@@ -117,17 +165,22 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
-      axios
-      .post('http://localhost:8000/usuario/new', this.userForm)
-      .then(response => { swal.fire(
-                            'El usuario fue agregado',
-                            '',
-                            'success'
-                          );
-                          this.loadUsers();
-                          this.close() })
-      .catch(error => console.log(error))
-    }
+      if (this.user) { //edit
+        axios
+        .post('http://localhost:8000/usuario/' + this.user.id + '/edit', this.userForm)
+        .then(response => { swal.fire('El usuario fue actualizado', '', 'success');
+                            this.loadUsers(),
+                            this.close() })
+        .catch(error => swal.fire('Se produjo un error', 'error'))
+      } else { //new
+        axios
+        .post('http://localhost:8000/usuario/new', this.userForm)
+        .then(response => { swal.fire('El usuario fue agregado', '', 'success');
+                            this.loadUsers();
+                            this.close() })
+        .catch(error => console.log(error))
+      }
+    },
   }
 }
 </script>

@@ -53,7 +53,11 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     roles() {
-      return this.user.roles.map(rol => rol.nombre).join(', ');
+      if (this.user.roles.length > 0) {
+        return this.user.roles.map(rol => rol.nombre).join(', ')
+      } else {
+        return 'Sin roles asignados'
+      }
     },
     createdOrUpdatedAt(date) {
       var localDate= new Date(date);
