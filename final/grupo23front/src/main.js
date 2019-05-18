@@ -13,11 +13,19 @@ require ('../node_modules/bulma/css/bulma.css')
 import axios from 'axios'
 import swal from 'sweetalert2'
 import 'vue-good-table/dist/vue-good-table.css'
+import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es'
 
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
 Vue.use(VueGoodTable);
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+  locale: 'es',
+  dictionary: {
+    es: {
+      messages: { ...esOriginalMessages }
+    }
+  }
+});
 
 Vue.config.productionTip = false
 window.axios = axios
@@ -98,7 +106,7 @@ const methods = [
         axios.defaults.headers.common['Authorization'] = null;
 
     }
-})()
+})
 
 ]
 
@@ -116,5 +124,4 @@ new Vue({
       this.bloqueo = false;
       })
   }
-
 }).$mount('#app')

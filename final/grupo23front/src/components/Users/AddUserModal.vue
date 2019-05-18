@@ -14,22 +14,22 @@
                 <div class="field">
                   <label class="label">Apellido*</label>
                   <div class="control">
-                    <input id="apellido" type="text" class="input" v-model="userForm.lastName">
+                    <input type="text" class="input" name="apellido" v-model="userForm.lastName" v-validate="'required|alpha_spaces|between:1,11'">
+                    <span>{{ errors.first('apellido') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Nombre*</label>
                   <div class="control">
-                    <input id="nombre" type="text" class="input" v-model="userForm.firstName">
+                    <input id="nombre" type="text" class="input" name="nombre" v-model="userForm.firstName" v-validate="'required|alpha_spaces'">
+                    <span>{{ errors.first('nombre') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Email*</label>
                   <div class="control">
-                    <input type="text" class="input" name="email" v-model="userForm.email" placeholder="ejemplo@gmail.com">
-                    <!-- <ul>
-                      <li v-for="error in errors.collect('email')">{{ error }}</li>
-                    </ul> -->
+                    <input type="text" class="input" name="email" v-model="userForm.email" placeholder="ejemplo@gmail.com" v-validate="'required|email'">
+                    <span>{{ errors.first('email') }}</span>
                   </div>
                 </div>
                 <div class="field">

@@ -150,18 +150,9 @@ export default {
     },
     patientDocType(patient){
       axios
-        .get('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'+patient.tipoDocId,
-         {
-      method: 'GET',
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    },)
+        .get('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/' + patient.tipoDocId)
         .then(response => {
-          docType = JSON.parse(response.data);
-          console.log(docType)
+          console.log(response.data.nombre)
         })
         .catch(error => {
           console.log(error)
