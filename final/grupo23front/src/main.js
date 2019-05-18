@@ -109,7 +109,7 @@ new Vue({
   methods,
   data,
   computed,
-  mounted(){
+  created(){
     this.bloqueo = true;
     axios.get('http://localhost:8000/configuracion/').then((response) => {
       this.info = response.data;

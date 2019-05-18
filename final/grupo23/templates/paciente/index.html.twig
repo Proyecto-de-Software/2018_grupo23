@@ -1,61 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Paciente index{% endblock %}
+{% block title %}Hello PacienteController!{% endblock %}
 
 {% block body %}
-    <h1>Paciente index</h1>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Apellido</th>
-                <th>Nombre</th>
-                <th>Fecha_nac</th>
-                <th>Lugar_nac</th>
-                <th>Localidad_id</th>
-                <th>Region_sanitaria_id</th>
-                <th>Domicilio</th>
-                <th>Tiene_documento</th>
-                <th>Tipo_doc_id</th>
-                <th>Numero</th>
-                <th>Tel</th>
-                <th>Nro_carpeta</th>
-                <th>Obra_social_id</th>
-                <th>Partido_id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for paciente in pacientes %}
-            <tr>
-                <td>{{ paciente.id }}</td>
-                <td>{{ paciente.apellido }}</td>
-                <td>{{ paciente.nombre }}</td>
-                <td>{{ paciente.fechaNac ? paciente.fechaNac|date('Y-m-d') : '' }}</td>
-                <td>{{ paciente.lugarNac }}</td>
-                <td>{{ paciente.localidadId }}</td>
-                <td>{{ paciente.regionSanitariaId }}</td>
-                <td>{{ paciente.domicilio }}</td>
-                <td>{{ paciente.tieneDocumento ? 'Yes' : 'No' }}</td>
-                <td>{{ paciente.tipoDocId }}</td>
-                <td>{{ paciente.numero }}</td>
-                <td>{{ paciente.tel }}</td>
-                <td>{{ paciente.nroCarpeta }}</td>
-                <td>{{ paciente.obraSocialId }}</td>
-                <td>{{ paciente.partidoId }}</td>
-                <td>
-                    <a href="{{ path('paciente_show', {'id': paciente.id}) }}">show</a>
-                    <a href="{{ path('paciente_edit', {'id': paciente.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="16">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    <a href="{{ path('paciente_new') }}">Create new</a>
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ '/home/matias/Documents/grupo23/final/grupo23/src/Controller/PacienteController.php'|file_link(0) }}">src/Controller/PacienteController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/home/matias/Documents/grupo23/final/grupo23/templates/paciente/index.html.twig'|file_link(0) }}">templates/paciente/index.html.twig</a></code></li>
+    </ul>
+</div>
 {% endblock %}

@@ -37,7 +37,6 @@
         <button class="modal-close" @click="close"></button>
       </div>
     </div>
-  </div>
 </template>
 
 
