@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       patients: null,
+      docTypes: null,
       isLoading: true,
       appRoles: [],
       columns: [
@@ -87,6 +88,7 @@ export default {
   },
   created() {
     this.loadPatients()
+    this.loadDocTypes()
   },
   methods: {
     loadPatients: function() {
@@ -96,6 +98,16 @@ export default {
           this.patients = JSON.parse(response.data);
           console.log(this.patients)
           this.isLoading = false
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    loadDocTypes: function(){
+      axios
+        .get('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento')
+        .then(response => {
+          this.docTypes= response.data;
         })
         .catch(error => {
           console.log(error)
@@ -137,10 +149,10 @@ export default {
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)
     },
-    showViewPatientModal(row) {
+    showViewPatientModal(patientData) {
       var ComponentClass = Vue.extend(ViewPatientModal);
       var instance = new ComponentClass({
-        propsData: { patient: row }
+        propsData: { patient: patientData }
       })
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)
@@ -149,15 +161,10 @@ export default {
       return patient.apellido + ' ' + patient.nombre
     },
     patientDocType(patient){
-      axios
-        .get('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/' + patient.tipoDocId)
-        .then(response => {
-          console.log(response.data.nombre)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+      var index = this.docTypes.findIndex(obj => obj.id==patient.tipoDocId);
+      return this.docTypes[index].nombre
+    }
+      ,
     patientDocNum(patient){
       return patient.numero
     },
