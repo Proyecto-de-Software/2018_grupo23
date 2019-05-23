@@ -121,6 +121,20 @@ Vue.mixin({
     },
 
     methods: {
+      //para utilizar este metodo en su componente se pone this.makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento').then((respuesta) => { console.log(respuesta)})
+      async makeCorsRequest(url){
+        var auth = axios.defaults.headers.common["Authorization"];
+        var info = '';
+        delete axios.defaults.headers.common["Authorization"];
+        await axios.get(url).then( (response) => {
+          axios.defaults.headers.common["Authorization"] = auth;
+          info = response.data;
+        }).catch((error) => { 
+          axios.defaults.headers.common["Authorization"] = auth;
+          info = error;
+         });
+         return info;
+      },
 
     }
 })
@@ -146,7 +160,7 @@ new Vue({
     if(!(this.store_token === '')){
       this.fetchLoggedUser();
     }
-    
+
   },
 
   methods: {
