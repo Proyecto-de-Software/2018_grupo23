@@ -1,0 +1,59 @@
+1- Instalar yarn https://yarnpkg.com/lang/en/
+2- Instalar Node.js https://nodejs.org/es/ ( v 10.15.3 LTS )
+3- Abrir la consola en la carpeta /final/ y ejecutar los siguientes comandos:
+
+    composer install
+    yarn install
+
+4- Configurar la BD:
+    4.1 Abrir el xampp iniciar los servicios e ir al phpmyadmin
+    4.2 Buscar la versión de su mariadb ( ver "1.png" )
+    4.3 Renombrar el archivo config\packages\doctrine.yaml.local a doctrine.yaml y editar la siguiente línea:
+        server_version: 'mariadb-10.1.31' (por la versión correcta de su mariadb)
+
+5- Crear la BD:
+    5.1 Con los servicios de xampp corriendo, entrar al phpmyadmin y crear una BD llamada test-grupo23
+    5.2 Ejecutar el siguiente comando en la carpeta /final/
+
+        php bin/console doctrine:schema:update --force
+
+    5.3 ejecutar las siguientes consultas manualmente en la bd test-grupo23 dentro de phpmyadmin (se pueden ejecutar todas al mismo tiempo):
+
+        INSERT INTO `tratamiento_farmacologico` (`id`, `nombre`) VALUES (NULL, 'Mañana'), (NULL, 'Tarde'), (NULL, 'Noche'), (NULL, 'No');
+
+        INSERT INTO `tipo_institucion` (`id`, `nombre`) VALUES (NULL, 'Hospital'), (NULL, 'Comisaría');
+
+        INSERT INTO `permiso` (`id`, `nombre`) VALUES (NULL, 'paciente_index'), (NULL, 'paciente_new'), (NULL, 'paciente_show'), (NULL, 'paciente_destroy'), (NULL, 'paciente_update'), (NULL, 'usuario_index'), (NULL, 'usuario_new'), (NULL, 'usuario_destroy'), (NULL, 'usuario_update'), (NULL, 'usuario_show'), (NULL, 'configuracion_index'), (NULL, 'configuracion_update'), (NULL, 'rol_index'), (NULL, 'rol_new'), (NULL, 'rol_show'), (NULL, 'rol_update'), (NULL, 'rol_destroy'), (NULL, 'atencion_index'), (NULL, 'atencion_show'), (NULL, 'atencion_new'), (NULL, 'atencion_update'), (NULL, 'atencion_destroy');
+
+        INSERT INTO `motivo_consulta` (`id`, `nombre`) VALUES (NULL, 'Receta Médica'), (NULL, 'Control por Guardia'), (NULL, 'Consulta'), (NULL, 'Intento de Suicidio'), (NULL, 'Interconsulta'), (NULL, 'Otras');
+
+        INSERT INTO `institucion` (`id`, `tipo_institucion_id`, `nombre`, `director`, `telefono`, `coordenadas`, `region_sanitaria_id`) VALUES (NULL, '2', 'Hospital Español', 'Roberto', '4526712', '[-34.9059,-57.9673]', '1'), (NULL, '1', 'Hospital Italiano', 'Marcelo', '4231231', '[-34.93621,-57.97242]', '2'), (NULL, '1', 'Hospital San Juan de Dios', 'Jorge', '2214546783', '[-34.94757,-57.94914]', '1'), (NULL, '1', 'Hospital Interzonal de Agudos Especializados en Pediatría Sor María Ludovica', 'Marcos', '2214677689', '[-34.93248,-57.94304]', '2'), (NULL, '1', 'Sanatorio Argentino', 'Fernando', '22147634789', '[-34.92307,-57.95116]', '3');
+
+        INSERT INTO `genero` (`id`, `nombre`) VALUES (NULL, 'Masculino'), (NULL, 'Femenino'), (NULL, 'Otro');
+
+        INSERT INTO `configuracion` (`id`, `variable`, `valor`) VALUES (1, 'titulo', 'Hospital Dr. Alejandro Korn'), (2, 'email', 'alejandro@hospital.gov.ar'), (3, 'descripcion', 'Excelencia, historia y legado.'), (4, 'estado', 'habilitado'), (5, 'paginado', '5'), (6, 'columna_uno', 'Hello World Lorem ipsum dolor sit amet, consectetur adipiscing elit.'), (7, 'columna_dos', 'Hello World Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida,'), (8, 'columna_tres', 'Hello World Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus'), (9, 'titulo_col_uno', 'Título columna 1'), (10, 'titulo_col_dos', 'Título 2'), (11, 'titulo_col_tres', 'Título columna 3');
+
+
+        INSERT INTO `acompanamiento` (`id`, `nombre`) VALUES (1, 'Familiar Cercano'), (2, 'Hermanos e hijos'), (3, 'Pareja'), (4, 'Referentes vinculares'), (5, 'Policía'), (6, 'SAME'), (7, 'Por sus propios medios');
+
+        INSERT INTO `user` (`id`, `email`, `username`, `password`, `roles`, `created_at`, `updated_at`, `first_name`, `last_name`, `activo`) VALUES
+        (1, 'pepito@asd.com', 'pepito', 'YRhj/jmB3xuaw7yNz0qAhVxjf+Q1zBLSogkixytJDizBL7vwsFm5Kw5MSjf8vlId4N6Hw90oyoOt9wOqQm1dng==', '[\"ROLE_ADMINISTRADOR\"]', '2019-05-03 16:43:42', '2019-05-19 00:40:53', 'fulanito', 'test', 1);
+
+        INSERT INTO `roles_del_sistema` (`id`, `nombre`) VALUES (1, 'ROLE_ADMINISTRADOR'), (2, 'ROLE_EQUIPO_DE_GUARDIA');
+
+        INSERT INTO `permiso_roles_del_sistema` (`permiso_id`, `roles_del_sistema_id`) VALUES ('1', '1');
+
+
+6- Para comenzar a utilizar la página abrir dos consolas en la carpeta /final/ y ejecutar los siguientes comandos (uno solo en cada una):
+
+    php bin/console server:run
+
+    yarn run encore dev --watch
+
+La página debería estar corriendo en http://localhost:8000/ , para ver la documentación de la página entrar a http://localhost:8000/api/doc
+Cada cambio que se haga en la vista se va auto compilar, para que esto surta efecto hay que apretar Ctrl+F5 en el navegador.
+La bd tiene un límite de 191 caracteres para varchar.
+Los componentes de VUE se encuentran en la carpeta assets\js\components y el main.js paso a ser assets\js\app.js.
+Se integra VUE al sistema a travez de twig, se ven las llamdas a los componentes de twig en templates\default\index.html.twig y el que renderiza esta vista es src\Controller\DefaultController.php
+Para instalar cualquier paquete de VUE necesario utilizar yarn add , si quieren buscar el comando exacto pueden usar el buscador de paquetes de yarn en https://yarnpkg.com/lang/en/
+Para debugear el back utilizar el comando dd(parametro); dd() muestra cualquier parámetro por el navegador y además ejecuta un die() para que no continúe la ejecución.
