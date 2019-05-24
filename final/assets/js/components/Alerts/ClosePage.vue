@@ -18,6 +18,7 @@
     },
     created(){
         events.$on('mantenimiento:active',() => this.mantenimiento = true);
+        events.$on('mantenimiento:inactive',() => this.mantenimiento = false);
     },
 
   }

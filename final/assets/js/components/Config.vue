@@ -117,12 +117,14 @@
         axios
          .post('http://localhost:8000/configuracion/new', configJSON)
          .then((response) => {
-                  console.log(response.data);
+                  if(this.config.estado === 'habilitado'){
+                    events.$emit('mantenimiento:inactive');
+                  }
                   this.$router.push('/');
          })
       },
       cancel() {
-        this.$router.push('/')
+        this.$router.push('/');
       }
     }
   }
