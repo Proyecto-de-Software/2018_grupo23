@@ -51,9 +51,9 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import AddUserModal from './AddUserModal.vue';
-import ViewUserModal from './ViewUserModal.vue';
+import Vue from 'vue'
+import AddUserModal from './AddUserModal.vue'
+import ViewUserModal from './ViewUserModal.vue'
 export default {
   components: { AddUserModal, ViewUserModal },
   data() {
@@ -87,26 +87,26 @@ export default {
     };
   },
   created() {
-    this.loadUsers();
-    this.loadRoles()
+    this.loadUsers()
+    this.loadAppRoles()
   },
   methods: {
     loadUsers: function() {
       axios
-        .get('http://localhost:8000/usuario/')
+        .get('http://localhost:8000/user/index/')
         .then(response => {
-          this.users = JSON.parse(response.data);
+          this.users = response.data
           this.isLoading = false
         })
         .catch(error => {
-          this.$swal.fire('Se produjo un error', error.message, 'error')
+          Vue.swal('Error: no fue posible cargar a los usuarios del sistema', error.message, 'error')
         })
     },
-    loadRoles() {
+    loadAppRoles() {
       axios
-        .get('http://localhost:8000/role/')
+        .get('http://localhost:8000/role/index/')
         .then(response => {
-          this.appRoles = JSON.parse(response.data);
+          this.appRoles = response.data
           this.isLoading = false
         })
         .catch(error => {
@@ -115,14 +115,14 @@ export default {
     },
     toggleUserState(id) {
       axios
-        .post('http://localhost:8000/usuario/' + id + '/edit_state')
+        .post('http://localhost:8000/user/' + id + '/edit_state')
         .then(response => { this.loadUsers();
-                            this.$swal.fire('El usuario fue bloqueado', '', 'success')
+                            Vue.swal('El usuario fue bloqueado', '', 'success')
                           })
         .catch(error => console.log(error.message))
     },
     deleteUser(userId) {
-      this.$swal.fire({
+      Vue.swal({
         title: 'Está seguro?',
         text: "No podrá revertirlo!",
         type: 'warning',
@@ -134,13 +134,13 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .delete('http://localhost:8000/usuario/' + userId)
+            .delete('http://localhost:8000/user/' + userId)
             .then(response => {
               this.loadUsers()
-              this.$swal.fire('El usuario fue eliminado', '', 'success')
+              Vue.swal('El usuario fue eliminado', '', 'success')
               })
             .catch(error => {
-              this.$swal.fire('Se produjo un error', error.message, 'error')
+              Vue.swal('Se produjo un error', error.message, 'error')
           });
         }
       })
@@ -162,16 +162,16 @@ export default {
       this.$refs.container.appendChild(instance.$el)
     },
     userCompleteName(user) {
-      return user.lastName + ' ' + user.firstName
+      return user.last_name + ' ' + user.first_name
     },
     userRoles(user) {
-      return user.roles.length > 0 ? user.roles.map(rol => rol.nombre).join(', ') :'Sin roles asignados';
+      return user.roles.length > 0 ? user.roles.map(rol => rol.nombre.replace('ROLE_', '')).join(', ') :'Sin roles asignados';
     },
     userIsActive(user) {
       return user.activo == 1 ? 'Activo' : 'Inactivo'
     },
     userIsCreatedAt(user) {
-      var created= new Date(user.createdAt);
+      var created= new Date(user.created_at);
       var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
       return (created.toLocaleDateString("es-ES", options) + "hs.")
     },

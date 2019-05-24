@@ -14,22 +14,25 @@
                 <div class="field">
                   <label class="label">Apellido*</label>
                   <div class="control">
-                    <input type="text" class="input" name="apellido" v-model="userForm.lastName" v-validate="'required|alpha_spaces|between:1,11'">
-                    <span>{{ errors.first('apellido') }}</span>
+                    <input type="text" class="input" name="apellido" v-model="userForm.lastName">
+                    <!-- v-validate="'required|alpha_spaces|between:1,11'" -->
+                    <!-- <span>{{ errors.first('apellido') }}</span> -->
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Nombre*</label>
                   <div class="control">
-                    <input id="nombre" type="text" class="input" name="nombre" v-model="userForm.firstName" v-validate="'required|alpha_spaces'">
-                    <span>{{ errors.first('nombre') }}</span>
+                    <input id="nombre" type="text" class="input" name="nombre" v-model="userForm.firstName">
+                    <!-- v-validate="'required|alpha_spaces'"> -->
+                    <!-- <span>{{ errors.first('nombre') }}</span> -->
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Email*</label>
                   <div class="control">
-                    <input type="text" class="input" name="email" v-model="userForm.email" placeholder="ejemplo@gmail.com" v-validate="'required|email'">
-                    <span>{{ errors.first('email') }}</span>
+                    <input type="text" class="input" name="email" v-model="userForm.email" placeholder="ejemplo@gmail.com">
+                    <!-- v-validate="'required|email'"> -->
+                    <!-- <span>{{ errors.first('email') }}</span> -->
                   </div>
                 </div>
                 <div class="field">
@@ -43,7 +46,7 @@
                   <label class="label roles-label">Qué roles desea asignarle? Si no asigna ninguno puede hacerlo en "editar"</label>
                     <div class="control">
                         <div v-for="rol in roles">
-                            <label>{{ rol.nombre }}</label>
+                            <label>{{ rol.nombre.replace('ROLE_', '') }}</label>
                             <input class="styled" type="checkbox" :value="rol.nombre" v-model="userForm.roles">
                         </div>
                     </div>
@@ -121,6 +124,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   props: {
     loadUsers: Function,
@@ -150,8 +154,8 @@ export default {
   },
   created() {
     if (this.user) { //edit
-      this.userForm.lastName = this.user.lastName;
-      this.userForm.firstName = this.user.firstName;
+      this.userForm.lastName = this.user.last_name;
+      this.userForm.firstName = this.user.first_name;
       this.userForm.email = this.user.email;
       this.userForm.username = this.user.username;
       this.user.roles.forEach((role) => this.userForm.roles.push(role.nombre))
@@ -165,15 +169,15 @@ export default {
     submit() {
       if (this.user) { //edit
         axios
-        .post('http://localhost:8000/usuario/' + this.user.id + '/edit', this.userForm)
-        .then(response => { this.$swal.fire('El usuario fue actualizado', '', 'success');
+        .post('http://localhost:8000/user/' + this.user.id + '/edit', this.userForm)
+        .then(response => { Vue.swal('El usuario fue actualizado', '', 'success');
                             this.loadUsers(),
                             this.close() })
-        .catch(error => this.$swal.fire('Se produjo un error', 'error'))
+        .catch(error => Vue.swal('Se produjo un error', 'error'))
       } else { //new
         axios
-        .post('http://localhost:8000/usuario/new', this.userForm)
-        .then(response => { this.$swal.fire('El usuario fue agregado', '', 'success');
+        .post('http://localhost:8000/user/new', this.userForm)
+        .then(response => { Vue.swal('El usuario fue agregado', '', 'success');
                             this.loadUsers();
                             this.close() })
         .catch(error => console.log(error))

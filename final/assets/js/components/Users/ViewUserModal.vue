@@ -8,7 +8,7 @@
           <section class="modal-card-body">
               <div class="text-box">
                 <h4 class="title is-5">Nombre</h4>
-                <p class="subtitle is-6">{{ user.firstName + ' ' + user.lastName }}</p>
+                <p class="subtitle is-6">{{ user.first_name + ' ' + user.last_name }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Email</h4>
@@ -19,16 +19,20 @@
                 <p class="subtitle is-6">{{ user.username }}</p>
               </div>
               <div class="text-box">
+                <h4 class="title is-5">Estado</h4>
+                <p class="subtitle is-6">{{ user.activo == 1 ? 'Activo' : 'Inactivo' }}</p>
+              </div>
+              <div class="text-box">
                 <h4 class="title is-5">Roles</h4>
                 <p class="subtitle is-6">{{ roles() }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Fecha de creación</h4>
-                <p class="subtitle is-6">{{ createdOrUpdatedAt(user.createdAt) }}</p>
+                <p class="subtitle is-6">{{ formatDate(user.created_at) }}</p>
               </div>
               <div class="">
                 <h4 class="title is-5">Fecha de última actualización</h4>
-                <p class="subtitle is-6">{{ createdOrUpdatedAt(user.updatedAt) }}</p>
+                <p class="subtitle is-6">{{ formatDate(user.updated_at) }}</p>
               </div>
           </section>
         <footer class="modal-card-foot">
@@ -51,13 +55,9 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     roles() {
-      if (this.user.roles.length > 0) {
-        return this.user.roles.map(rol => rol.nombre).join(', ')
-      } else {
-        return 'Sin roles asignados'
-      }
+      return this.user.roles.length > 0 ? this.user.roles.map(rol => rol.nombre.replace('ROLE_', '')).join(', ') :'Sin roles asignados';
     },
-    createdOrUpdatedAt(date) {
+    formatDate(date) {
       var localDate= new Date(date);
       var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
       return (localDate.toLocaleDateString("es-ES", options) + "hs.")

@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use JMS\Serializer\Annotation as Serializer;
 use App\Entity\Permiso;
 
-
 /**
  * User
  *
@@ -28,7 +27,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
-     */
+    */
     protected $email;
 
     /**
@@ -79,7 +78,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $activo;
+    private $activo = 1;
 
     public function __construct()
     {
