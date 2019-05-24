@@ -1,19 +1,19 @@
 import 'babel-polyfill';
 import './font-awesome.js';
-import 'vue-good-table/dist/vue-good-table.css'
-import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es.js'
+import 'vue-good-table/dist/vue-good-table.css';
+import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es.js';
 
 require('../css/bulma.css');
 
 import Vue from 'vue';
 import axios from 'axios';
-import VueRouter from 'vue-router'
-import VueSweetalert2  from 'vue-sweetalert2';
+import VueRouter from 'vue-router';
+import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
 import VeeValidate from 'vee-validate';
 
 window.axios = axios;
-window.events = new Vue()
+window.events = new Vue();
 Vue.use(VueSweetalert2);
 Vue.use(VueGoodTable);
 Vue.use(VeeValidate, {
@@ -35,6 +35,8 @@ import Futer from './components/Futer.vue' /*esto de NINGUNA manera puede conten
 import Barra from './components/Barra.vue' /*lo mismo aca srry*/
 import Login from './components/Login.vue'
 import Config from './components/Config.vue'
+import UserIndex from './components/Users/UserIndex.vue'
+// import ReportsIndex from './components/Reports/ReportsIndex.vue'
 
 /****************Ruteo *************************************** */
 /** no olvidar registrar el componente abajo del todo en VUE */
@@ -46,8 +48,8 @@ const routes = [
   { path: '/app/login', component: Login},
   //{ path: '/app/paciente', component: PatientIndex},
   { path: '/app/config', component: Config},
-  //{ path: '/app/usuario', component: UserIndex},
-  //{ path: '/app/reportes', component: ReportsIndex },
+  { path: '/app/usuario', component: UserIndex},
+  // { path: '/app/reportes', component: ReportsIndex },
   { path: '*', redirect: '/' }
 ]
 
@@ -76,7 +78,7 @@ Vue.mixin({
                 return this.$root.$data.store_config;
             }
           },
-        
+
           jwtToken : {
             set: function(token) {
               this.$root.$data.store_token = token;
@@ -121,20 +123,6 @@ Vue.mixin({
     },
 
     methods: {
-      //para utilizar este metodo en su componente se pone this.makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento').then((respuesta) => { console.log(respuesta)})
-      async makeCorsRequest(url){
-        var auth = axios.defaults.headers.common["Authorization"];
-        var info = '';
-        delete axios.defaults.headers.common["Authorization"];
-        await axios.get(url).then( (response) => {
-          axios.defaults.headers.common["Authorization"] = auth;
-          info = response.data;
-        }).catch((error) => { 
-          axios.defaults.headers.common["Authorization"] = auth;
-          info = error;
-         });
-         return info;
-      },
 
     }
 })
@@ -182,8 +170,8 @@ new Vue({
     expireJWTcheck(error) {
       if (window.location.pathname !='/app/login' && 401 === error.response.status) {
         Vue.swal({
-              title: "Session Expired",
-              text:  "Your session has expired. You will be redirected to the login page",
+              title: "La sesión expiró",
+              text:  "Su sesión ha expirado. Será redirigido a la página de login",
               type:  "warning",
               confirmButtonColor: "#DD6B55",
               confirmButtonText: "Ok",
@@ -208,5 +196,5 @@ watch: {
     }
   }
 },
-  components: { Home, Futer, Barra, Alertas, Config, Closepage }
+  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex }
 });
