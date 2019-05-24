@@ -20,7 +20,7 @@ class Consulta
      * @ORM\ManyToOne(targetEntity="App\Entity\paciente", inversedBy="consultas")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $paciente_id;
+    private $paciente;
 
     /**
      * @ORM\Column(type="date")
@@ -31,12 +31,12 @@ class Consulta
      * @ORM\ManyToOne(targetEntity="App\Entity\motivoConsulta")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $motivo_id;
+    private $motivo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\institucion")
      */
-    private $derivacion_id;
+    private $derivacion;
 
     /**
      * @ORM\Column(type="string", length=190, nullable=true)
@@ -62,27 +62,27 @@ class Consulta
      * @ORM\ManyToOne(targetEntity="App\Entity\tratamientoFarmacologico")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $tratamiento_farmacologico_id;
+    private $tratamiento_farmacologico;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\acompanamiento")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $acompanamiento_id;
+    private $acompanamiento;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPacienteId(): ?paciente
+    public function getPacienteId()
     {
-        return $this->paciente_id;
+        return $this->paciente;
     }
 
-    public function setPacienteId(?paciente $paciente_id): self
+    public function setPacienteId(?paciente $paciente): self
     {
-        $this->paciente_id = $paciente_id;
+        $this->paciente = $paciente;
 
         return $this;
     }
@@ -99,26 +99,26 @@ class Consulta
         return $this;
     }
 
-    public function getMotivoId(): ?motivoConsulta
+    public function getMotivoId()
     {
-        return $this->motivo_id;
+        return $this->motivo;
     }
 
-    public function setMotivoId(?motivoConsulta $motivo_id): self
+    public function setMotivoId(?motivoConsulta $motivo): self
     {
-        $this->motivo_id = $motivo_id;
+        $this->motivo = $motivo;
 
         return $this;
     }
 
-    public function getDerivacionId(): ?institucion
+    public function getDerivacionId()
     {
-        return $this->derivacion_id;
+        return $this->derivacion;
     }
 
-    public function setDerivacionId(?institucion $derivacion_id): self
+    public function setDerivacionId(?institucion $derivacion): self
     {
-        $this->derivacion_id = $derivacion_id;
+        $this->derivacion = $derivacion;
 
         return $this;
     }
@@ -171,26 +171,26 @@ class Consulta
         return $this;
     }
 
-    public function getTratamientoFarmacologicoId(): ?tratamientoFarmacologico
+    public function getTratamientoFarmacologicoId()
     {
-        return $this->tratamiento_farmacologico_id;
+        return $this->tratamiento_farmacologico;
     }
 
-    public function setTratamientoFarmacologicoId(?tratamientoFarmacologico $tratamiento_farmacologico_id): self
+    public function setTratamientoFarmacologicoId(?tratamientoFarmacologico $tratamiento_farmacologico): self
     {
-        $this->tratamiento_farmacologico_id = $tratamiento_farmacologico_id;
+        $this->tratamiento_farmacologico = $tratamiento_farmacologico;
 
         return $this;
     }
 
-    public function getAcompanamientoId(): ?acompanamiento
+    public function getAcompanamientoId()
     {
-        return $this->acompanamiento_id;
+        return $this->acompanamiento;
     }
 
-    public function setAcompanamientoId(?acompanamiento $acompanamiento_id): self
+    public function setAcompanamientoId(?acompanamiento $acompanamiento): self
     {
-        $this->acompanamiento_id = $acompanamiento_id;
+        $this->acompanamiento = $acompanamiento;
 
         return $this;
     }

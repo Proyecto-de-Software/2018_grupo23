@@ -57,7 +57,7 @@ class Paciente
      * @ORM\ManyToOne(targetEntity="App\Entity\genero")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $genero_id;
+    private $genero;
 
     /**
      * @ORM\Column(type="boolean")
@@ -95,7 +95,7 @@ class Paciente
     private $partido_id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Consulta", mappedBy="paciente_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Consulta", mappedBy="paciente", orphanRemoval=true)
      */
     private $consultas;
 
@@ -193,14 +193,14 @@ class Paciente
         return $this;
     }
 
-    public function getGeneroId(): ?genero
+    public function getGeneroId()
     {
-        return $this->genero_id;
+        return $this->genero;
     }
 
-    public function setGeneroId(?genero $genero_id): self
+    public function setGeneroId(?genero $genero): self
     {
-        $this->genero_id = $genero_id;
+        $this->genero = $genero;
 
         return $this;
     }
