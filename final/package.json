@@ -17,9 +17,13 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "chart.js": "^2.8.0",
     "copy-webpack-plugin": "^5.0.3",
     "font-awesome": "^4.7.0",
+    "html2canvas": "^1.0.0-rc.1",
+    "jspdf": "^1.5.3",
     "vee-validate": "^2.2.7",
+    "vue-chartjs": "^3.4.2",
     "vue-good-table": "^2.16.4",
     "vue-router": "^3.0.6",
     "vue-sweetalert2": "^2.0.5"

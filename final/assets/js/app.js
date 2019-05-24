@@ -36,7 +36,7 @@ import Barra from './components/Barra.vue' /*lo mismo aca srry*/
 import Login from './components/Login.vue'
 import Config from './components/Config.vue'
 import UserIndex from './components/Users/UserIndex.vue'
-// import ReportsIndex from './components/Reports/ReportsIndex.vue'
+import ReportsIndex from './components/Reports/ReportsIndex.vue'
 
 /****************Ruteo *************************************** */
 /** no olvidar registrar el componente abajo del todo en VUE */
@@ -49,7 +49,7 @@ const routes = [
   //{ path: '/app/paciente', component: PatientIndex},
   { path: '/app/config', component: Config},
   { path: '/app/usuario', component: UserIndex},
-  // { path: '/app/reportes', component: ReportsIndex },
+  { path: '/app/reportes', component: ReportsIndex },
   { path: '*', redirect: '/' }
 ]
 
@@ -132,7 +132,7 @@ Vue.mixin({
         await axios.get(url).then( (response) => {
           axios.defaults.headers.common["Authorization"] = auth;
           info = response.data;
-        }).catch((error) => { 
+        }).catch((error) => {
           axios.defaults.headers.common["Authorization"] = auth;
           info = error;
          });
@@ -212,5 +212,5 @@ watch: {
     }
   }
 },
-  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex }
+  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex }
 });

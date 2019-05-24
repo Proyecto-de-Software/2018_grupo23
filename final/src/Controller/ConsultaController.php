@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\FOSRestController;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 
 
@@ -23,7 +24,7 @@ use Swagger\Annotations as SWG;
 * @Route("/consulta")
 */
 
-class ConsultaController extends AbstractController
+class ConsultaController extends FOSRestController
 {
 
     public function index()
@@ -35,39 +36,39 @@ class ConsultaController extends AbstractController
 
 
     /**
-     *@Route("/consulta/reportes/motivo", name="reporte_consulta_motivo", methods={"GET"})
+     *@Route("/reportes/motivo", name="reporte_consulta_motivo", methods={"GET"})
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="Consulta")
      */
-    public function viewAttentionsByReason(): JsonResponse
+    public function viewAttentionsByReason(): Response
     {
+      $serializer = $this->get('jms_serializer');
       $attentions = $this->getDoctrine()->getRepository(Consulta::class)->findByReason();
-      $response = $this->serializer->serialize($attentions, 'json');
-      return new JsonResponse($response);
+      return new Response($serializer->serialize($attentions, "json"));
     }
 
     /**
-     *@Route("/consulta/reportes/genero", name="reporte_consulta_genero", methods={"GET"})
+     *@Route("/reportes/genero", name="reporte_consulta_genero", methods={"GET"})
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="Consulta")
      */
-    public function viewAttentionsByGenre(): JsonResponse
+    public function viewAttentionsByGenre(): Response
     {
+      $serializer = $this->get('jms_serializer');
       $attentions = $this->getDoctrine()->getRepository(Consulta::class)->findByGenre();
-      $response = $this->serializer->serialize($attentions, 'json');
-      return new JsonResponse($response);
+      return new Response($serializer->serialize($attentions, "json"));
     }
 
     /**
-     *@Route("/consulta/reportes/localidad", name="reporte_consulta_localidad", methods={"GET"})
+     *@Route("/reportes/localidad", name="reporte_consulta_localidad", methods={"GET"})
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="Consulta")
      */
-    public function viewAttentionsByLocation(): JsonResponse
+    public function viewAttentionsByLocation(): Response
     {
+      $serializer = $this->get('jms_serializer');
       $attentions = $this->getDoctrine()->getRepository(Consulta::class)->findByLocation();
-      $response = $this->serializer->serialize($attentions, 'json');
-      return new JsonResponse($response);
+      return new Response($serializer->serialize($attentions, "json"));
     }
 
 }

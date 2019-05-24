@@ -17,7 +17,7 @@ class Consulta
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\paciente", inversedBy="consultas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Paciente", inversedBy="consultas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $paciente;
@@ -28,13 +28,13 @@ class Consulta
     private $fecha;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\motivoConsulta")
+     * @ORM\ManyToOne(targetEntity="App\Entity\MotivoConsulta")
      * @ORM\JoinColumn(nullable=false)
      */
     private $motivo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\institucion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Institucion")
      */
     private $derivacion;
 
@@ -59,13 +59,13 @@ class Consulta
     private $observaciones;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\tratamientoFarmacologico")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TratamientoFarmacologico")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tratamiento_farmacologico;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\acompanamiento")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Acompanamiento")
      * @ORM\JoinColumn(nullable=false)
      */
     private $acompanamiento;

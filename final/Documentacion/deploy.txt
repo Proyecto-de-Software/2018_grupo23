@@ -57,3 +57,9 @@ Los componentes de VUE se encuentran en la carpeta assets\js\components y el mai
 Se integra VUE al sistema a travez de twig, se ven las llamdas a los componentes de twig en templates\default\index.html.twig y el que renderiza esta vista es src\Controller\DefaultController.php
 Para instalar cualquier paquete de VUE necesario utilizar yarn add , si quieren buscar el comando exacto pueden usar el buscador de paquetes de yarn en https://yarnpkg.com/lang/en/
 Para debugear el back utilizar el comando dd(parametro); dd() muestra cualquier parámetro por el navegador y además ejecuta un die() para que no continúe la ejecución.
+
+7- Dependencias que hay que instalar
+
+yarn add vue-chartjs chart.js
+yarn add jspdf
+yarn add html2canvas

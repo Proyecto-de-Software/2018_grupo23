@@ -78,20 +78,29 @@ export default {
             rows: []
           },
           loaded: false,
-          isEmptyData: false
+          isEmptyData: false,
+          locations: []
     }
   },
+  created() {
+    this.loadLocationsFromApi()
+  },
   methods: {
+    loadLocationsFromApi() {
+      this.makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad')
+      .then(response => this.locations = response)
+      .catch(error => console.log(error))
+    },
     getAttentionsBy(criteriaStr) {
       this.loaded = false;
       axios.
        get('http://localhost:8000/consulta/reportes/' + criteriaStr)
        .then(response => {
-                           var result = JSON.parse(response.data);
+                           var result = response.data;
                            if (result.length > 0) {
                              this.tabledata.heading = criteriaStr.charAt(0).toUpperCase() + criteriaStr.slice(1)
                              this.removeChartAndTableData();
-                             this.addChartAndTableData(result);
+                             this.addChartAndTableData(result, criteriaStr);
                              this.loaded = true
                            } else {
                              this.isEmptyData = true
@@ -100,8 +109,15 @@ export default {
         )
        .catch(error => console.log(error))
     },
-    addChartAndTableData(data) {
+    getLocationName(locationId) {
+      var index = this.locations.findIndex(loc => loc.id == locationId)
+      return this.locations[index].nombre
+    },
+    addChartAndTableData(data, criteria) {
       for (var i = 0; i < data.length; i++) {
+        if (criteria == 'localidad') {
+          data[i].nombre = this.getLocationName(data[i].id)
+        }
         this.chartdata.labels.push(data[i].nombre);
         this.tabledata.rows.push({ label: data[i].nombre, total: data[i].cant })
         this.chartdata.datasets.forEach((dataset) => {
