@@ -26,7 +26,7 @@
                             <router-link class="navbar-item" to="app/usuario">Usuarios</router-link>
                             <router-link class="navbar-item" to="app/reportes">Reportes</router-link>
                             <hr class="navbar-divider">
-                            <router-link class="navbar-item" to="app/roles_y_permisos">Roles y permisos</router-link>
+                            <router-link class="navbar-item" to="app/roles">Roles y permisos</router-link>
                             <router-link class="navbar-item" to="app/config">Configuración</router-link>
                         </div>
 
@@ -46,7 +46,7 @@
                 <div class="navbar-end" v-else>
                     <router-link class="navbar-item" to="app/login">Ingresar</router-link>
                 </div>
-                
+
             </div>
     </nav>
 </template>
