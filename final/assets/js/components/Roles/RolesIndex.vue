@@ -14,8 +14,8 @@
                styleClass="vgt-table bordered">
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
-                  <button type="button" class="button is-info is-small is-spaced" title="Editar" @click="showEditRoleModal(props.row)">Editar</button>
-                  <button type="button" class="button is-info is-small is-spaced" title="Ver" @click="showViewRoleModal(props.row)">Ver</button>
+                  <button type="button" class="button is-info is-small is-spaced" title="Editar" @click="showEditAndViewRoleModal(props.row, 'Editar')">Editar</button>
+                  <button type="button" class="button is-info is-small is-spaced" title="Ver" @click="showEditAndViewRoleModal(props.row, 'Ver')">Ver</button>
                 </span>
               </template>
             </vue-good-table>
@@ -27,13 +27,13 @@
 
 <script>
 import Vue from 'vue'
-import EditRoleModal from './EditRoleModal.vue'
-import ViewRoleModal from './ViewRoleModal.vue'
+import EditAndViewRoleModal from './EditAndViewRoleModal.vue'
 export default {
-  components: { EditRoleModal, ViewRoleModal },
+  components: { EditAndViewRoleModal },
   data() {
     return {
       appRoles: null,
+      appPerms: [],
       isLoading: true,
       columns: [
         {
@@ -50,6 +50,7 @@ export default {
   },
   created() {
     this.loadAppRoles()
+    this.loadAppPermissions()
   },
   methods: {
     loadAppRoles: function() {
@@ -63,18 +64,16 @@ export default {
           console.log(error)
         })
     },
-    showEditRoleModal(row) {
-      var ComponentClass = Vue.extend(EditRoleModal)
-      var instance = new ComponentClass({
-        propsData: { role: row, loadAppRoles: this.loadAppRoles }
-      })
-      instance.$mount()
-      this.$refs.container.appendChild(instance.$el)
+    loadAppPermissions() {
+      axios
+      .get('http://localhost:8000/role/permissions_all')
+      .then(response =>  this.appPerms = response.data)
+      .catch(error => console.log(error))
     },
-    showViewRoleModal(row) {
-      var ComponentClass = Vue.extend(ViewRoleModal)
+    showEditAndViewRoleModal(row, modalTitle) {
+      var ComponentClass = Vue.extend(EditAndViewRoleModal)
       var instance = new ComponentClass({
-        propsData: { role: row }
+        propsData: { role: row, loadAppRoles: this.loadAppRoles, appPerms: this.appPerms, title: modalTitle}
       })
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)

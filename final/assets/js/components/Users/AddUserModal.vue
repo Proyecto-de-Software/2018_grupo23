@@ -43,7 +43,7 @@
                   <p class="help">Debe tener entre 6 y 20 caracteres</p>
                 </div>
                 <div class="field">
-                  <label class="label roles-label">Qué roles desea asignarle? Si no asigna ninguno puede hacerlo en "editar"</label>
+                  <label class="label roles-label">Qué roles desea asignarle?</label>
                     <div class="control">
                         <div v-for="rol in roles">
                             <label>{{ rol.nombre.replace('ROLE_', '') }}</label>
@@ -154,34 +154,32 @@ export default {
   },
   created() {
     if (this.user) { //edit
-      this.userForm.lastName = this.user.last_name;
-      this.userForm.firstName = this.user.first_name;
-      this.userForm.email = this.user.email;
-      this.userForm.username = this.user.username;
+      this.userForm.lastName = this.user.last_name
+      this.userForm.firstName = this.user.first_name
+      this.userForm.email = this.user.email
+      this.userForm.username = this.user.username
       this.user.roles.forEach((role) => this.userForm.roles.push(role.nombre))
     }
   },
   methods: {
     close() {
       this.$destroy();
-      this.$el.parentNode.removeChild(this.$el);
+      this.$el.parentNode.removeChild(this.$el)
     },
     submit() {
       if (this.user) { //edit
         axios
         .post('http://localhost:8000/user/' + this.user.id + '/edit', this.userForm)
-        .then(response => { Vue.swal('El usuario fue actualizado', '', 'success');
-                            this.loadUsers(),
-                            this.close() })
+        .then(response =>  Vue.swal('El usuario fue actualizado', '', 'success'))
         .catch(error => Vue.swal('Se produjo un error', 'error'))
       } else { //new
         axios
         .post('http://localhost:8000/user/new', this.userForm)
-        .then(response => { Vue.swal('El usuario fue agregado', '', 'success');
-                            this.loadUsers();
-                            this.close() })
+        .then(response => Vue.swal('El usuario fue agregado', '', 'success'))
         .catch(error => console.log(error))
       }
+      this.loadUsers()
+      this.close()
     },
   }
 }

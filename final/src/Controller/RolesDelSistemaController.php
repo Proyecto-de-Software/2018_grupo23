@@ -35,4 +35,42 @@ class RolesDelSistemaController extends FOSRestController
       return new Response($serializer->serialize($roles, "json"));
     }
 
+    /**
+     *@Route("/permissions_all", name="permissions_all", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="RolesDelSistema")
+    */
+    public function getAppPermissions()
+    {
+      $serializer = $this->get('jms_serializer');
+      $perms = $this->getDoctrine()->getRepository(Permiso::class)->findAll();
+      return new Response($serializer->serialize($perms, "json"));
+    }
+
+    /**
+     *@Route("/{id}/edit", name="role_edit", methods={"POST"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="RolesDelSistema")
+     */
+     public function edit(Request $request, RolesDelSistema $role): Response
+     {
+       $entityManager = $this->getDoctrine()->getManager();
+       if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'rol_update']))) {
+         $data = json_decode($request->getContent(), true);
+         foreach ($role->getPermisos() as $permiso) {
+           if ( !in_array($permiso->getNombre(), $data) ) {
+             $role->removePermiso($permiso);
+           }
+         }
+         foreach ($data as $perm) {
+           $role->addPermiso($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => $perm]));
+         }
+         $entityManager->persist($role);
+         $entityManager->flush();
+         return new Response("Rol editado");
+       } else {
+         throw new \Exception("Usted no tiene permiso para realizar esa acción", 1);
+       }
+     }
+
 }
