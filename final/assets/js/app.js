@@ -154,7 +154,7 @@ new Vue({
   },
   router,
 
-  mounted(){
+  created(){
     events.$emit('loading:start');
 
     axios.interceptors.response.use((response) => {  //metodo para redirigir a login cuando la sesion expira, siempre y cuando no este en el login
