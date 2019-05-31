@@ -16,6 +16,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
+
 /**
  * Class ApiController
  *
@@ -165,44 +168,22 @@ class ApiController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/test", name="test_test")
+     * @Rest\Post("/test", name="test_test")
+     * 
+     * @RequestParam(name="pepe", strict=true, nullable=false, allowBlank=false)
+     * @param ParamFetcher $pf
+     * 
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="Test")
      */
-    public function testRoute(){
+    public function testRoute(ParamFetcher $pf){
         $serializer = $this->get('jms_serializer');
-        $em = $this->getDoctrine()->getManager();
-        $emu = $this->getDoctrine()->getRepository(User::class);
-        /*
-        $emp = $this->getDoctrine()->getRepository(Permiso::class);
-        $permiso = $emp->findOneBy(
-            ['nombre' => 'paciente_index']
-        );
-
-        $emr = $this->getDoctrine()->getRepository(RolesDelSistema::class);
-        $ro = $emr->findOneBy(
-            ['nombre' => 'ROLE_ADMINISTRADOR']
-        );
 
 
-
-        $ro->addPermiso($permiso);
-        */
-
-        $u = $emu->findOneBy(
-            ['id' => '1']
-        );
-
-        //$u->setRoles(["ROLE_ADMINISTRADOR"]);
-
-        //$em->persist($u);
-        //$em->flush();
-
-        //dd($user->hasPermit($this->getDoctrine()->getRepository(Permiso::class)->findOneBy(['nombre' => 'paciente_index'])));
+        dd($pf->get('pepe'));
 
         $response = [
             'code' => 200,
-            'data' => $u
         ];
  
         return new Response($serializer->serialize($response, "json"));
