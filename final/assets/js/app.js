@@ -200,6 +200,12 @@ new Vue({
               window.location = 'app/login';
           });
       } else {
+          if( 400 === error.response.status ||
+              403 === error.response.status ||
+              404 === error.response.status ||
+              500 === error.response.status){
+                events.$emit('alert:error', error.response.data);
+          }
           return Promise.reject(error);
       }
     },
