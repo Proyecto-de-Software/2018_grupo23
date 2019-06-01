@@ -51,10 +51,17 @@ class UserController extends FOSRestController
         foreach($users as $u){
             $this->getPermisos($u);
             }
+<<<<<<< HEAD
+        return new Response($serializer->serialize($users, "json"), 200);
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
+=======
         return new Response($serializer->serialize($users, "json"));
       } else {
          throw new \Exception("No tienes permiso para realizar esa acción");
        }
+>>>>>>> 533f3cf3ee7d9060a8f845d382f9109ef47a129e
     }
 
     /**
@@ -73,7 +80,7 @@ class UserController extends FOSRestController
     public function new(Request $request, ParamFetcher $pf): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
-      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_new']))) {
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_new']))) {
         $user = new User();
         $user->setFirstName($pf->get('firstName'));
         $user->setLastName($pf->get('lastName'));
@@ -87,10 +94,10 @@ class UserController extends FOSRestController
         }
         $entityManager->persist($user);
         $entityManager->flush();
-        return new Response('Usuario agregado');
-      // } else {
-      //   throw new \Exception("No tienes permiso para realizar esa acción");
-      // }
+        return new Response('Usuario agregado', 200);
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
     }
 
     /**
@@ -110,7 +117,7 @@ class UserController extends FOSRestController
     public function edit(Request $request, User $user, ParamFetcher $pf): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
-      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
         $serializer = $this->get('jms_serializer');
         if ($pf->get('passHasBeenModified')) {
           if ( !empty($pf->get('oldPass')) && !empty($pf->get('newPass')) && !empty($pf->get('repeatNewPass')) ) {
@@ -119,13 +126,13 @@ class UserController extends FOSRestController
               if ( $encoderService->isPasswordValid($user, $pf->get('oldPass')) ) {
                 $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
               } else {
-                throw new \Exception("La contraseña actual ingresada no es correcta", 1);
+                return new Response("La contraseña actual ingresada no es correcta", 400);
               }
             } else {
-              throw new \Exception("Contraseña y repetir contraseña no coinciden", 1);
+              return new Response("Contraseña y repetir contraseña no coinciden", 400);
             }
           } else {
-            throw new \Exception("Faltó completar alguno de los campos de contraseña", 1);
+            return new Response("Faltó completar alguno de los campos de contraseña", 400);
           }
         }
         $user->setFirstName($pf->get('firstName'));
@@ -135,10 +142,10 @@ class UserController extends FOSRestController
         $user->setRoles($pf->get('roles'));
         $entityManager->persist($user);
         $entityManager->flush();
-        return new Response('Usuario editado');
-      // } else {
-      //   throw new \Exception("No tienes permiso para realizar esa acción");
-      // }
+        return new Response('Usuario editado', 200);
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
       }
 
     /**
@@ -149,17 +156,17 @@ class UserController extends FOSRestController
     public function delete(Request $request, User $user): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
-      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_destroy']))) {
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_destroy']))) {
         if ( $this->getUser()->getId() != $user->getId() ) { //no es él mismo
           $entityManager->remove($user);
           $entityManager->flush();
         } else {
-          throw new \Exception("No puedes bloquear a ese usuario");
+          return new Response("No puedes bloquear a ese usuario", 400);
         }
-      // } else {
-      //   throw new \Exception("No tienes permiso para realizar esa acción");
-      // }
-      return new Response('Usuario eliminado');
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
+      return new Response('Usuario eliminado', 200);
     }
 
     /**
@@ -170,7 +177,7 @@ class UserController extends FOSRestController
     public function editState(Request $request, User $user): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
-      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
         if ( $this->getUser()->getId() != $user->getId() ) { //no es él mismo
           $currentState = $user->getActivo();
           $newState = ($currentState == 1 ? 0 : 1);
@@ -178,12 +185,13 @@ class UserController extends FOSRestController
           $entityManager->persist($user);
           $entityManager->flush();
         } else {
-          throw new \Exception("No puedes bloquear a ese usuario");
+          return new Response("No puedes bloquear a ese usuario", 400);
         }
-        return new Response('Usuario bloqueado/desbloqueado');
-      // } else {
-      //   throw new \Exception("No tienes permiso para realizar esa acción");
-      // }
+        $msg = $currentState == 1 ? 'bloqueado' : 'desbloqueado';
+        return new Response('Usuario ' . $msg, 200);
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
     }
 
     //agrega los permisos a cada rol del usuario

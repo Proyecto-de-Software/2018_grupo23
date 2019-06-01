@@ -14,8 +14,8 @@
                styleClass="vgt-table bordered">
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
-                  <button type="button" class="button is-info is-small is-spaced" title="Editar" @click="showEditAndViewRoleModal(props.row, 'Editar')">Editar</button>
-                  <button type="button" class="button is-info is-small is-spaced" title="Ver" @click="showEditAndViewRoleModal(props.row, 'Ver')">Ver</button>
+                  <button v-if="loggedUser.permisos.includes('rol_update')" type="button" class="button is-info is-small is-spaced" title="Editar" @click="showEditAndViewRoleModal(props.row, 'Editar')">Editar</button>
+                  <button v-if="loggedUser.permisos.includes('rol_show')" type="button" class="button is-info is-small is-spaced" title="Ver" @click="showEditAndViewRoleModal(props.row, 'Ver')">Ver</button>
                 </span>
               </template>
             </vue-good-table>
@@ -55,7 +55,7 @@ export default {
   methods: {
     loadAppRoles: function() {
       axios
-        .get('http://localhost:8000/role/index/')
+        .post('http://localhost:8000/role/index', { perm: false })
         .then(response => {
           this.appRoles = response.data
           this.isLoading = false

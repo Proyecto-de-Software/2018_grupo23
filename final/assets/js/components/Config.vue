@@ -103,7 +103,7 @@
       </div>
     </div>
     <div class="field is-grouped is-grouped-centered">
-      <button type="submit" class="button is-success" @click="submit">Guardar cambios</button>
+      <button v-if="loggedUser.permisos.includes('configuracion_update')" type="submit" class="button is-success" @click="submit">Guardar cambios</button>
       <button type="button" class="button is-light" @click="cancel">Cancelar</button>
     </div>
   </div>
