@@ -294,7 +294,7 @@ class User implements UserInterface
         $ok = false;
         $rs = $this->getRoles();
         $i = 0;
-        while(!$ok || sizeof($rs) > $i){
+        while(!$ok && sizeof($rs) > $i){
             $ok = $permit->hasRole($rs[$i]);
             $i++;
         }

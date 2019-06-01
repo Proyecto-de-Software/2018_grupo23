@@ -24,7 +24,7 @@ class Permiso
     private $nombre;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\RolesDelSistema", inversedBy="permisos")
+     * @ORM\ManyToMany(targetEntity="App\Entity\RolesDelSistema", inversedBy="permisos", fetch="EAGER")
      */
     private $roles;
 
@@ -79,9 +79,9 @@ class Permiso
     public function hasRole($rol_name): bool
     {  
         $ok = false;
-        $rs = $this->getRoles();
+        $rs = $this->getRoles()->toArray();
         $i = 0;
-        while(!$ok || sizeof($rs) > $i){
+        while(!$ok && sizeof($rs) > $i){
             $r = $rs[$i];
             $ok = $r->getNombre() === $rol_name;
             $i++;
