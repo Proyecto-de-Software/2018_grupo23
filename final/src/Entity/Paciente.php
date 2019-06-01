@@ -54,7 +54,7 @@ class Paciente
     private $domicilio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\genero")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Genero")
      * @ORM\JoinColumn(nullable=false)
      */
     private $genero;
