@@ -95,8 +95,12 @@ export default {
     };
   },
   created() {
-    this.loadDocTypes()
     this.loadPatients()
+    this.loadPartidos();
+    this.loadRegionesSanitarias();
+    this.loadLocalidades();
+    this.loadDocTypes();
+    this.loadObrasSociales();
     
   },
   methods: {
@@ -145,13 +149,11 @@ export default {
       var instance = new ComponentClass({
         propsData: { 
           patient: patientData, 
-          loadPatients: this.loadPatients,
-          title: modalTitle,
-          loadPartidos: this.loadPartidos,
-          loadRegionesSanitarias: this.loadRegionesSanitarias,
-          loadLocalidades: this.loadLocalidades,
-          loadDocTypes: this.loadDocTypes,
-          loadObrasSociales: this.loadObrasSociales,
+          partidos: this.partidos,
+          regionesSanitarias: this.regionesSanitarias,
+          localidades: this.localidades,
+          docTypes: this.docTypes,
+          obrasSociales: this.obrasSociales,
           getFormattedDate: this.getFormattedDate,
           getPartido: this.getPartido,
           getRegionSanitaria: this.getRegionSanitaria,
@@ -168,11 +170,6 @@ export default {
       var instance = new ComponentClass({
         propsData: { 
           patient: patientData, 
-          loadPartidos: this.loadPartidos,
-          loadRegionesSanitarias: this.loadRegionesSanitarias,
-          loadLocalidades: this.loadLocalidades,
-          loadDocTypes: this.loadDocTypes,
-          loadObrasSociales: this.loadObrasSociales,
           getFormattedDate: this.getFormattedDate,
           getPartido: this.getPartido,
           getRegionSanitaria: this.getRegionSanitaria,

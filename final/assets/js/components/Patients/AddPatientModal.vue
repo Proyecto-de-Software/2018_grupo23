@@ -37,9 +37,11 @@
                 </div>
                 <div class="field">
                   <label class="label">Partido</label>
-                  <div class="control">
-                    <input type="text" class="input" v-model="patientForm.partidoId">
-                  </div>
+                  select v-model="partidoSelected">
+                    <option v-for="partido in partidos" :value="partido.nombre">
+                      {{ partido.nombre }}
+                    </option>
+                  </select>
                 </div>
                 <div class="field">
                   <label class="label">Region sanitaria</label>
@@ -121,11 +123,11 @@ export default {
     loadPatients: Function,
     patient: Object,
     title: String,
-    loadPartidos: Function,
-    loadRegionesSanitarias: Function,
-    loadLocalidades: Function,
-    loadDocTypes: Function,
-    loadObrasSociales: Function,
+    partidos: Array,
+    regionesSanitarias: Array,
+    localidades: Array,
+    docTypes: Array,
+    obrasSociales: Array,
     getFormattedDate: Function,
     getPartido: Function,
     getRegionSanitaria: Function,
@@ -157,11 +159,6 @@ export default {
     }
   },
   created() {
-    this.loadPartidos();
-    this.loadRegionesSanitarias();
-    this.loadLocalidades();
-    this.loadDocTypes();
-    this.loadObrasSociales();
     if (this.patient != null) { //estoy en edición
       this.patientForm.apellido = this.patient.apellido;
       this.patientForm.nombre = this.patient.nombre;

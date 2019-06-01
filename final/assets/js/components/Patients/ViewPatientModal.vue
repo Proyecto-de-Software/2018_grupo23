@@ -77,11 +77,6 @@
 export default {
   props: {
     patient: Object,
-    loadPartidos: Function,
-    loadRegionesSanitarias: Function,
-    loadLocalidades: Function,
-    loadDocTypes: Function,
-    loadObrasSociales: Function,
     getFormattedDate: Function,
     getPartido: Function,
     getRegionSanitaria: Function,
@@ -91,11 +86,6 @@ export default {
     
   },
   created(){
-    this.loadPartidos();
-    this.loadRegionesSanitarias();
-    this.loadLocalidades();
-    this.loadDocTypes();
-    this.loadObrasSociales();
   },
   methods: {
     close() {
