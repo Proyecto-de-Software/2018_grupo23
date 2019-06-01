@@ -38,6 +38,7 @@ import Config from './components/Config.vue'
 import UserIndex from './components/Users/UserIndex.vue'
 import ReportsIndex from './components/Reports/ReportsIndex.vue'
 import RolesIndex from './components/Roles/RolesIndex.vue'
+import PatientIndex from './components/Patients/PatientIndex.vue'
 
 /****************Ruteo *************************************** */
 /** no olvidar registrar el componente abajo del todo en VUE */
@@ -52,6 +53,7 @@ const routes = [
   { path: '/app/usuario', component: UserIndex},
   { path: '/app/reportes', component: ReportsIndex },
   { path: '/app/roles', component: RolesIndex },
+  { path: '/app/paciente', component: PatientIndex},
   { path: '*', redirect: '/' }
 ]
 
@@ -214,5 +216,5 @@ watch: {
     }
   }
 },
-  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex }
+  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex }
 });
