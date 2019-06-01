@@ -204,7 +204,11 @@ new Vue({
               403 === error.response.status ||
               404 === error.response.status ||
               500 === error.response.status){
-                events.$emit('alert:error', error.response.data);
+                if(error.response.data.length > 300){
+                  events.$emit('alert:error', "Se produjo una violacion en los tipos de parametros");
+                }else{
+                  events.$emit('alert:error', error.response.data);
+                }
           }
           return Promise.reject(error);
       }
