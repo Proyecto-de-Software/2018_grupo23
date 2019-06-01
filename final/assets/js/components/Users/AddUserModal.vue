@@ -102,7 +102,8 @@
                         </section>
                         <footer class="modal-card-foot">
                           <button type="button" class="button is-success" @click="{ userForm.passHasBeenModified = true; passInputModal = false }">Aceptar</button>
-                          <button type="button" class="button is-text" @click="{ userForm.passHasBeenModified = false; passInputModal = false }">Cancelar</button>
+                          <button type="button" class="button is-text"
+                                  @click="{ userForm.passHasBeenModified = false; userForm.oldPass = ''; userForm.newPass = ''; userForm.repeatNewPass = ''; passInputModal = false }">Cancelar</button>
                         </footer>
                       </div>
                   </div>
@@ -170,13 +171,13 @@ export default {
       if (this.user) { //edit
         axios
         .post('http://localhost:8000/user/' + this.user.id + '/edit', this.userForm)
-        .then(response =>  Vue.swal('El usuario fue actualizado', '', 'success'))
-        .catch(error => Vue.swal('Se produjo un error', 'error'))
+        // .then(response => Vue.swal('El usuario fue actualizado', '', 'success'))
+        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
       } else { //new
         axios
         .post('http://localhost:8000/user/new', this.userForm)
-        .then(response => Vue.swal('El usuario fue agregado', '', 'success'))
-        .catch(error => console.log(error))
+        // .then(response => console.log(response) )
+        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
       }
       this.loadUsers()
       this.close()

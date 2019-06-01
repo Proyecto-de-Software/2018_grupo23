@@ -28,6 +28,7 @@
               :search-options="{ enabled: true, placeholder: 'Buscar' }"
                styleClass="vgt-table bordered">
               <div slot="table-actions">
+                <!-- meter v-if="loggedUser.permisos.includes('nombre_permiso')" a los botones-->
                 <button type="button" class="button is-info" @click="showAddUserModal('Agregar Usuario')">Agregar Usuario</button>
               </div>
               <template slot="table-row" slot-scope="props">
@@ -35,7 +36,7 @@
                   <button type="button" class="button is-info is-small is-spaced" title="Editar" @click="showAddUserModal('Editar Usuario', props.row)">Editar</button>
                   <button type="button" class="button is-info is-small is-spaced" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
                   <span v-if="props.row.activo == 1">
-                    <button class="button_block button is-danger is-small is-spaced" @click="toggleUserState(props.row.id)" title="Bloquear">Bloquear</button>
+                    <button class="button_block button is-danger is-small is-spaced" @click="toggleUserState(props.row.id, props.row.activo)" title="Bloquear">Bloquear</button>
                   </span>
                   <span v-else>
                     <button class="button_unblock button is-info is-small is-spaced" @click="toggleUserState(props.row.id)" title="Desbloquear">Desbloquear</button>
@@ -95,31 +96,43 @@ export default {
       axios
         .get('http://localhost:8000/user/index/')
         .then(response => {
-          this.users = response.data
-          this.isLoading = false
+          if (response.status === 200) {
+            this.users = response.data
+            this.isLoading = false
+          }
         })
         .catch(error => {
-          Vue.swal('Error: no fue posible cargar a los usuarios del sistema', error.message, 'error')
+          Vue.swal('Error: no fue posible cargar a los usuarios del sistema', '', 'error')
         })
     },
     loadAppRoles() {
       axios
         .get('http://localhost:8000/role/index/')
         .then(response => {
-          this.appRoles = response.data
-          this.isLoading = false
+          if (response.status === 200) {
+            this.appRoles = response.data
+            this.isLoading = false
+          }
         })
         .catch(error => {
-          console.log(error)
+          Vue.swal('Error: no fue posible cargar los roles de usuario', '', 'error')
         })
     },
-    toggleUserState(id) {
+    toggleUserState(id, state) {
       axios
         .post('http://localhost:8000/user/' + id + '/edit_state')
-        .then(response => { this.loadUsers();
-                            Vue.swal('El usuario fue bloqueado', '', 'success')
-                          })
-        .catch(error => console.log(error.message))
+        .then(response => {
+          if (response.status === 200) {
+            this.loadUsers();
+            if (state == 1)
+              Vue.swal('El usuario fue bloqueado', '', 'success')
+              // events.$emit('alert:success', 'El usuario fue bloqueado')
+            else
+              Vue.swal('El usuario fue desbloqueado', '', 'success')
+              // events.$emit('alert:success', 'El usuario fue desbloqueado')
+          }
+          })
+        .catch(error => Vue.swal('Se produjo un error', '', 'error'))
     },
     deleteUser(userId) {
       Vue.swal({
@@ -136,11 +149,13 @@ export default {
           axios
             .delete('http://localhost:8000/user/' + userId)
             .then(response => {
-              this.loadUsers()
-              Vue.swal('El usuario fue eliminado', '', 'success')
-              })
+              if (response.status === 200) {
+                this.loadUsers()
+                Vue.swal('El usuario fue eliminado', '', 'success')
+              }
+            })
             .catch(error => {
-              Vue.swal('Se produjo un error', error.message, 'error')
+              Vue.swal('Se produjo un error', '', 'error')
           });
         }
       })
