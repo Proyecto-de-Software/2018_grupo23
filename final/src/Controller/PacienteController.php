@@ -36,6 +36,18 @@ class PacienteController extends FOSRestController
         $patients = $this->getDoctrine()->getRepository(Paciente::class)->findAll();
         return new Response($serializer->serialize($patients, "json"));
     }
+
+    /**
+     *@Route("/generos", name="paciente_generos", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Patient")
+     */
+    public function generos(Request $request)
+    {
+        $serializer = $this->get('jms_serializer');
+        $generos = $this->getDoctrine()->getRepository(Genero::class)->findAll();
+        return new Response($serializer->serialize($generos, "json"));
+    }
     
 
 }

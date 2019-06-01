@@ -50,6 +50,7 @@
 import Vue from 'vue';
 import AddPatientModal from './AddPatientModal.vue';
 import ViewPatientModal from './ViewPatientModal.vue';
+
 export default {
   components: { AddPatientModal, ViewPatientModal },
   data() {
@@ -69,6 +70,8 @@ export default {
       obrasSociales: Array,
       obrasSocialesLoading: true,
       appRoles: [],
+      generos: Array,
+      generosLoading: true,
       columns: [
         {
           label: 'Nombre completo',
@@ -95,7 +98,8 @@ export default {
     };
   },
   created() {
-    this.loadPatients()
+    this.loadPatients();
+    this.loadGeneros();
     this.loadPartidos();
     this.loadRegionesSanitarias();
     this.loadLocalidades();
@@ -114,6 +118,14 @@ export default {
         })
         .catch(error => {
           console.log(error)
+        })
+    },
+    loadGeneros: function(){
+      axios
+        .get('http://localhost:8000/paciente/generos')
+        .then(response =>{
+          this.generos= response.data
+          this.generosLoading = false
         })
     },
     deletePatient(patientId) {
@@ -149,6 +161,9 @@ export default {
       var instance = new ComponentClass({
         propsData: { 
           patient: patientData, 
+          loadPatients: this.loadPatients,
+          title: modalTitle,
+          generos: this.generos,
           partidos: this.partidos,
           regionesSanitarias: this.regionesSanitarias,
           localidades: this.localidades,
