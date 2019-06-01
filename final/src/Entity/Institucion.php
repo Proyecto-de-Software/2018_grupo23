@@ -42,7 +42,7 @@ class Institucion
     private $region_sanitaria_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\tipoInstitucion")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TipoInstitucion")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tipo_institucion;

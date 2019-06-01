@@ -37,9 +37,11 @@
                 </div>
                 <div class="field">
                   <label class="label">Partido</label>
-                  <div class="control">
-                    <input type="text" class="input" v-model="patientForm.partidoId">
-                  </div>
+                  select v-model="partidoSelected">
+                    <option v-for="partido in partidos" :value="partido.nombre">
+                      {{ partido.nombre }}
+                    </option>
+                  </select>
                 </div>
                 <div class="field">
                   <label class="label">Region sanitaria</label>
@@ -120,7 +122,18 @@ export default {
   props: {
     loadPatients: Function,
     patient: Object,
-    title: String
+    title: String,
+    partidos: Array,
+    regionesSanitarias: Array,
+    localidades: Array,
+    docTypes: Array,
+    obrasSociales: Array,
+    getFormattedDate: Function,
+    getPartido: Function,
+    getRegionSanitaria: Function,
+    getLocalidad: Function,
+    getDocType: Function,
+    getObraSocial: Function,
   },
   data() {
     return {
@@ -149,19 +162,19 @@ export default {
     if (this.patient != null) { //estoy en edición
       this.patientForm.apellido = this.patient.apellido;
       this.patientForm.nombre = this.patient.nombre;
-      this.patientForm.fechaNac = this.patient.fechaNac;
-      this.patientForm.lugarNac = this.patient.lugarNac;
-      this.patientForm.partidoId = this.patient.partidoId;
-      this.patientForm.regionSanitariaId = this.patient.regionSanitariaId;
-      this.patientForm.localidadId = this.patient.localidadId;
+      this.patientForm.fechaNac = new Date(this.patient.fecha_nac);
+      this.patientForm.lugarNac = this.patient.lugar_nac;
+      this.patientForm.partidoId = this.getPartido(this.patient);
+      this.patientForm.regionSanitariaId = this.getRegionSanitaria(this.patient);
+      this.patientForm.localidadId = this.getLocalidad(this.patient);
       this.patientForm.domicilio = this.patient.domicilio;
-      this.patientForm.genero = this.patient.genero;
-      this.patientForm.tieneDocumento = this.patient.tieneDocumento;
-      this.patientForm.tipoDocId = this.patient.tipoDocId;
+      this.patientForm.genero = this.patient.genero.nombre;
+      this.patientForm.tieneDocumento = this.patient.tiene_documento ? 'si' : 'no' ;
+      this.patientForm.tipoDocId = this.getDocType(this.patient);
       this.patientForm.numero = this.patient.numero;
       this.patientForm.tel = this.patient.tel;
-      this.patientForm.nroCarpeta = this.patient.nroCarpeta;
-      this.patientForm.obraSocialId = this.patient.obraSocialId;
+      this.patientForm.nroCarpeta = this.patient.nro_carpeta;
+      this.patientForm.obraSocialId = this.getObraSocial(this.patient);
     }
   },
   methods: {

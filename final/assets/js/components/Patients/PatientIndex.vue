@@ -56,7 +56,18 @@ export default {
     return {
       patients: null,
       docTypes: null,
+      docTypesLoading: true,
       isLoading: true,
+      partidos: Array,
+      partidosLoading: true,
+      regionesSanitarias: Array,
+      regionesLoading: true,
+      localidades: Array,
+      localidadesLoading: true,
+      docTypes: Array,
+      docTypesLoading: true,
+      obrasSociales: Array,
+      obrasSocialesLoading: true,
       appRoles: [],
       columns: [
         {
@@ -66,7 +77,7 @@ export default {
         },
         {
           label: 'Tipo',
-          field: this.patientDocType,
+          field: this.getDocType,
         },
         {
           label: 'Numero de documento',
@@ -85,26 +96,21 @@ export default {
   },
   created() {
     this.loadPatients()
-    this.loadDocTypes()
+    this.loadPartidos();
+    this.loadRegionesSanitarias();
+    this.loadLocalidades();
+    this.loadDocTypes();
+    this.loadObrasSociales();
+    
   },
   methods: {
     loadPatients: function() {
       axios
-        .get('http://localhost:8000/paciente/')
+        .get('http://localhost:8000/paciente/index')
         .then(response => {
-          this.patients = JSON.parse(response.data);
+          this.patients = response.data;
           console.log(this.patients)
           this.isLoading = false
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    loadDocTypes: function(){
-      axios
-        .get('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento')
-        .then(response => {
-          this.docTypes= response.data;
         })
         .catch(error => {
           console.log(error)
@@ -141,7 +147,20 @@ export default {
     showAddPatientModal(patientData, modalTitle) {
       var ComponentClass = Vue.extend(AddPatientModal);
       var instance = new ComponentClass({
-        propsData: { patient: patientData, loadPatients: this.loadPatients, title: modalTitle}
+        propsData: { 
+          patient: patientData, 
+          partidos: this.partidos,
+          regionesSanitarias: this.regionesSanitarias,
+          localidades: this.localidades,
+          docTypes: this.docTypes,
+          obrasSociales: this.obrasSociales,
+          getFormattedDate: this.getFormattedDate,
+          getPartido: this.getPartido,
+          getRegionSanitaria: this.getRegionSanitaria,
+          getLocalidad: this.getLocalidad,
+          getDocType: this.getDocType,
+          getObraSocial: this.getObraSocial,
+          }
       })
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)
@@ -149,7 +168,15 @@ export default {
     showViewPatientModal(patientData) {
       var ComponentClass = Vue.extend(ViewPatientModal);
       var instance = new ComponentClass({
-        propsData: { patient: patientData }
+        propsData: { 
+          patient: patientData, 
+          getFormattedDate: this.getFormattedDate,
+          getPartido: this.getPartido,
+          getRegionSanitaria: this.getRegionSanitaria,
+          getLocalidad: this.getLocalidad,
+          getDocType: this.getDocType,
+          getObraSocial: this.getObraSocial,
+          }
       })
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)
@@ -157,17 +184,126 @@ export default {
     patientCompleteName(patient) {
       return patient.apellido + ' ' + patient.nombre
     },
-    patientDocType(patient){
-      var index = this.docTypes.findIndex(obj => obj.id==patient.tipoDocId);
-      return this.docTypes[index].nombre
-    }
-      ,
     patientDocNum(patient){
       return patient.numero
     },
     patientClinicHistoryNumber(patient){
       return patient.id
+    },
+    loadPartidos(){
+      this
+        .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido')
+        .then(response => {
+          this.partidos=response;
+          this.partidosLoading=false;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getPartido(patient){
+      if(this.partidosLoading==false){
+      var index = this.partidos.findIndex(obj => obj.id==patient.partido_id)
+      }
+    if(index==undefined){
+      return 'partido no asignado'
     }
+    else{
+      return this.partidos[index].nombre
+    }
+    },
+loadRegionesSanitarias(){
+      this
+        .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria')
+        .then(response => {
+          this.regionesSanitarias=response;
+          this.regionesLoading=false;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+  getRegionSanitaria(patient){
+      if(this.regionesLoading==false){
+      var index = this.regionesSanitarias.findIndex(obj => obj.id==patient.region_sanitaria_id)
+      }
+    if(index==undefined){
+      return 'región no asignada'
+    }
+    else{
+      return this.regionesSanitarias[index].nombre
+    }
+    },
+ loadLocalidades(){
+      this
+        .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad')
+        .then(response => {
+          this.localidades=response;
+          this.localidadesLoading=false;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getLocalidad(patient){
+      if(this.localidadesLoading==false){
+      var index = this.localidades.findIndex(obj => obj.id==patient.localidad_id)
+      }
+    if(index==undefined){
+      return 'localidad no asignada'
+    }
+    else{
+      return this.localidades[index].nombre
+    }
+    },
+   loadDocTypes(){
+      this
+        .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento')
+        .then(response => {
+          this.docTypes= response;
+          this.docTypesLoading=false;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+     getDocType(patient){
+      if(this.docTypesLoading==false){
+      var index = this.docTypes.findIndex(obj => obj.id==patient.tipo_doc_id)
+      }
+    if(index==undefined){
+      return 'no asignado'
+    }
+    else{
+      return this.docTypes[index].nombre
+    }
+    },
+  loadObrasSociales(){
+      this
+        .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social')
+        .then(response => {
+          this.obrasSociales=response;
+          this.obrasSocialesLoading=false;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getObraSocial(patient){
+      if(this.obrasSocialesLoading==false){
+      var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
+      }
+    if(index==undefined){
+      return 'obra social no asignada'
+    }
+    else{
+      return this.obrasSociales[index].nombre
+    }
+    },
+  getFormattedDate(date) {
+    return [date.getDate(), date.getMonth()+1, date.getFullYear()]
+      .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+},
   },
   computed: {
     rowsPerPage() {
