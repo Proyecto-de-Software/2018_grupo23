@@ -7,6 +7,8 @@ use App\Entity\Permiso;
 use App\Entity\RolesDelSistema;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,83 +44,122 @@ class UserController extends FOSRestController
      */
     public function index(Request $request)
     {
+      $entityManager = $this->getDoctrine()->getManager();
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_index']))) {
         $serializer = $this->get('jms_serializer');
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         foreach($users as $u){
             $this->getPermisos($u);
             }
         return new Response($serializer->serialize($users, "json"));
+      // } else {
+      //   throw new \Exception("No tienes permiso para realizar esa acción");
+      // }
     }
 
     /**
-     *@Route("/new", name="usuario_new", methods={"POST"})
-     * @SWG\Response(response=200, description="")
+     * @Route("/new", name="usuario_new", methods={"POST"})
+     * @SWG\Response(response=200, description="User was created successfully")
      * @SWG\Tag(name="User")
+     * @RequestParam(name="firstName", strict=true, nullable=false, allowBlank=false, description="Nombre.")
+     * @RequestParam(name="lastName", strict=true, nullable=false, allowBlank=false, description="Apellido.")
+     * @RequestParam(name="username", strict=true, nullable=false, allowBlank=false, description="Nombre de usuario.")
+     * @RequestParam(name="email", strict=true, nullable=false, allowBlank=false, description="Email.")
+     * @RequestParam(name="roles", description="Roles.")
+     * @RequestParam(name="newPass", strict=true, nullable=false, allowBlank=false, description="Password.")
+     * @RequestParam(name="repeatNewPass", strict=true, nullable=false, allowBlank=false, description="rePassword.")
+     * @param ParamFetcher $pf
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ParamFetcher $pf): Response
     {
-      $dataJson = $request->getContent();
-      $data = json_decode($dataJson, true);
-      $user = new User();
-      $user->setFirstName($data['firstName']);
-      $user->setLastName($data['lastName']);
-      $user->setUsername($data['username']);
-      $user->setEmail($data['email']);
-      $user->setPassword($this->passEncoder->encodePassword($user, $data['newPass']));
-      $user->setRoles($data['roles']);
       $entityManager = $this->getDoctrine()->getManager();
-      $entityManager->persist($user);
-      $entityManager->flush();
-      return new Response('Usuario agregado');
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_new']))) {
+        $user = new User();
+        $user->setFirstName($pf->get('firstName'));
+        $user->setLastName($pf->get('lastName'));
+        $user->setUsername($pf->get('username'));
+        $user->setEmail($pf->get('email'));
+        $user->setRoles($pf->get('roles'));
+        if ( $pf->get('newPass') == $pf->get('repeatNewPass') ) {
+          $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
+        } else {
+          return new Response("Contraseña y repetir contraseña no coinciden", 403);
+        }
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new Response('Usuario agregado');
+      // } else {
+      //   throw new \Exception("No tienes permiso para realizar esa acción");
+      // }
     }
 
     /**
      *@Route("/{id}/edit", name="usuario_edit", methods={"POST"})
-     * @SWG\Response(response=200, description="")
-     * @SWG\Tag(name="User")
+     * @SWG\Response(response=200, description="User was edited successfully")
+     * @RequestParam(name="firstName", strict=true, nullable=false, allowBlank=false, description="Nombre.")
+     * @RequestParam(name="lastName", strict=true, nullable=false, allowBlank=false, description="Apellido.")
+     * @RequestParam(name="username", strict=true, nullable=false, allowBlank=false, description="Nombre de usuario.")
+     * @RequestParam(name="email", strict=true, nullable=false, allowBlank=false, description="Email.")
+     * @RequestParam(name="roles", description="Roles.")
+     * @RequestParam(name="oldPass", strict=true, nullable=true, allowBlank=true, description="oldPassword.")
+     * @RequestParam(name="newPass", strict=true, nullable=true, allowBlank=true, description="newPassword.")
+     * @RequestParam(name="repeatNewPass", strict=true, nullable=true, allowBlank=true, description="rePassword.")
+     * @RequestParam(name="passHasBeenModified", strict=true, default=false, nullable=false, allowBlank=false, description="passModified.")
+     * @param ParamFetcher $pf
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, ParamFetcher $pf): Response
     {
-      $dataJson = $request->getContent();
-      $data = json_decode($dataJson, true);
       $entityManager = $this->getDoctrine()->getManager();
-      $user->setFirstName($data['firstName']);
-      $user->setLastName($data['lastName']);
-      $user->setUsername($data['username']);
-      $user->setEmail($data['email']);
-      if ($data['passHasBeenModified']) {
-        if ( !empty($data['oldPass']) && !empty($data['newPass']) && !empty($data['repeatNewPass']) ) {
-          if ( $data['newPass'] == $data['repeatNewPass'] ) {
-            $encoderService = $this->container->get('security.password_encoder');
-            if ( $encoderService->isPasswordValid($user, strval($data['oldPass'])) ) {
-              $user->setPassword($this->passEncoder->encodePassword($user, strval($data['newPass'])));
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
+        $serializer = $this->get('jms_serializer');
+        if ($pf->get('passHasBeenModified')) {
+          if ( !empty($pf->get('oldPass')) && !empty($pf->get('newPass')) && !empty($pf->get('repeatNewPass')) ) {
+            if ( $pf->get('newPass') == $pf->get('repeatNewPass') ) {
+              $encoderService = $this->container->get('security.password_encoder');
+              if ( $encoderService->isPasswordValid($user, $pf->get('oldPass')) ) {
+                $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
+              } else {
+                throw new \Exception("La contraseña actual ingresada no es correcta", 1);
+              }
             } else {
-              throw new \Exception("La contraseña actual ingresada no es correcta", 1);
+              throw new \Exception("Contraseña y repetir contraseña no coinciden", 1);
             }
           } else {
-            throw new \Exception("Contraseña y repetir contraseña no coinciden", 1);
+            throw new \Exception("Faltó completar alguno de los campos de contraseña", 1);
           }
-        } else {
-          throw new \Exception("Faltó completar alguno de los campos de contraseña", 1);
         }
+        $user->setFirstName($pf->get('firstName'));
+        $user->setLastName($pf->get('lastName'));
+        $user->setUsername($pf->get('username'));
+        $user->setEmail($pf->get('email'));
+        $user->setRoles($pf->get('roles'));
+        $entityManager->persist($user);
+        $entityManager->flush();
+        return new Response('Usuario editado');
+      // } else {
+      //   throw new \Exception("No tienes permiso para realizar esa acción");
+      // }
       }
-      $user->setRoles($data['roles']);
-      $entityManager->persist($user);
-      $entityManager->flush();
-      return new Response('Usuario editado');
-    }
 
     /**
      *@Route("/{id}", name="usuario_delete", methods={"DELETE"})
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="User")
      */
-    public function delete(Request $request, User $usuario): Response
+    public function delete(Request $request, User $user): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($usuario);
-        $entityManager->flush();
-        return new Response('Usuario eliminado');
+      $entityManager = $this->getDoctrine()->getManager();
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_destroy']))) {
+        if ( $this->getUser()->getId() != $user->getId() ) { //no es él mismo
+          $entityManager->remove($user);
+          $entityManager->flush();
+        } else {
+          throw new \Exception("No puedes bloquear a ese usuario");
+        }
+      // } else {
+      //   throw new \Exception("No tienes permiso para realizar esa acción");
+      // }
+      return new Response('Usuario eliminado');
     }
 
     /**
@@ -127,15 +168,23 @@ class UserController extends FOSRestController
      * @SWG\Tag(name="User")
      */
     public function editState(Request $request, User $user): Response
-      {
-        $entityManager = $this->getDoctrine()->getManager();
-        $currentState = $user->getActivo();
-        $newState = ($currentState == 1 ? 0 : 1);
-        $user->setActivo($newState);
-        $entityManager->persist($user);
-        $entityManager->flush();
-        return new Response('okey');
-      }
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
+        if ( $this->getUser()->getId() != $user->getId() ) { //no es él mismo
+          $currentState = $user->getActivo();
+          $newState = ($currentState == 1 ? 0 : 1);
+          $user->setActivo($newState);
+          $entityManager->persist($user);
+          $entityManager->flush();
+        } else {
+          throw new \Exception("No puedes bloquear a ese usuario");
+        }
+        return new Response('Usuario bloqueado/desbloqueado');
+      // } else {
+      //   throw new \Exception("No tienes permiso para realizar esa acción");
+      // }
+    }
 
     //agrega los permisos a cada rol del usuario
     protected function getPermisos($u)

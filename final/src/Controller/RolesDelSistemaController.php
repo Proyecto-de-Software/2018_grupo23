@@ -30,9 +30,13 @@ class RolesDelSistemaController extends FOSRestController
     */
     public function index()
     {
-      $serializer = $this->get('jms_serializer');
-      $roles = $this->getDoctrine()->getRepository(RolesDelSistema::class)->findAll();
-      return new Response($serializer->serialize($roles, "json"));
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'rol_index']))) {
+        $serializer = $this->get('jms_serializer');
+        $roles = $this->getDoctrine()->getRepository(RolesDelSistema::class)->findAll();
+        return new Response($serializer->serialize($roles, "json"));
+      // } else {
+      //   throw new \Exception("Usted no tiene permiso para realizar esa acción", 1);
+      // }
     }
 
     /**
@@ -55,7 +59,7 @@ class RolesDelSistemaController extends FOSRestController
      public function edit(Request $request, RolesDelSistema $role): Response
      {
        $entityManager = $this->getDoctrine()->getManager();
-       if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'rol_update']))) {
+       // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'rol_update']))) {
          $data = json_decode($request->getContent(), true);
          foreach ($role->getPermisos() as $permiso) {
            if ( !in_array($permiso->getNombre(), $data) ) {
@@ -67,10 +71,10 @@ class RolesDelSistemaController extends FOSRestController
          }
          $entityManager->persist($role);
          $entityManager->flush();
-         return new Response("Rol editado");
-       } else {
-         throw new \Exception("Usted no tiene permiso para realizar esa acción", 1);
-       }
+         return new Response("Rol actualizado");
+       // } else {
+       //   throw new \Exception("Usted no tiene permiso para realizar esa acción", 1);
+       // }
      }
 
 }

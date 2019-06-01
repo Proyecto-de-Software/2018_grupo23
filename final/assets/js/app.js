@@ -202,6 +202,16 @@ new Vue({
               window.location = 'app/login';
           });
       } else {
+          if( 400 === error.response.status ||
+              403 === error.response.status ||
+              404 === error.response.status ||
+              500 === error.response.status){
+                if(error.response.data.length > 300){
+                  events.$emit('alert:error', "Se produjo una violacion en los tipos de parametros");
+                }else{
+                  events.$emit('alert:error', error.response.data);
+                }
+          }
           return Promise.reject(error);
       }
     },
