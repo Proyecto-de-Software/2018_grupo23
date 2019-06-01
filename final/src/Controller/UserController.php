@@ -45,16 +45,16 @@ class UserController extends FOSRestController
     public function index(Request $request)
     {
       $entityManager = $this->getDoctrine()->getManager();
-      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_index']))) {
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_index']))) {
         $serializer = $this->get('jms_serializer');
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         foreach($users as $u){
             $this->getPermisos($u);
             }
         return new Response($serializer->serialize($users, "json"));
-      // } else {
-      //   throw new \Exception("No tienes permiso para realizar esa acción");
-      // }
+      } else {
+         throw new \Exception("No tienes permiso para realizar esa acción");
+       }
     }
 
     /**
