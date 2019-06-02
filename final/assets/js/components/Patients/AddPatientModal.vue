@@ -207,17 +207,20 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
-      axios
-      .post('http://localhost:8000/paciente/new', this.patientForm)
-      .then(response => { this.$swal.fire(
-                            'El paciente fue agregado',
-                            '',
-                            'success'
-                          );
-                          this.loadPatients();
-                          this.close() })
-      .catch(error => console.log(error))
-    }
+      if (this.patient) { //edit
+        axios
+        .post('http://localhost:8000/paciente/' + this.patient.id + '/edit', this.patientForm)
+        // .then(response => Vue.swal('El paciente fue actualizado', '', 'success'))
+        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+      } else { //new
+        axios
+        .post('http://localhost:8000/paciente/new', this.patientForm)
+        // .then(response => console.log(response) )
+        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+      }
+      this.loadPatients()
+      this.close()
+    },
   }
 }
 </script>

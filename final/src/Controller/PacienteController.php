@@ -89,20 +89,21 @@ class PacienteController extends FOSRestController
         $paciente= new Paciente();
         $paciente->setApellido($pf->get('apellido'));
         $paciente->setNombre($pf->get('nombre'));
-        $paciente->setFechaNac($pf->get('fechaNac'));
+        $paciente->setFechaNac(new \DateTime('@'.strtotime($pf->get('fechaNac'))));
         $paciente->setLugarNac($pf->get('lugarNac'));
-        $paciente->setPartidoId($pf->get('partidoId'));
-        $paciente->setRegionSanitariaId($pf->get('regionSanitariaId'));
-        $paciente->setLocalidadId($pf->get('localidadId'));
+        $paciente->setPartidoId((int)$pf->get('partidoId'));
+        $paciente->setRegionSanitariaId((int)$pf->get('regionSanitariaId'));
+        $paciente->setLocalidadId((int)$pf->get('localidadId'));
         $paciente->setDomicilio($pf->get('domicilio'));
-        $paciente->setGenero($pf->get('genero'));
+        $genero=$entityManager->getRepository(Genero::class)->findOneBy(['id' => $pf->get('genero')]);
+        $paciente->setGeneroId($genero);
         $paciente->setTieneDocumento($pf->get('tieneDocumento'));
-        $paciente->setTipoDocId($pf->get('tipoDocId'));
+        $paciente->setTipoDocId((int)$pf->get('tipoDocId'));
         $paciente->setNumero($pf->get('numero'));
         $paciente->setTel($pf->get('tel'));
-        $paciente->setNroCarpeta('nroCarpeta');
-        $paciente->setObraSocialId('obraSocialId');
-        $entityManager->persist($user);
+        $paciente->setNroCarpeta((int)$pf->get('nroCarpeta'));
+        $paciente->setObraSocialId((int)'obraSocialId');
+        $entityManager->persist($paciente);
         $entityManager->flush();
         return new Response('Usuario agregado', 200);
         }
@@ -131,7 +132,8 @@ class PacienteController extends FOSRestController
         return $date<date('Y-m-d');
     }
     function checkDoc($doc){
-        return isEmpty($entityManager->getRepository(Paciente::class)->findOneBy(['numero' => $doc]));
+        $entityManager = $this->getDoctrine()->getManager();
+        return empty($entityManager->getRepository(Paciente::class)->findOneBy(['numero' => $doc]));
 
     }
     
