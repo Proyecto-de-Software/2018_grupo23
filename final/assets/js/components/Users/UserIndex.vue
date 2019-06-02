@@ -154,9 +154,11 @@ export default {
       })
     },
     showAddUserModal(modalTitle, userData = false) {
+      var allUserNames = this.users.map((user) => user.username)
+      var allUserEmails = this.users.map((user) => user.email)
       var ComponentClass = Vue.extend(AddUserModal);
       var instance = new ComponentClass({
-        propsData: { user: userData, roles: this.appRoles, loadUsers: this.loadUsers, title: modalTitle}
+        propsData: { user: userData, roles: this.appRoles, loadUsers: this.loadUsers, title: modalTitle, usersNames: allUserNames, usersEmails: allUserEmails}
       })
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)

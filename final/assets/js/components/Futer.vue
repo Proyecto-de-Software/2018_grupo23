@@ -1,7 +1,8 @@
 <template>
   <div>
     <footer class="footer">
-      <div class="content has-text-centered">
+      <div v-if="isLoading"></div>
+      <div v-else class="content has-text-centered">
           <p class="level-item"><strong>{{ config.titulo }}</strong></p>
           <p class="level-item">{{ config.descripcion }}</p>
           <p class="level-item">Contacto: {{ config.email }}</p>
@@ -13,7 +14,14 @@
 
 <script>
   export default {
-
+    data() {
+      return {
+        isLoading: true
+      }
+    },
+    mounted() {
+      events.$on('loading_config:finish', () => this.isLoading = false)
+    },
   }
 </script>
 

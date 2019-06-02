@@ -26,7 +26,9 @@
                 <div class="field">
                   <label class="label">Fecha de Nacimiento*</label>
                   <div class="control">
-                    <input type="date" class="input" v-model="patientForm.fechaNac" >
+                    <input type="date" class="input"
+                     :value="patientForm.fechaNac && patientForm.fechaNac.toISOString().split('T')[0]"
+                     @input="patientForm.fechaNac = $event.target.valueAsDate">
                   </div>
                 </div>
                 <div class="field">
@@ -37,27 +39,33 @@
                 </div>
                 <div class="field">
                   <label class="label">Partido</label>
-                  <select  v-model="patientForm.partidoId">
-                    <option v-for="partido in partidos" :value="partido.id" :selected="patientForm.partidoId == partido.id">
-                      {{ partido.nombre }}
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.partidoId" @change="onPartidoSelect($event)">
+                      <option v-for="partido in partidos" :value="partido.id" :selected="patientForm.partidoId == partido.id">
+                        {{ partido.nombre }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">Region sanitaria</label>
-                  <select v-model="patientForm.regionSanitariaId">
-                    <option v-for="region in regionesSanitarias" :value="region.id" :selected="patientForm.regionSanitariaId == region.id">
-                      {{ region.nombre }}
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.regionSanitariaId">
+                      <option v-for="region in regionesSanitarias" :value="region.id" :selected="patientForm.regionSanitariaId == region.id" :disabled="true">
+                        {{ region.nombre }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">Localidad</label>
-                 <select v-model="patientForm.localidadId">
-                    <option v-for="localidad in localidades" :value="localidad.id" :selected="patientForm.localidadId == localidad.id">
-                      {{ localidad.nombre }}
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.localidadId">
+                      <option v-for="localidad in localidades" :value="localidad.id" :selected="patientForm.localidadId == localidad.id">
+                        {{ localidad.nombre }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">Domicilio*</label>
@@ -67,30 +75,36 @@
                 </div>
                 <div class="field">
                   <label class="label">Género*</label>
-                 <select v-model="patientForm.genero">
-                    <option v-for="genero in generos" :value="genero.id" :selected="patientForm.genero == genero.id">
-                      {{ genero.nombre }}
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.genero">
+                      <option v-for="genero in generos" :value="genero.id" :selected="patientForm.genero == genero.id">
+                        {{ genero.nombre }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">¿Tiene en su poder un documento?*</label>
-                  <select v-model="patientForm.tieneDocumento">
-                    <option :value="1" :selected="patientForm.tieneDocumento == 0">
-                      Sí
-                    </option>
-                    <option :value="0" :selected="patientForm.tieneDocumento == 1">
-                      NO
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.tieneDocumento">
+                      <option :value="1" :selected="patientForm.tieneDocumento == 0">
+                        Sí
+                      </option>
+                      <option :value="0" :selected="patientForm.tieneDocumento == 1">
+                        NO
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">Tipo de documento*</label>
-                  <select v-model="patientForm.tipoDocId">
-                    <option v-for="docType in docTypes" :value="docType.id" :selected="patientForm.tipoDocId == docType.id">
-                      {{ docType.nombre }}
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.tipoDocId">
+                      <option v-for="docType in docTypes" :value="docType.id" :selected="patientForm.tipoDocId == docType.id">
+                        {{ docType.nombre }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">Número de documento*</label>
@@ -112,11 +126,13 @@
                 </div>
                 <div class="field">
                   <label class="label">Obra social</label>
-                  <select v-model="patientForm.obraSocialId">
-                    <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
-                      {{ obraSocial.nombre }}
-                    </option>
-                  </select>
+                  <div class="select">
+                    <select v-model="patientForm.obraSocialId">
+                      <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
+                        {{ obraSocial.nombre }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="field">
                   <label class="label">Historia Clínica</label>
@@ -124,7 +140,7 @@
                     <input type="text" class="input" v-model="patientForm.historiaClinica" readonly>
                   </div>
                 </div>
-                
+
                 <p>* campos obligatorios</p>
               </form>
             </div>
@@ -162,7 +178,7 @@ export default {
     return {
       isLoading: false,
       isReadOnly: false,
-    patientForm: {
+      patientForm: {
         apellido: '',
         nombre: '',
         fechaNac: '',
@@ -184,25 +200,29 @@ export default {
   },
   created() {
     if (this.patient != null) { //estoy en edición
-      this.patientForm.apellido = this.patient.apellido;
-      this.patientForm.nombre = this.patient.nombre;
-      this.patientForm.fechaNac = new Date(this.patient.fecha_nac);
-      this.patientForm.lugarNac = this.patient.lugar_nac;
-      this.patientForm.partidoId = this.patient.partido_id;
+      this.patientForm.apellido = this.patient.apellido
+      this.patientForm.nombre = this.patient.nombre
+      this.patientForm.fechaNac = new Date(this.patient.fecha_nac)
+      this.patientForm.lugarNac = this.patient.lugar_nac
+      this.patientForm.partidoId = this.patient.partido_id
       this.patientForm.regionSanitariaId = this.patient.region_sanitaria_id
-      this.patientForm.localidadId = this.patient.localidad_id;
-      this.patientForm.domicilio = this.patient.domicilio;
-      this.patientForm.genero = this.patient.genero.id;
-      this.patientForm.tieneDocumento = this.patient.tiene_documento;
-      this.patientForm.tipoDocId = this.patient.tipo_doc_id;
-      this.patientForm.numero = this.patient.numero;
-      this.patientForm.tel = this.patient.tel;
-      this.patientForm.nroCarpeta = this.patient.nro_carpeta;
-      this.patientForm.obraSocialId = this.patient.obra_social_id;
+      this.patientForm.localidadId = this.patient.localidad_id
+      this.patientForm.domicilio = this.patient.domicilio
+      this.patientForm.genero = this.patient.genero.id
+      this.patientForm.tieneDocumento = this.patient.tiene_documento
+      this.patientForm.tipoDocId = this.patient.tipo_doc_id
+      this.patientForm.numero = this.patient.numero
+      this.patientForm.tel = this.patient.tel
+      this.patientForm.nroCarpeta = this.patient.nro_carpeta
+      this.patientForm.obraSocialId = this.patient.obra_social_id
       this.patientForm.historiaClinica = this.patient.id
     }
   },
   methods: {
+    onPartidoSelect(event) {
+      var index = this.partidos.findIndex(partido => partido.id==event.target.value)
+      this.patientForm.regionSanitariaId = this.partidos[index]['region_sanitaria_id']
+    },
     close() {
       this.$destroy();
       this.$el.parentNode.removeChild(this.$el);
@@ -221,7 +241,7 @@ export default {
       }
       this.loadPatients()
       this.close()
-    },
+    }
   }
 }
 </script>

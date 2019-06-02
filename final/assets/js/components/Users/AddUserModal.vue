@@ -35,7 +35,7 @@
                 <div class="field">
                   <label class="label">Nombre de usuario*</label>
                   <div class="control">
-                    <input type="text" class="input" :class="{'is-danger': errors.has('nombre de usuario')}" name="nombre de usuario" v-model="userForm.username" v-validate="'required|alpha_num|min:6|max:20'">
+                    <input type="text" class="input" :class="{'is-danger': errors.has('nombre de usuario')}" name="nombre de usuario" v-model="userForm.username" v-validate="'required|alpha_num|min:6|max:20|usernameAlreadyExists'">
                     <span v-show="errors.has('nombre de usuario')" class="help is-danger">{{ errors.first('nombre de usuario') }}</span>
                   </div>
                   <p class="help">Debe tener entre 6 y 20 caracteres</p>
@@ -137,7 +137,9 @@ export default {
        type: [Object, Boolean],
        default: false
     },
-    title: String
+    title: String,
+    usersNames: Array,
+    usersEmails: Array
   },
   data() {
     return {

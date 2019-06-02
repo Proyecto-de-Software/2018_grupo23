@@ -2,8 +2,8 @@
   <div class="box">
     <section class="section">
       <div class="container" ref="container">
-          <div v-if="isLoading">
-            <h1 class="title">Cargando datos...</h1>
+          <div v-if="isLoading" class="has-text-centered">
+            <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
@@ -51,7 +51,6 @@ export default {
   created() {
     this.loadAppRoles()
     this.loadAppPermissions()
-    this.isLoading = false
   },
   methods: {
     loadAppRoles: function() {
@@ -62,7 +61,9 @@ export default {
     loadAppPermissions() {
       axios
       .get('http://localhost:8000/role/permissions_all')
-      .then(response => this.appPerms = response.data)
+      .then(response => { this.appPerms = response.data
+                          this.isLoading = false
+      })
     },
     showEditAndViewRoleModal(row, modalTitle) {
       var ComponentClass = Vue.extend(EditAndViewRoleModal)

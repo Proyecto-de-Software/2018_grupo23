@@ -1,10 +1,10 @@
 <template>
   <div>
       <div class="box">
-    <section class="section">
+      <section class="section">
       <div class="container" ref="container">
-          <div v-if="isLoading">
-            <h1 class="title">Cargando datos...</h1>
+          <div v-if="isLoading" class="has-text-centered">
+            <a class="button is-loading page-loading-button "></a>
           </div>
           <div v-else>
             <vue-good-table
@@ -33,9 +33,9 @@
               </div>
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
-                  <button type="button" class="button is-info" title="Editar" @click="showAddPatientModal(props.row, 'Editar Paciente')">Editar</button>
-                  <button type="button" class="button is-info" title="Ver" @click="showViewPatientModal(props.row)">Ver</button>
-                  <button class="button_delete button is-danger" title="Eliminar" @click="deletePatient(props.row.id)">Eliminar</button>
+                  <button type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddPatientModal(props.row, 'Editar Paciente')">Editar</button>
+                  <button type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewPatientModal(props.row)">Ver</button>
+                  <button class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deletePatient(props.row.id)">Eliminar</button>
                 </span>
               </template>
             </vue-good-table>
@@ -105,7 +105,7 @@ export default {
     this.loadLocalidades();
     this.loadDocTypes();
     this.loadObrasSociales();
-    
+
   },
   methods: {
     loadPatients: function() {
@@ -159,8 +159,8 @@ export default {
     showAddPatientModal(patientData, modalTitle) {
       var ComponentClass = Vue.extend(AddPatientModal);
       var instance = new ComponentClass({
-        propsData: { 
-          patient: patientData, 
+        propsData: {
+          patient: patientData,
           loadPatients: this.loadPatients,
           title: modalTitle,
           generos: this.generos,
@@ -183,8 +183,8 @@ export default {
     showViewPatientModal(patientData) {
       var ComponentClass = Vue.extend(ViewPatientModal);
       var instance = new ComponentClass({
-        propsData: { 
-          patient: patientData, 
+        propsData: {
+          patient: patientData,
           getFormattedDate: this.getFormattedDate,
           getPartido: this.getPartido,
           getRegionSanitaria: this.getRegionSanitaria,
