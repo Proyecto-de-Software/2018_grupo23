@@ -50,7 +50,11 @@ class UserController extends FOSRestController
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         foreach($users as $u){
             $this->getPermisos($u);
+<<<<<<< HEAD
         }
+=======
+            }
+>>>>>>> ec65c020f685f538c9b2145aba1ef901f92d312e
         return new Response($serializer->serialize($users, "json"), 200);
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
