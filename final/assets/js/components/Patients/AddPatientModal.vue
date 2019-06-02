@@ -74,13 +74,13 @@
                   </select>
                 </div>
                 <div class="field">
-                  <label class="label">Tiene en su poder un documento</label>
+                  <label class="label">¿Tiene en su poder un documento?*</label>
                   <select v-model="patientForm.tieneDocumento">
-                    <option :value=true :selected="patientForm.tieneDocumento == true">
-                      {{ Sí }}
+                    <option :value="1" :selected="patientForm.tieneDocumento == 0">
+                      Sí
                     </option>
-                    <option :value=false :selected="patientForm.tieneDocumento == false">
-                      {{ NO }}
+                    <option :value="0" :selected="patientForm.tieneDocumento == 1">
+                      NO
                     </option>
                   </select>
                 </div>
@@ -112,8 +112,16 @@
                 </div>
                 <div class="field">
                   <label class="label">Obra social</label>
+                  <select v-model="patientForm.obraSocialId">
+                    <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
+                      {{ obraSocial.nombre }}
+                    </option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label">Historia Clínica</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="patientForm.obraSocialId">
+                    <input type="text" class="input" v-model="patientForm.historiaClinica" readonly>
                   </div>
                 </div>
                 
@@ -169,6 +177,7 @@ export default {
         tel: '',
         nroCarpeta: '',
         obraSocialId: '',
+        historiaClinica: '',
       }
     }
   },
@@ -189,6 +198,7 @@ export default {
       this.patientForm.tel = this.patient.tel;
       this.patientForm.nroCarpeta = this.patient.nro_carpeta;
       this.patientForm.obraSocialId = this.patient.obra_social_id;
+      this.patientForm.historiaClinica = this.patient.id
     }
   },
   methods: {
