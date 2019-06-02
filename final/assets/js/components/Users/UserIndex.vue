@@ -2,8 +2,8 @@
   <div class="box">
     <section class="section">
       <div class="container" ref="container">
-          <div v-if="isLoading">
-            <h1 class="title">Cargando datos...</h1>
+          <div v-if="isLoading" class="has-text-centered">
+            <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
@@ -32,15 +32,15 @@
               </div>
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
-                  <button  v-if="loggedUser.permisos.includes('usuario_update')" type="button" class="button is-info is-small is-spaced" title="Editar" @click="showAddUserModal('Editar Usuario', props.row)">Editar</button>
-                  <button v-if="loggedUser.permisos.includes('usuario_show')" type="button" class="button is-info is-small is-spaced" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
+                  <button  v-if="loggedUser.permisos.includes('usuario_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddUserModal('Editar Usuario', props.row)">Editar</button>
+                  <button v-if="loggedUser.permisos.includes('usuario_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewUserModal(props.row)">Ver</button>
                   <span v-if="props.row.activo == 1">
-                    <button v-if="loggedUser.permisos.includes('usuario_update')" class="button_block button is-danger is-small is-spaced" @click="toggleUserState(props.row.id, props.row.activo)" title="Bloquear">Bloquear</button>
+                    <button v-if="loggedUser.permisos.includes('usuario_update')" class="button_block button is-danger is-small button-is-spaced" @click="toggleUserState(props.row.id, props.row.activo)" title="Bloquear">Bloquear</button>
                   </span>
                   <span v-else>
-                    <button v-if="loggedUser.permisos.includes('usuario_update')" class="button_unblock button is-info is-small is-spaced" @click="toggleUserState(props.row.id)" title="Desbloquear">Desbloquear</button>
+                    <button v-if="loggedUser.permisos.includes('usuario_update')" class="button_unblock button is-info is-small button-is-spaced" @click="toggleUserState(props.row.id)" title="Desbloquear">Desbloquear</button>
                   </span>
-                  <button v-if="loggedUser.permisos.includes('usuario_destroy')" class="button_delete button is-danger is-small is-spaced" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
+                  <button v-if="loggedUser.permisos.includes('usuario_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deleteUser(props.row.id)">Eliminar</button>
                 </span>
               </template>
             </vue-good-table>
@@ -106,7 +106,7 @@ export default {
     },
     loadAppRoles() {
       axios
-        .post('http://localhost:8000/role/index', { perm: true })
+        .post('http://localhost:8000/role/index')
         .then(response => {
           if (response.status === 200) {
             this.appRoles = response.data
@@ -121,15 +121,14 @@ export default {
       axios
         .post('http://localhost:8000/user/' + id + '/edit_state')
         .then(response => {
-            this.loadUsers()
-            if (state == 1)
-              Vue.swal('El usuario fue bloqueado', '', 'success')
-              // events.$emit('alert:success', 'El usuario fue bloqueado')
-            else
-              Vue.swal('El usuario fue desbloqueado', '', 'success')
-              // events.$emit('alert:success', 'El usuario fue desbloqueado')
-          })
-        .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+              if (response.status == 200) {
+                if (state == 1)
+                  events.$emit('alert:success', 'El usuario fue bloqueado')
+                else
+                  events.$emit('alert:success', 'El usuario fue desbloqueado')
+              }
+              this.loadUsers()
+        })
     },
     deleteUser(userId) {
       Vue.swal({
@@ -147,13 +146,10 @@ export default {
             .delete('http://localhost:8000/user/' + userId)
             .then(response => {
               if (response.status === 200) {
-                this.loadUsers()
                 Vue.swal('El usuario fue eliminado', '', 'success')
               }
+              this.loadUsers()
             })
-            .catch(error => {
-              Vue.swal('Se produjo un error', '', 'error')
-          });
         }
       })
     },
@@ -195,11 +191,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-
-.is-spaced {
-  margin: 5px;
-}
-
-</style>

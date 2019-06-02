@@ -4,6 +4,7 @@ import 'vue-good-table/dist/vue-good-table.css';
 import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es.js';
 
 require('../css/bulma.css');
+require('../css/style.css');
 
 import Vue from 'vue';
 import axios from 'axios';

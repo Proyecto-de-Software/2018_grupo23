@@ -51,24 +51,18 @@ export default {
   created() {
     this.loadAppRoles()
     this.loadAppPermissions()
+    this.isLoading = false
   },
   methods: {
     loadAppRoles: function() {
       axios
-        .post('http://localhost:8000/role/index', { perm: false })
-        .then(response => {
-          this.appRoles = response.data
-          this.isLoading = false
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      .post('http://localhost:8000/role/index')
+      .then(response => this.appRoles = response.data)
     },
     loadAppPermissions() {
       axios
       .get('http://localhost:8000/role/permissions_all')
-      .then(response =>  this.appPerms = response.data)
-      .catch(error => console.log(error))
+      .then(response => this.appPerms = response.data)
     },
     showEditAndViewRoleModal(row, modalTitle) {
       var ComponentClass = Vue.extend(EditAndViewRoleModal)

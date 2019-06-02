@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Configuracion;
+use App\Entity\Permiso;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -25,11 +26,10 @@ class ConfiguracionController extends FOSRestController
      */
     public function index()
     {
-        $serializer = $this->get('jms_serializer');
-
-        $config = $this->getDoctrine()->getRepository(Configuracion::class)->findAll();
-
-        return new Response($serializer->serialize($config, "json"));
+      $entityManager = $this->getDoctrine()->getManager();
+      $serializer = $this->get('jms_serializer');
+      $config = $this->getDoctrine()->getRepository(Configuracion::class)->findAll();
+      return new Response($serializer->serialize($config, "json"), 200);
     }
 
     /**
@@ -39,6 +39,8 @@ class ConfiguracionController extends FOSRestController
      */
     public function new(Request $request): Response
     {
+      $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'configuracion_update']))) {
         $data = $request->getContent();
         $configArray = json_decode($data, true);
         $em = $this->getDoctrine()->getManager();
@@ -48,7 +50,10 @@ class ConfiguracionController extends FOSRestController
           $em->persist($row);
         }
         $em->flush();
-        return new Response('exito');
+        return new Response('Configuración editada', 200);
+      } else {
+        return new Response("Usted no tiene permiso para realizar esa acción", 400);
+      }
     }
 
 }

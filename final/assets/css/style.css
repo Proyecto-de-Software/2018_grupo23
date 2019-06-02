@@ -1,0 +1,10 @@
+/* estilos nuestros */
+
+.page-loading-button {
+  font-size: 100px;
+  border: none;
+}
+
+.button-is-spaced {
+  margin: 5px;
+}

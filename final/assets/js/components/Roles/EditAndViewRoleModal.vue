@@ -10,6 +10,7 @@
               <h1 class="title">Cargando...</h1>
             </div>
             <div v-else>
+
               <form class="form">
 
                 <div class="field">
@@ -151,11 +152,16 @@ export default {
       if ( this.title === 'Editar' ) {
         axios
         .post('http://localhost:8000/role/' + this.role.id + '/edit', this.roleForm.perms)
-        .then(response => { Vue.swal('El rol fue actualizado', '', 'success');
-                            this.loadAppRoles()
-                            this.close()
+        .then(response => {
+          if (response.status === 200) {
+            events.$emit('alert:success', 'El rol fue actualizado');
+            this.loadAppRoles()
+          } else {
+            events.$emit('alert:error', 'No fue posible realizar esa acción')
+          }
+          this.close()
         })
-        .catch(error => Vue.swal('Error con la solicitud', '', 'error'))
+        .catch(error => this.close())
       } else {
         this.close()
       }

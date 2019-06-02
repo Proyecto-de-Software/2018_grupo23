@@ -42,7 +42,7 @@ class UserController extends FOSRestController
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="User")
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
       if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_index']))) {
@@ -50,18 +50,11 @@ class UserController extends FOSRestController
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         foreach($users as $u){
             $this->getPermisos($u);
-            }
-<<<<<<< HEAD
+        }
         return new Response($serializer->serialize($users, "json"), 200);
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
-=======
-        return new Response($serializer->serialize($users, "json"));
-      } else {
-         throw new \Exception("No tienes permiso para realizar esa acción");
-       }
->>>>>>> 533f3cf3ee7d9060a8f845d382f9109ef47a129e
     }
 
     /**
