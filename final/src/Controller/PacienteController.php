@@ -114,6 +114,72 @@ class PacienteController extends FOSRestController
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
     }
+    /**
+     * @Route("/{id}/edit", name="paciente_edit", methods={"POST"})
+     * @SWG\Response(response=200, description="Patient was edited successfully")
+     * @SWG\Tag(name="Patient")
+     * @RequestParam(name="apellido", strict=true, nullable=false, allowBlank=false, description="Apellido.")
+     * @RequestParam(name="nombre", strict=true, nullable=false, allowBlank=false, description="Nombre.")
+     * @RequestParam(name="fechaNac", strict=true, nullable=false, allowBlank=false, description="Fecha de nacimiento.")
+     * @RequestParam(name="lugarNac", strict=false, nullable=true, allowBlank=true, description="Lugar de nacimiento.")
+     * @RequestParam(name="partidoId", description="Partido.")
+     * @RequestParam(name="regionSanitariaId", description="Region Sanitaria.")
+     * @RequestParam(name="localidadId", description="Localidad.")
+     * @RequestParam(name="domicilio", strict=true, nullable=false, allowBlank=false, description="Domicilio.")
+     * @RequestParam(name="genero", strict=true, nullable=false, allowBlank=false, description="Genero.")
+     * @RequestParam(name="tieneDocumento", strict=true, nullable=false, allowBlank=false, description="Tiene documento?.")
+     * @RequestParam(name="tipoDocId", strict=true, nullable=false, allowBlank=false, description="Tipo de Documento.")
+     * @RequestParam(name="numero", strict=true, nullable=false, allowBlank=false, description="Número de documento.")
+     * @RequestParam(name="tel",  description="Telefono.")
+     * @RequestParam(name="nroCarpeta",  description="Número de carpeta.")
+     * @RequestParam(name="obraSocialId",  description="Obra Social.")
+     * @RequestParam(name="historiaClinica",  description="Historia Clínica.")
+     * 
+     * @param ParamFetcher $pf
+     */
+    public function edit(Request $request, ParamFetcher $pf): Response
+    {
+    $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'paciente_update']))) {
+        if(!empty($entityManager->getRepository(Paciente::class)->findOneBy(['id'=>$pf->get('historiaClinica')]))){
+            if(
+                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido",$pf->get('partidoId')) &&
+                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$pf->get('regionSanitariaId')) &&
+                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$pf->get('localidadId')) &&
+                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$pf->get('obraSocialId')) &&
+                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$pf->get('tipoDocId'))
+            ){
+            $paciente=$entityManager->getRepository(Paciente::class)->findOneBy(['id'=>$pf->get('historiaClinica')]);
+            $paciente->setApellido($pf->get('apellido'));
+            $paciente->setNombre($pf->get('nombre'));
+            $paciente->setFechaNac(new \DateTime('@'.strtotime($pf->get('fechaNac'))));
+            $paciente->setLugarNac($pf->get('lugarNac'));
+            $paciente->setPartidoId((int)$pf->get('partidoId'));
+            $paciente->setRegionSanitariaId((int)$pf->get('regionSanitariaId'));
+            $paciente->setLocalidadId((int)$pf->get('localidadId'));
+            $paciente->setDomicilio($pf->get('domicilio'));
+            $genero=$entityManager->getRepository(Genero::class)->findOneBy(['id' => $pf->get('genero')]);
+            $paciente->setGeneroId($genero);
+            $paciente->setTieneDocumento($pf->get('tieneDocumento'));
+            $paciente->setTipoDocId((int)$pf->get('tipoDocId'));
+            $paciente->setNumero($pf->get('numero'));
+            $paciente->setTel($pf->get('tel'));
+            $paciente->setNroCarpeta((int)$pf->get('nroCarpeta'));
+            $paciente->setObraSocialId((int)'obraSocialId');
+            $entityManager->persist($paciente);
+            $entityManager->flush();
+            return new Response('Usuario agregado', 200);
+
+            }
+            else{
+                return new Response("Algo ha salido mal", 400);
+            }
+        }
+        else{
+        return new Response("El paciente no existe", 400);
+        }
+        }
+    }
 
     function isValidId($url,$id){
         if(!empty($id)){
