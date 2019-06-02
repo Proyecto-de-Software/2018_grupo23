@@ -51,17 +51,10 @@ class UserController extends FOSRestController
         foreach($users as $u){
             $this->getPermisos($u);
             }
-<<<<<<< HEAD
         return new Response($serializer->serialize($users, "json"), 200);
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
-=======
-        return new Response($serializer->serialize($users, "json"));
-      } else {
-         throw new \Exception("No tienes permiso para realizar esa acción");
-       }
->>>>>>> 533f3cf3ee7d9060a8f845d382f9109ef47a129e
     }
 
     /**
