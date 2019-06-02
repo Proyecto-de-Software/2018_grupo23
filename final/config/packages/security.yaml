@@ -36,7 +36,7 @@ security:
                     - lexik_jwt_authentication.jwt_token_authenticator  #despues agregar una regla de firewall para todo el sistema
 
         app:
-            pattern:   ^/(role|user|consulta)/
+            pattern:   ^/(role|user|consulta|paciente)/
             stateless: true
             anonymous: false
             provider: api_user_provider
@@ -57,4 +57,5 @@ security:
         - { path: ^/role,               roles: ROLE_ADMINISTRADOR }
         - { path: ^/consulta,           roles: ROLE_ADMINISTRADOR }
         - { path: ^/configuracion,      roles: ROLE_ADMINISTRADOR }
+        - { path: ^/paciente,           roles: [ ROLE_ADMINISTRADOR, ROLE_EQUIPO_DE_GUARDIA ] }
         - { path: ^/app,                roles: IS_AUTHENTICATED_ANONYMOUSLY }
