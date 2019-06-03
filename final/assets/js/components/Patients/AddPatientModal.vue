@@ -87,12 +87,8 @@
                   <label class="label">¿Tiene en su poder un documento?*</label>
                   <div class="select">
                     <select v-model="patientForm.tieneDocumento">
-                      <option :value="1" :selected="patientForm.tieneDocumento == 0">
-                        Sí
-                      </option>
-                      <option :value="0" :selected="patientForm.tieneDocumento == 1">
-                        NO
-                      </option>
+                      <option value="1">Sí</option>
+                      <option value="0">No</option>
                     </select>
                   </div>
                 </div>

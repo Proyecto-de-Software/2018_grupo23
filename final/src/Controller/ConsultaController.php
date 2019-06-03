@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Consulta;
+use App\Entity\Paciente;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
@@ -27,11 +28,19 @@ use Swagger\Annotations as SWG;
 class ConsultaController extends FOSRestController
 {
 
-    public function index()
+
+    /**
+     *@Route("/index/{id}", name="consulta_index", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Consulta")
+     */
+    public function index(Request $request, Paciente $paciente) : response
     {
-        return $this->render('consulta/index.html.twig', [
-            'controller_name' => 'ConsultaController',
-        ]);
+        $serializer = $this->get('jms_serializer');
+        if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'atencion_show']))) {
+          $querys = $this->getDoctrine()->getRepository(Consulta::class)->findBy(['paciente_id' => $paciente.id]);
+          return new Response($serializer->serialize($querys, "json"));
+        }
     }
 
 

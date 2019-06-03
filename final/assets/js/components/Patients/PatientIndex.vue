@@ -8,6 +8,7 @@
           </div>
           <div v-else>
             <vue-good-table
+              v-if="patients && patients.length"
               :columns="columns"
               :rows="patients"
               :lineNumbers="true"
@@ -33,9 +34,18 @@
               </div>
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
-                  <button type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddPatientModal(props.row, 'Editar Paciente')">Editar</button>
-                  <button type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewPatientModal(props.row)">Ver</button>
-                  <button class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deletePatient(props.row.id)">Eliminar</button>
+                  <button v-if="loggedUser.permisos.includes('paciente_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddPatientModal(props.row, 'Editar Paciente')">Editar</button>
+                  <button v-if="loggedUser.permisos.includes('paciente_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewPatientModal(props.row)">Ver</button>
+                  <button v-if="loggedUser.permisos.includes('paciente_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deletePatient(props.row.id)">Eliminar</button>
+                  <router-link 
+                  v-if="loggedUser.permisos.includes('atencion_index')" 
+                  class="button is-info is-small button-is-spaced" 
+                  :to="{ name: 'consulta', params: { idPaciente: props.row.id}}"  
+                  title="Atenciones" 
+                  replace>
+                    Atenciones
+                  </router-link>
+                  
                 </span>
               </template>
             </vue-good-table>
@@ -129,7 +139,7 @@ export default {
         })
     },
     deletePatient(patientId) {
-      this.$swal.fire({
+      Vue.swal({
         title: 'Está seguro?',
         text: "No podrá revertirlo!",
         type: 'warning',
@@ -143,7 +153,7 @@ export default {
           axios
             .delete('http://localhost:8000/paciente/' + patientId)
             .then(response => {
-              this.$swal.fire(
+              Vue.swal(
                 'El paciente fue eliminado',
                 '',
                 'success'
@@ -312,6 +322,7 @@ loadRegionesSanitarias(){
       return 'obra social no asignada'
     }
     else{
+      console.log(this.obrasSociales[index])
       return this.obrasSociales[index].nombre
     }
     },

@@ -99,7 +99,7 @@ class PacienteController extends FOSRestController
         $paciente->setGeneroId($genero);
         $paciente->setTieneDocumento($pf->get('tieneDocumento'));
         $paciente->setTipoDocId((int)$pf->get('tipoDocId'));
-        $paciente->setNumero($pf->get('numero'));
+        $paciente->setNumero((int)$pf->get('numero'));
         $paciente->setTel($pf->get('tel'));
         $paciente->setNroCarpeta((int)$pf->get('nroCarpeta'));
         $paciente->setObraSocialId((int)'obraSocialId');
@@ -162,13 +162,13 @@ class PacienteController extends FOSRestController
             $paciente->setGeneroId($genero);
             $paciente->setTieneDocumento($pf->get('tieneDocumento'));
             $paciente->setTipoDocId((int)$pf->get('tipoDocId'));
-            $paciente->setNumero($pf->get('numero'));
+            $paciente->setNumero((int)$pf->get('numero'));
             $paciente->setTel($pf->get('tel'));
             $paciente->setNroCarpeta((int)$pf->get('nroCarpeta'));
-            $paciente->setObraSocialId((int)'obraSocialId');
+            $paciente->setObraSocialId((int)$pf->get('obraSocialId'));
             $entityManager->persist($paciente);
             $entityManager->flush();
-            return new Response('Usuario agregado', 200);
+            return new Response('Paciente agregado', 200);
 
             }
             else{
@@ -179,6 +179,24 @@ class PacienteController extends FOSRestController
         return new Response("El paciente no existe", 400);
         }
         }
+    }
+
+    /**
+     *@Route("/{id}", name="paciente_delete", methods={"DELETE"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Patient")
+     */
+    public function delete(Request $request, Paciente $paciente): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'paciente_destroy']))) {
+          $entityManager->remove($paciente);
+          $entityManager->flush();
+        }
+      else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
+      return new Response('Paciente eliminado', 200);
     }
 
     function isValidId($url,$id){
