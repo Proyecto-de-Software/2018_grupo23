@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Consulta;
 use App\Entity\Paciente;
+use App\Entity\Permiso;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
@@ -34,11 +35,12 @@ class ConsultaController extends FOSRestController
      * @SWG\Response(response=200, description="")
      * @SWG\Tag(name="Consulta")
      */
-    public function index(Request $request, Paciente $paciente) : response
+    public function index(Request $request, $id) : response
     {
         $serializer = $this->get('jms_serializer');
+        $entityManager = $this->getDoctrine()->getManager();
         if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'atencion_show']))) {
-          $querys = $this->getDoctrine()->getRepository(Consulta::class)->findBy(['paciente_id' => $paciente.id]);
+          $querys = $this->getDoctrine()->getRepository(Consulta::class)->findBy(['paciente' => $id]);
           return new Response($serializer->serialize($querys, "json"));
         }
     }

@@ -55,7 +55,7 @@ const routes = [
   { path: '/app/reportes', component: ReportsIndex },
   { path: '/app/roles', component: RolesIndex },
   { path: '/app/paciente', component: PatientIndex},
-  { path: '/app/consulta/:idPaciente', name:'consulta', component: AttentionIndex},
+  { path: '/app/consulta/index/:idPaciente', name:'consulta', component: AttentionIndex},
   { path: '*', redirect: '/' }
 ]
 
