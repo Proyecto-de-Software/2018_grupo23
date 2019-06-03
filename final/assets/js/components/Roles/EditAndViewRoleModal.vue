@@ -6,10 +6,6 @@
           <h3 class="title">{{ title }} Rol</h3>
         </header>
           <section class="modal-card-body">
-            <div v-if="isLoading">
-              <h1 class="title">Cargando...</h1>
-            </div>
-            <div v-else>
 
               <form class="form">
 
@@ -86,8 +82,8 @@
                 </div>
              </div>
 
-              </form>
-            </div>
+            </form>
+
           </section>
         <footer class="modal-card-foot">
           <button type="button" class="button is-success" @click="submit">Aceptar</button>
@@ -110,7 +106,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       roleForm: {
         perms: []
       }

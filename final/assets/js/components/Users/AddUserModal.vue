@@ -35,7 +35,7 @@
                 <div class="field">
                   <label class="label">Nombre de usuario*</label>
                   <div class="control">
-                    <input type="text" class="input" :class="{'is-danger': errors.has('nombre de usuario')}" name="nombre de usuario" v-model="userForm.username" v-validate="'required|alpha_num|min:6|max:20|usernameAlreadyExists'">
+                    <input type="text" class="input" :class="{'is-danger': errors.has('nombre de usuario')}" name="nombre de usuario" v-model="userForm.username" v-validate="'required|alpha_num|min:6|max:20'">
                     <span v-show="errors.has('nombre de usuario')" class="help is-danger">{{ errors.first('nombre de usuario') }}</span>
                   </div>
                   <p class="help">Debe tener entre 6 y 20 caracteres</p>
@@ -138,8 +138,6 @@ export default {
        default: false
     },
     title: String,
-    usersNames: Array,
-    usersEmails: Array
   },
   data() {
     return {
@@ -182,13 +180,19 @@ export default {
           if (this.user) { //edit
             axios
             .post('http://localhost:8000/user/' + this.user.id + '/edit', this.userForm)
-            // .then(response => Vue.swal('El usuario fue actualizado', '', 'success'))
-            // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+            .then(response => {
+              if (response.status == 200) {
+                Vue.swal('El usuario fue actualizado', '', 'success')
+              }
+            })
           } else { //new
             axios
             .post('http://localhost:8000/user/new', this.userForm)
-            // .then(response => console.log(response) )
-            // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+            .then(response => {
+              if (response.status == 200) {
+                Vue.swal('El usuario fue creado', '', 'success')
+              }
+            })
           }
           this.loadUsers()
           this.close()

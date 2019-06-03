@@ -7,6 +7,7 @@
           </div>
           <div v-else>
             <vue-good-table
+              v-if="appRoles && appRoles.length"
               :columns="columns"
               :rows="appRoles"
               :lineNumbers="true"
@@ -51,19 +52,18 @@ export default {
   created() {
     this.loadAppRoles()
     this.loadAppPermissions()
+    this.isLoading = false
   },
   methods: {
-    loadAppRoles: function() {
-      axios
+    loadAppRoles: async function() {
+      return axios
       .post('http://localhost:8000/role/index')
       .then(response => this.appRoles = response.data)
     },
-    loadAppPermissions() {
-      axios
+    async loadAppPermissions() {
+      return axios
       .get('http://localhost:8000/role/permissions_all')
-      .then(response => { this.appPerms = response.data
-                          this.isLoading = false
-      })
+      .then(response => this.appPerms = response.data)
     },
     showEditAndViewRoleModal(row, modalTitle) {
       var ComponentClass = Vue.extend(EditAndViewRoleModal)

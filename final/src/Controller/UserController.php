@@ -74,20 +74,28 @@ class UserController extends FOSRestController
     {
       $entityManager = $this->getDoctrine()->getManager();
       if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_new']))) {
-        $user = new User();
-        $user->setFirstName($pf->get('firstName'));
-        $user->setLastName($pf->get('lastName'));
-        $user->setUsername($pf->get('username'));
-        $user->setEmail($pf->get('email'));
-        $user->setRoles($pf->get('roles'));
-        if ( $pf->get('newPass') == $pf->get('repeatNewPass') ) {
-          $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
+        if ($this->notAlreadyExists('email', $pf->get('email'))) {
+          if ($this->notAlreadyExists('username', $pf->get('username'))) {
+            $user = new User();
+            $user->setFirstName($pf->get('firstName'));
+            $user->setLastName($pf->get('lastName'));
+            $user->setUsername($pf->get('username'));
+            $user->setEmail($pf->get('email'));
+            $user->setRoles($pf->get('roles'));
+            if ( $pf->get('newPass') == $pf->get('repeatNewPass') ) {
+              $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
+            } else {
+              return new Response("Contraseña y repetir contraseña no coinciden", 403);
+            }
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return new Response('Usuario agregado', 200);
+          } else {
+            return new Response("El nombre de usuario ingresado ya se encuentra en uso", 400);
+          }
         } else {
-          return new Response("Contraseña y repetir contraseña no coinciden", 403);
+          return new Response("El email ingresado ya se encuentra en uso", 400);
         }
-        $entityManager->persist($user);
-        $entityManager->flush();
-        return new Response('Usuario agregado', 200);
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
@@ -111,22 +119,30 @@ class UserController extends FOSRestController
     {
       $entityManager = $this->getDoctrine()->getManager();
       if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'usuario_update']))) {
-        $serializer = $this->get('jms_serializer');
-        if ($pf->get('passHasBeenModified')) {
-          if ( !empty($pf->get('oldPass')) && !empty($pf->get('newPass')) && !empty($pf->get('repeatNewPass')) ) {
-            if ( $pf->get('newPass') == $pf->get('repeatNewPass') ) {
-              $encoderService = $this->container->get('security.password_encoder');
-              if ( $encoderService->isPasswordValid($user, $pf->get('oldPass')) ) {
-                $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
+        if ($this->notAlreadyExists('email', $pf->get('email'), $user)) {
+          if ($this->notAlreadyExists('username', $pf->get('username'), $user)) {
+            $serializer = $this->get('jms_serializer');
+            if ($pf->get('passHasBeenModified')) {
+              if ( !empty($pf->get('oldPass')) && !empty($pf->get('newPass')) && !empty($pf->get('repeatNewPass')) ) {
+                if ( $pf->get('newPass') == $pf->get('repeatNewPass') ) {
+                  $encoderService = $this->container->get('security.password_encoder');
+                  if ( $encoderService->isPasswordValid($user, $pf->get('oldPass')) ) {
+                    $user->setPassword($this->passEncoder->encodePassword($user, $pf->get('newPass')));
+                  } else {
+                    return new Response("La contraseña actual ingresada no es correcta", 400);
+                  }
+                } else {
+                  return new Response("Contraseña y repetir contraseña no coinciden", 400);
+                }
               } else {
-                return new Response("La contraseña actual ingresada no es correcta", 400);
+                return new Response("Faltó completar alguno de los campos de contraseña", 400);
               }
-            } else {
-              return new Response("Contraseña y repetir contraseña no coinciden", 400);
             }
-          } else {
-            return new Response("Faltó completar alguno de los campos de contraseña", 400);
-          }
+         } else {
+            return new Response("El nombre de usuario ingresado ya se encuentra en uso", 400);
+         }
+        } else {
+          return new Response("El email ingresado ya se encuentra en uso", 400);
         }
         $user->setFirstName($pf->get('firstName'));
         $user->setLastName($pf->get('lastName'));
@@ -139,7 +155,7 @@ class UserController extends FOSRestController
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
-      }
+    }
 
     /**
      *@Route("/{id}", name="usuario_delete", methods={"DELETE"})
@@ -185,6 +201,19 @@ class UserController extends FOSRestController
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
+    }
+
+    function notAlreadyExists($field, $value, $user = false) { //si le pasa value user viene del edit
+      $entityManager = $this->getDoctrine()->getManager();
+      $user_arr = $entityManager->getRepository(User::class)->findOneBy([$field => $value]);
+      if ($user_arr) { //alguien lo tiene
+        if ($user) { //edit mode
+          return $user->getId() == $user_arr->getId() ? true : false; //es el del mismo que estoy editando
+        }else { //new
+          return false;
+        }
+      } //nadie lo tiene
+      return true;
     }
 
     //agrega los permisos a cada rol del usuario

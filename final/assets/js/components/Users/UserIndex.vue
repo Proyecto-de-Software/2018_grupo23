@@ -7,6 +7,7 @@
           </div>
           <div v-else>
             <vue-good-table
+              v-if="users && users.length"
               :columns="columns"
               :rows="users"
               :lineNumbers="true"
@@ -92,7 +93,7 @@ export default {
   },
   methods: {
     loadUsers: function() {
-      axios
+       axios
         .get('http://localhost:8000/user/index/')
         .then(response => {
           if (response.status === 200) {
@@ -105,7 +106,7 @@ export default {
         })
     },
     loadAppRoles() {
-      axios
+       axios
         .post('http://localhost:8000/role/index')
         .then(response => {
           if (response.status === 200) {
@@ -123,9 +124,9 @@ export default {
         .then(response => {
               if (response.status == 200) {
                 if (state == 1)
-                  events.$emit('alert:success', 'El usuario fue bloqueado')
+                  Vue.swal('El usuario fue bloqueado', '', 'success')
                 else
-                  events.$emit('alert:success', 'El usuario fue desbloqueado')
+                Vue.swal('El usuario fue desbloqueado', '', 'success')
               }
               this.loadUsers()
         })
@@ -154,11 +155,9 @@ export default {
       })
     },
     showAddUserModal(modalTitle, userData = false) {
-      var allUserNames = this.users.map((user) => user.username)
-      var allUserEmails = this.users.map((user) => user.email)
       var ComponentClass = Vue.extend(AddUserModal);
       var instance = new ComponentClass({
-        propsData: { user: userData, roles: this.appRoles, loadUsers: this.loadUsers, title: modalTitle, usersNames: allUserNames, usersEmails: allUserEmails}
+        propsData: { user: userData, roles: this.appRoles, loadUsers: this.loadUsers, title: modalTitle }
       })
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)

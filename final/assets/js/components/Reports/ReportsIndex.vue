@@ -4,7 +4,8 @@
     <section class="section">
       <div class="container is-fluid">
         <div class="has-text-centered">
-          <h4 class="title is-4">Gráfico y listado de atenciones agrupadas por:</h4>
+          <h4 class="title is-4">Gráfico y listado de atenciones</h4>
+          <h6 class="title is-6">(seleccione una opción)</h6>
           <button class="button is-info is-spaced" type="button" @click="getAttentionsBy('motivo')">Motivo</button>
           <button class="button is-info is-spaced" type="button" @click="getAttentionsBy('genero')">Género</button>
           <button class="button is-info is-spaced" type="button" @click="getAttentionsBy('localidad')">Localidad</button>
@@ -16,37 +17,43 @@
       <h5 class="title is-5">No hay consultas en el sistema</h5>
     </div>
 
-    <div v-if="loaded" class="container" ref="content">
-      <div ref="chart-container">
-        <pie-chart
-          :chartdata="chartdata"
-          :options="options"/>
-        </pie-chart>
-      </div>
-      <section class="section">
-        <div v-if="loaded" class="columns is-centered">
-          <div class="column is-narrow">
-            <table class="table is-bordered" ref="table">
-              <thead>
-                <tr>
-                  <th>{{ tabledata.heading }}</th>
-                  <th>Cantidad</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="row in tabledata.rows">
-                    <td>{{ row.label }}</td>
-                    <td>{{ row.total }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <div v-if="!loaded" class="has-text-centered">
+      <a class="button is-loading page-loading-button"></a>
+    </div>
+    <div v-else>
+      <div v-if="loaded" class="container" ref="content">
+        <div ref="chart-container">
+          <pie-chart
+            :chartdata="chartdata"
+            :options="options"/>
+          </pie-chart>
         </div>
-      </section>
+        <section class="section">
+          <div v-if="loaded" class="columns is-centered">
+            <div class="column is-narrow">
+              <table class="table is-bordered" ref="table">
+                <thead>
+                  <tr>
+                    <th>{{ tabledata.heading }}</th>
+                    <th>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="row in tabledata.rows">
+                      <td>{{ row.label }}</td>
+                      <td>{{ row.total }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div v-if="loaded" class="has-text-centered">
+        <button class="button is-info" type="button" @click="downloadPdf">Descargar</button>
+      </div>
     </div>
-    <div v-if="loaded" class="has-text-centered">
-      <button class="button is-info" type="button" @click="downloadPdf">Descargar</button>
-    </div>
+
 
   </div>
 </template>
@@ -89,7 +96,6 @@ export default {
     loadLocationsFromApi() {
       this.makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad')
       .then(response => this.locations = response)
-      .catch(error => console.log(error))
     },
     getAttentionsBy(criteriaStr) {
       this.loaded = false;
@@ -107,7 +113,6 @@ export default {
                            }
                          }
         )
-       .catch(error => console.log(error))
     },
     getLocationName(locationId) {
       var index = this.locations.findIndex(loc => loc.id == locationId)
