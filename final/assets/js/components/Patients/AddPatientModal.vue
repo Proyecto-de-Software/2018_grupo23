@@ -85,11 +85,13 @@
                 </div>
                 <div class="field">
                   <label class="label">¿Tiene en su poder un documento?*</label>
-                  <div class="select">
-                    <select v-model="patientForm.tieneDocumento">
-                      <option value="1">Sí</option>
-                      <option value="0">No</option>
-                    </select>
+                  <div class="control">
+                    <input type="radio"  value="1" v-model="patientForm.tieneDocumento" :selected="patientForm.tieneDocumento==true">
+                    <label>Sí</label>
+                    <br>
+                    <input type="radio" value="0" v-model="patientForm.tieneDocumento" :selected="patientForm.tieneDocumento==false">
+                    <label>No</label>
+                    <br>
                   </div>
                 </div>
                 <div class="field">
@@ -174,6 +176,7 @@ export default {
     return {
       isLoading: false,
       isReadOnly: false,
+      localidadesSinFiltrar: Array,
       patientForm: {
         apellido: '',
         nombre: '',
@@ -195,6 +198,7 @@ export default {
     }
   },
   created() {
+    this.localidadesSinFiltrar=this.localidades
     if (this.patient != null) { //estoy en edición
       this.patientForm.apellido = this.patient.apellido
       this.patientForm.nombre = this.patient.nombre
@@ -218,6 +222,7 @@ export default {
     onPartidoSelect(event) {
       var index = this.partidos.findIndex(partido => partido.id==event.target.value)
       this.patientForm.regionSanitariaId = this.partidos[index]['region_sanitaria_id']
+      this.localidades=this.localidadesSinFiltrar.filter(loc => loc.partido_id==event.target.value)
     },
     close() {
       this.$destroy();
