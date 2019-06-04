@@ -2,12 +2,12 @@
   <div class="box">
     <section class="section">
       <div class="container" ref="container">
-          <div v-if="isLoading" class="has-text-centered">
+          <div v-if="!isAllContentLoaded" class="has-text-centered">
             <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
-              v-if="users && users.length"
+              v-if="isAllContentLoaded"
               :columns="columns"
               :rows="users"
               :lineNumbers="true"
@@ -60,8 +60,7 @@ export default {
   data() {
     return {
       users: null,
-      isLoading: true,
-      appRoles: [],
+      appRoles: null,
       columns: [
         {
           label: 'Nombre completo',
@@ -98,7 +97,6 @@ export default {
         .then(response => {
           if (response.status === 200) {
             this.users = response.data
-            this.isLoading = false
           }
         })
         .catch(error => {
@@ -111,7 +109,6 @@ export default {
         .then(response => {
           if (response.status === 200) {
             this.appRoles = response.data
-            this.isLoading = false
           }
         })
         .catch(error => {
@@ -126,7 +123,7 @@ export default {
                 if (state == 1)
                   Vue.swal('El usuario fue bloqueado', '', 'success')
                 else
-                Vue.swal('El usuario fue desbloqueado', '', 'success')
+                  Vue.swal('El usuario fue desbloqueado', '', 'success')
               }
               this.loadUsers()
         })
@@ -188,6 +185,9 @@ export default {
   computed: {
     rowsPerPage() {
       return this.$root.config.paginado
+    },
+    isAllContentLoaded() {
+      return (this.users && this.appRoles)
     }
   }
 };
