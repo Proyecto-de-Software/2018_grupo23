@@ -50,8 +50,9 @@
 
 <script>
 import Vue from 'vue'
+import ViewAttentionModal from './ViewAttentionModal.vue';
 export default {
-    components: {},
+    components: { ViewAttentionModal},
     data(){
         return {
         attentions: Array,
@@ -109,6 +110,21 @@ export default {
     },
     attentionDerivation(attention){
       return attention.derivacion['nombre']
+    },
+    showViewAttentionModal(attentionData) {
+      var ComponentClass = Vue.extend(ViewAttentionModal);
+      var instance = new ComponentClass({
+        propsData: {
+          attention: attentionData,
+          getFormattedDate: this.getFormattedDate,
+          }
+      })
+      instance.$mount()
+      this.$refs.container.appendChild(instance.$el)
+    },
+    getFormattedDate(date) {
+    return [date.getDate(), date.getMonth()+1, date.getFullYear()]
+      .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
     },
     
     },
