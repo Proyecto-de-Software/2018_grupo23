@@ -31,9 +31,13 @@ class RolesDelSistemaController extends FOSRestController
     public function index(Request $request): Response
     {
       $entityManager = $this->getDoctrine()->getManager();
-      $serializer = $this->get('jms_serializer');
-      $roles = $this->getDoctrine()->getRepository(RolesDelSistema::class)->findAll();
-      return new Response($serializer->serialize($roles, "json"), 200);
+      // if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'rol_index']))) {
+        $serializer = $this->get('jms_serializer');
+        $roles = $this->getDoctrine()->getRepository(RolesDelSistema::class)->findAll();
+        return new Response($serializer->serialize($roles, "json"), 200);
+      // } else {
+      //   return new Response("Usted no tiene permiso para realizar esa acción", 400);
+      // }
     }
 
     /**

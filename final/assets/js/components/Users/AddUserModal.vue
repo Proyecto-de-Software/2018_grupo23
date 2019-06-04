@@ -104,7 +104,9 @@
                           </form>
                         </section>
                         <footer class="modal-card-foot">
-                          <button type="button" class="button is-success" @click="{ userForm.passHasBeenModified = true; passInputModal = false }">Aceptar</button>
+                          <!-- <button type="button" class="button is-success" @click="{ userForm.passHasBeenModified = true; passInputModal = false }">Aceptar</button> -->
+                          <button type="button" class="button is-success" @click="passInputValidate">Aceptar</button>
+
                           <button type="button" class="button is-text"
                                   @click="{ userForm.passHasBeenModified = false; userForm.oldPass = ''; userForm.newPass = ''; userForm.repeatNewPass = ''; passInputModal = false }">Cancelar</button>
                         </footer>
@@ -170,6 +172,17 @@ export default {
     close() {
       this.$destroy();
       this.$el.parentNode.removeChild(this.$el)
+    },
+    passInputValidate() {
+      this.$validator.validate()
+      .then(valid => {
+        if (!valid) {
+          Vue.swal('El formulario no cumple con lo solicitado', '', 'error')
+        } else {
+          this.userForm.passHasBeenModified = true
+          this.passInputModal = false
+        }
+      })
     },
     submit() {
       this.$validator.validate()

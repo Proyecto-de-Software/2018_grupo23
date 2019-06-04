@@ -2,12 +2,12 @@
   <div class="box">
     <section class="section">
       <div class="container" ref="container">
-          <div v-if="isLoading" class="has-text-centered">
+          <div v-if="!isAllContentLoaded" class="has-text-centered">
             <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
-              v-if="appRoles && appRoles.length"
+              v-if="isAllContentLoaded"
               :columns="columns"
               :rows="appRoles"
               :lineNumbers="true"
@@ -33,9 +33,8 @@ export default {
   components: { EditAndViewRoleModal },
   data() {
     return {
-      appRoles: null,
+      appRoles: [],
       appPerms: [],
-      isLoading: true,
       columns: [
         {
           label: 'Nombre',
@@ -52,16 +51,15 @@ export default {
   created() {
     this.loadAppRoles()
     this.loadAppPermissions()
-    this.isLoading = false
   },
   methods: {
-    loadAppRoles: async function() {
-      return axios
+    loadAppRoles: function() {
+       axios
       .post('http://localhost:8000/role/index')
       .then(response => this.appRoles = response.data)
     },
-    async loadAppPermissions() {
-      return axios
+    loadAppPermissions() {
+       axios
       .get('http://localhost:8000/role/permissions_all')
       .then(response => this.appPerms = response.data)
     },
@@ -75,6 +73,11 @@ export default {
     },
     roleName(role) {
       return role.nombre.replace('ROLE_', '')
+    }
+  },
+  computed: {
+    isAllContentLoaded() {
+      return (this.appRoles.length > 0) && (this.appPerms.length > 0) && (this.loggedUser !== 'undefined')
     }
   }
 }
