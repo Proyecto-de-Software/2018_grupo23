@@ -107,19 +107,19 @@
                 <div class="field">
                   <label class="label">Número de documento*</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="patientForm.numero">
+                    <input type="number" class="input" v-model="patientForm.numero">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Tel/Cel</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="patientForm.tel">
+                    <input type="number" class="input" v-model="patientForm.tel">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Número de carpeta</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="patientForm.nroCarpeta">
+                    <input type="number" class="input" v-model="patientForm.nroCarpeta">
                   </div>
                 </div>
                 <div class="field">

@@ -5,6 +5,10 @@ namespace App\Controller;
 use App\Entity\Consulta;
 use App\Entity\Paciente;
 use App\Entity\Permiso;
+use App\Entity\Acompanamiento;
+use App\Entity\Institucion;
+use App\Entity\MotivoConsulta;
+use App\Entity\TratamientoFarmacologico;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
@@ -80,6 +84,54 @@ class ConsultaController extends FOSRestController
       $serializer = $this->get('jms_serializer');
       $attentions = $this->getDoctrine()->getRepository(Consulta::class)->findByLocation();
       return new Response($serializer->serialize($attentions, "json"));
+    }
+
+    /**
+     *@Route("/acompanamientos", name="acompanamientos", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Consulta")
+     */
+    public function acompanamientos(): Response
+    {
+      $serializer = $this->get('jms_serializer');
+      $acompanamientos = $this->getDoctrine()->getRepository(Acompanamiento::class)->findAll();
+      return new Response($serializer->serialize($acompanamientos, "json"));
+    }
+
+    /**
+     *@Route("/instituciones", name="instituciones", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Consulta")
+     */
+    public function instituciones(): Response
+    {
+      $serializer = $this->get('jms_serializer');
+      $instituciones = $this->getDoctrine()->getRepository(Institucion::class)->findAll();
+      return new Response($serializer->serialize($instituciones, "json"));
+    }
+
+    /**
+     *@Route("/motivos", name="motivos", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Consulta")
+     */
+    public function motivos(): Response
+    {
+      $serializer = $this->get('jms_serializer');
+      $motivos = $this->getDoctrine()->getRepository(MotivoConsulta::class)->findAll();
+      return new Response($serializer->serialize($motivos, "json"));
+    }
+
+    /**
+     *@Route("/tratamientos", name="tratamientos", methods={"GET"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Consulta")
+     */
+    public function tratamientos(): Response
+    {
+      $serializer = $this->get('jms_serializer');
+      $tratamientos = $this->getDoctrine()->getRepository(TratamientoFarmacologico::class)->findAll();
+      return new Response($serializer->serialize($tratamientos, "json"));
     }
 
 }
