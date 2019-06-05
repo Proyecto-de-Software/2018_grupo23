@@ -1,0 +1,84 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['FOS\\RestBundle\\Controller\\Annotations\\Post'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\Post')),
+            clone ($p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\RequestParam')),
+            clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+            clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+            clone ($p['Swagger\\Annotations\\Tag'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Tag')),
+            clone $p['Swagger\\Context'],
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/test',
+                ],
+                'name' => [
+                    'test_test',
+                ],
+                'methods' => [
+                    [
+                        'POST',
+                    ],
+                ],
+            ],
+            'stdClass' => [
+                'allowBlank' => [
+                    1 => false,
+                ],
+                'name' => [
+                    1 => 'pepe',
+                    4 => 'Test',
+                ],
+                'response' => [
+                    2 => 200,
+                ],
+                'description' => [
+                    2 => '',
+                ],
+                '_context' => [
+                    2 => $o[3],
+                    4 => $o[5],
+                ],
+                'filename' => [
+                    3 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                    5 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                ],
+                'line' => [
+                    3 => 827,
+                    5 => 827,
+                ],
+                'method' => [
+                    3 => 'Annotation',
+                    5 => 'Annotation',
+                ],
+                'class' => [
+                    3 => 'DocParser',
+                    5 => 'DocParser',
+                ],
+                'namespace' => [
+                    3 => 'Doctrine\\Common\\Annotations',
+                    5 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    3 => [
+                        $o[2],
+                    ],
+                    5 => [
+                        $o[4],
+                    ],
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[2],
+            $o[4],
+        ],
+        []
+    );
+
+}];

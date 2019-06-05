@@ -1,0 +1,92 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['FOS\\RestBundle\\Controller\\Annotations\\Get'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\Get')),
+            clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+            clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+            clone $p['Swagger\\Annotations\\Response'],
+            clone $p['Swagger\\Context'],
+            clone ($p['Swagger\\Annotations\\Tag'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Tag')),
+            clone $p['Swagger\\Context'],
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/session',
+                ],
+                'name' => [
+                    'user_session',
+                ],
+                'methods' => [
+                    [
+                        'GET',
+                    ],
+                ],
+            ],
+            'stdClass' => [
+                'response' => [
+                    1 => 200,
+                    3 => 500,
+                ],
+                'description' => [
+                    1 => 'Session retrived',
+                    3 => 'Session was not successfully retrived',
+                ],
+                '_context' => [
+                    1 => $o[2],
+                    3 => $o[4],
+                    5 => $o[6],
+                ],
+                'filename' => [
+                    2 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                    4 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                    6 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                ],
+                'line' => [
+                    2 => 827,
+                    4 => 827,
+                    6 => 827,
+                ],
+                'method' => [
+                    2 => 'Annotation',
+                    4 => 'Annotation',
+                    6 => 'Annotation',
+                ],
+                'class' => [
+                    2 => 'DocParser',
+                    4 => 'DocParser',
+                    6 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'Doctrine\\Common\\Annotations',
+                    4 => 'Doctrine\\Common\\Annotations',
+                    6 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                    4 => [
+                        $o[3],
+                    ],
+                    6 => [
+                        $o[5],
+                    ],
+                ],
+                'name' => [
+                    5 => 'User',
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[3],
+            $o[5],
+        ],
+        []
+    );
+
+}];

@@ -1,0 +1,116 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+            clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+            clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+            clone ($p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\RequestParam')),
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/{id}/edit',
+                ],
+                'name' => [
+                    'usuario_edit',
+                ],
+                'methods' => [
+                    [
+                        'POST',
+                    ],
+                ],
+            ],
+            'stdClass' => [
+                'response' => [
+                    1 => 200,
+                ],
+                'description' => [
+                    1 => 'User was edited successfully',
+                    3 => 'Nombre.',
+                    'Apellido.',
+                    'Nombre de usuario.',
+                    'Email.',
+                    'Roles.',
+                    'oldPassword.',
+                    'newPassword.',
+                    'rePassword.',
+                    'passModified.',
+                ],
+                '_context' => [
+                    1 => $o[2],
+                ],
+                'filename' => [
+                    2 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                ],
+                'line' => [
+                    2 => 827,
+                ],
+                'method' => [
+                    2 => 'Annotation',
+                ],
+                'class' => [
+                    2 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                ],
+                'allowBlank' => [
+                    3 => false,
+                    false,
+                    false,
+                    false,
+                    11 => false,
+                ],
+                'name' => [
+                    3 => 'firstName',
+                    'lastName',
+                    'username',
+                    'email',
+                    'roles',
+                    'oldPass',
+                    'newPass',
+                    'repeatNewPass',
+                    'passHasBeenModified',
+                ],
+                'nullable' => [
+                    8 => true,
+                    true,
+                    true,
+                ],
+                'default' => [
+                    11 => false,
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[3],
+            $o[4],
+            $o[5],
+            $o[6],
+            $o[7],
+            $o[8],
+            $o[9],
+            $o[10],
+            $o[11],
+        ],
+        []
+    );
+
+}];

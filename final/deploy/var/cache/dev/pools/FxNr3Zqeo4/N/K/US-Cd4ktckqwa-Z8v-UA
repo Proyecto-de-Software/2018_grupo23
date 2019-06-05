@@ -1,0 +1,158 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+            clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+            clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+            clone ($p['Swagger\\Annotations\\Tag'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Tag')),
+            clone $p['Swagger\\Context'],
+            clone ($p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\RequestParam')),
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+            clone $p['FOS\\RestBundle\\Controller\\Annotations\\RequestParam'],
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/new',
+                ],
+                'name' => [
+                    'paciente_new',
+                ],
+                'methods' => [
+                    [
+                        'POST',
+                    ],
+                ],
+            ],
+            'stdClass' => [
+                'response' => [
+                    1 => 200,
+                ],
+                'description' => [
+                    1 => 'Patient was created successfully',
+                    5 => 'Apellido.',
+                    'Nombre.',
+                    'Fecha de nacimiento.',
+                    'Lugar de nacimiento.',
+                    'Partido.',
+                    'Region Sanitaria.',
+                    'Localidad.',
+                    'Domicilio.',
+                    'Genero.',
+                    'Tiene documento?.',
+                    'Tipo de Documento.',
+                    'Número de documento.',
+                    'Telefono.',
+                    'Número de carpeta.',
+                    'Obra Social.',
+                    'Historia Clínica.',
+                ],
+                '_context' => [
+                    1 => $o[2],
+                    3 => $o[4],
+                ],
+                'filename' => [
+                    2 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                    4 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                ],
+                'line' => [
+                    2 => 827,
+                    4 => 827,
+                ],
+                'method' => [
+                    2 => 'Annotation',
+                    4 => 'Annotation',
+                ],
+                'class' => [
+                    2 => 'DocParser',
+                    4 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'Doctrine\\Common\\Annotations',
+                    4 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                    4 => [
+                        $o[3],
+                    ],
+                ],
+                'name' => [
+                    3 => 'Patient',
+                    5 => 'apellido',
+                    'nombre',
+                    'fechaNac',
+                    'lugarNac',
+                    'partidoId',
+                    'regionSanitariaId',
+                    'localidadId',
+                    'domicilio',
+                    'genero',
+                    'tieneDocumento',
+                    'tipoDocId',
+                    'numero',
+                    'tel',
+                    'nroCarpeta',
+                    'obraSocialId',
+                    'historiaClinica',
+                ],
+                'allowBlank' => [
+                    5 => false,
+                    false,
+                    false,
+                    12 => false,
+                    false,
+                    false,
+                    false,
+                    false,
+                ],
+                'strict' => [
+                    8 => false,
+                ],
+                'nullable' => [
+                    8 => true,
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[3],
+            $o[5],
+            $o[6],
+            $o[7],
+            $o[8],
+            $o[9],
+            $o[10],
+            $o[11],
+            $o[12],
+            $o[13],
+            $o[14],
+            $o[15],
+            $o[16],
+            $o[17],
+            $o[18],
+            $o[19],
+            $o[20],
+        ],
+        []
+    );
+
+}];

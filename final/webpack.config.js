@@ -3,9 +3,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 if(Encore.isProduction()){
-    Encore.setPublicPath('/final/deploy/public/build')
+    //Encore.setPublicPath('/final/deploy/public/build')
     //Encore.setPublicPath('/Proyecto/grupo23/final/deploy/public/build')
-    //Encore.setPublicPath('/build')
+    Encore.setPublicPath('/build')
 }else{
     Encore.setPublicPath('/build')
 }

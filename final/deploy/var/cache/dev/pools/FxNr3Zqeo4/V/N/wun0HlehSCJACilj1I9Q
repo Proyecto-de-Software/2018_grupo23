@@ -1,0 +1,78 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+            clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+            clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+            clone ($p['Swagger\\Annotations\\Tag'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Tag')),
+            clone $p['Swagger\\Context'],
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/reportes/genero',
+                ],
+                'name' => [
+                    'reporte_consulta_genero',
+                ],
+                'methods' => [
+                    [
+                        'GET',
+                    ],
+                ],
+            ],
+            'stdClass' => [
+                'response' => [
+                    1 => 200,
+                ],
+                'description' => [
+                    1 => '',
+                ],
+                '_context' => [
+                    1 => $o[2],
+                    3 => $o[4],
+                ],
+                'filename' => [
+                    2 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                    4 => 'C:\\Users\\Sony-q\\Documents\\GitLab\\Proyecto\\grupo23\\final\\deploy\\vendor\\doctrine\\annotations\\lib\\Doctrine\\Common\\Annotations\\DocParser.php',
+                ],
+                'line' => [
+                    2 => 827,
+                    4 => 827,
+                ],
+                'method' => [
+                    2 => 'Annotation',
+                    4 => 'Annotation',
+                ],
+                'class' => [
+                    2 => 'DocParser',
+                    4 => 'DocParser',
+                ],
+                'namespace' => [
+                    2 => 'Doctrine\\Common\\Annotations',
+                    4 => 'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    2 => [
+                        $o[1],
+                    ],
+                    4 => [
+                        $o[3],
+                    ],
+                ],
+                'name' => [
+                    3 => 'Consulta',
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[3],
+        ],
+        []
+    );
+
+}];

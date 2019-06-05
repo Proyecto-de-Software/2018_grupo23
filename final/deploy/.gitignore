@@ -3,9 +3,6 @@
 /.env.local
 /.env.local.php
 /.env.*.local
-/var/cache/dev/*
-/var/cache/prod/
-/var/log
 ###< symfony/framework-bundle ###
 
 ###> lexik/jwt-authentication-bundle ###

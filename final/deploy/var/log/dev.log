@@ -1,0 +1,1 @@
+[2019-06-06 00:32:58] request.INFO: Matched route "default". {"route":"default","route_parameters":{"_route":"default","_controller":"App\\Controller\\DefaultController::index"},"request_uri":"http://localhost/Proyecto/grupo23/final/deploy/public/","method":"GET"} []
