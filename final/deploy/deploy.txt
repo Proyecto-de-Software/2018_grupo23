@@ -1,0 +1,13 @@
+mover las carpetas de final a deploy
+ejecutar:
+	composer install --optimize-autoloader
+
+volver a la carpeta final y modificar el archivo .env, cambiar APLICATION_ENV=development a APLICATION_ENV=production
+ademas cambiar la coneccion a la bd.
+cambiar la config del webpack de Encore.setPublicPath('/build') a 
+	Encore.setPublicPath('/Proyecto/grupo23/final/deploy/public/build')
+
+Luego ejecutar
+ 	yarn run encore production
+
+mover lo que esta en public/build a deploy/public/build

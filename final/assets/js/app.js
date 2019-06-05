@@ -49,7 +49,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/', component: Home },
   { path: '/app', component: Home },
-  { path: '/app/login', component: Login},
+  { path: '/app/login', name:'login', component: Login},
   { path: '/app/config', component: Config},
   { path: '/app/usuario', component: UserIndex},
   { path: '/app/reportes', component: ReportsIndex },
@@ -144,6 +144,31 @@ Vue.mixin({
          return info;
       },
 
+      url(path) {
+        let url = new URL(window.location)
+
+        if (process.env.APLICATION_ENV === 'production') {
+          //var baseUrl = `${url.origin}/Proyecto/grupo23/final/deploy/public/index.php`
+          var baseUrl = `${url.origin}/final/deploy/public/index.php`
+        } else {
+          var baseUrl = url.origin
+        }
+
+        return `${baseUrl}${path}`
+      },
+
+      asset(name) {
+
+        let url = new URL(window.location)
+
+        if (process.env.NODE_ENV === 'production') {
+            //return `/Proyecto/grupo23/final/deploy/public${name}`
+            return `/final/deploy/public${name}`
+        }
+
+        return `${url.origin}/${name}`
+    },
+
 
     }
 })
@@ -170,11 +195,13 @@ new Vue({
       this.fetchLoggedUser();
     }
 
+    events.$on('change:route', (componente) => this.cambiarRuta(componente))
+
   },
 
   methods: {
     async fetchPageConfig(){
-      await axios.get('http://localhost:8000/configuracion/').then((response) => {
+      await axios.get(this.url('/configuracion/')).then((response) => {
         this.config = response.data;
         if(this.config.estado === "deshabilitado"){
           events.$emit('mantenimiento:active')
@@ -183,7 +210,7 @@ new Vue({
     },
 
     async fetchLoggedUser(){
-      await axios.get('http://localhost:8000/api/session').then((response) => {
+      await axios.get(this.url('/api/session')).then((response) => {
         this.loggedUser = response.data
       }).catch((error) => { });
     },
@@ -200,7 +227,7 @@ new Vue({
               localStorage.removeItem('token');
               this.store_token = '';
               axios.defaults.headers.common['Authorization'] = null;
-              window.location = 'app/login';
+              this.$router.replace({ name: 'login' });
           });
       } else {
           if( 400 === error.response.status ||
@@ -215,6 +242,10 @@ new Vue({
           }
           return Promise.reject(error);
       }
+    },
+
+    cambiarRuta(componente){
+      this.$router.replace({ name: componente });
     },
   },
 

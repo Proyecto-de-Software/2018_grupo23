@@ -115,7 +115,7 @@
       submit() {
         var configJSON = JSON.stringify(this.config);
         axios
-         .post('http://localhost:8000/configuracion/new', configJSON)
+         .post(this.url('/configuracion/new'), configJSON)
          .then((response) => {
                   if(this.config.estado === 'habilitado'){
                     events.$emit('mantenimiento:inactive');

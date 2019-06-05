@@ -1,7 +1,15 @@
 const Encore = require('@symfony/webpack-encore');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
-Encore.setPublicPath('/build')
+if(Encore.isProduction()){
+    Encore.setPublicPath('/final/deploy/public/build')
+    //Encore.setPublicPath('/Proyecto/grupo23/final/deploy/public/build')
+    //Encore.setPublicPath('/build')
+}else{
+    Encore.setPublicPath('/build')
+}
+
 Encore
     // the project directory where all compiled assets will be stored
     .setOutputPath('public/build/')
@@ -15,6 +23,8 @@ Encore
         // copies to {output}/images
         { from: './assets/img', to: 'images' }
     ]))
+
+    .addPlugin(new Dotenv())
 
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvidejQuery()
@@ -41,4 +51,6 @@ Encore
     ;
 
 // export the final configuration
-module.exports = Encore.getWebpackConfig();
+var config = Encore.getWebpackConfig();
+//config.node = { fs: 'empty' };
+module.exports = config;

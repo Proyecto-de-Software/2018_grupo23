@@ -1,0 +1,6 @@
+{
+  "build/app.css": "/final/deploy/public/build/app.css",
+  "build/app.js": "/final/deploy/public/build/app.js",
+  "build/runtime.js": "/final/deploy/public/build/runtime.js",
+  "build/images/logo.png": "/final/deploy/public/build/images/logo.png"
+}

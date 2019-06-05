@@ -52,7 +52,7 @@ export default {
             _password : this.pass
         };
         axios
-      .post('http://localhost:8000/api/login_check',credentials) //mando el post
+      .post(this.url('/api/login_check'),credentials) //mando el post
       .then((response) => {
         if(response.status === 200){
           this.jwtToken = response.data['token']; //seteo el token
