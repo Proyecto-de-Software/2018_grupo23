@@ -102,7 +102,7 @@ class PacienteController extends FOSRestController
         $paciente->setNumero((int)$pf->get('numero'));
         $paciente->setTel($pf->get('tel'));
         $paciente->setNroCarpeta((int)$pf->get('nroCarpeta'));
-        $paciente->setObraSocialId((int)'obraSocialId');
+        $paciente->setObraSocialId((int)$pf->get('obraSocialId'));
         $entityManager->persist($paciente);
         $entityManager->flush();
         return new Response('Usuario agregado', 200);

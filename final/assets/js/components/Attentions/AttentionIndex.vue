@@ -29,6 +29,9 @@
                }"
               :search-options="{ enabled: true, placeholder: 'Buscar' }"
                styleClass="vgt-table bordered">
+              <div slot="emptystate" class="has-text-centered">
+                 <h3 class="h3">No hay atenciones cargadas en el sistema</h3>
+               </div>
               <div slot="table-actions">
                 <button type="button" class="button is-info" @click="showAddAttentionModal(null, 'Agregar Atencion')">Agregar Atención</button>
               </div>
@@ -51,8 +54,9 @@
 <script>
 import Vue from 'vue'
 import ViewAttentionModal from './ViewAttentionModal.vue';
+import AddAttentionModal from './AddAttentionModal.vue';
 export default {
-    components: { ViewAttentionModal},
+    components: { ViewAttentionModal, AddAttentionModal},
     data(){
         return {
         attentions: Array,
@@ -80,11 +84,19 @@ export default {
           field: 'acciones',
         },
       ],
+      acompanamientos: Array,
+      instituciones: Array,
+      motivos: Array,
+      tratamientos: Array,
         };
     },
     
     created(){
         this.loadAttentions();
+        this.loadAcompanamientos();
+        this.loadInstituciones();
+        this.loadMotivos();
+        this.loadTratamientos();
     },
     methods: {
     loadAttentions: function() {
@@ -109,7 +121,11 @@ export default {
       return (attention.internacion? 'Sí' : 'No')
     },
     attentionDerivation(attention){
-      return attention.derivacion['nombre']
+      if(attention.derivacion != undefined){
+        return attention.derivacion['nombre'] 
+      }
+      else
+        return 'no derivado'
     },
     showViewAttentionModal(attentionData) {
       var ComponentClass = Vue.extend(ViewAttentionModal);
@@ -122,9 +138,67 @@ export default {
       instance.$mount()
       this.$refs.container.appendChild(instance.$el)
     },
+    showAddAttentionModal(attentionData) {
+      var ComponentClass = Vue.extend(AddAttentionModal);
+      var instance = new ComponentClass({
+        propsData: {
+          attention: attentionData,
+          getFormattedDate: this.getFormattedDate,
+          acompanamientos: this.acompanamientos,
+          instituciones: this.instituciones,
+          motivos: this.motivos,
+          tratamientos: this.tratamientos,
+          idPaciente: this.$route.params.idPaciente,
+          }
+      })
+      instance.$mount()
+      this.$refs.container.appendChild(instance.$el)
+    },
+
     getFormattedDate(date) {
     return [date.getDate(), date.getMonth()+1, date.getFullYear()]
       .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+    },
+
+    loadAcompanamientos(){
+        axios
+        .get('http://localhost:8000/consulta/acompanamientos')
+        .then(response => {
+          this.acompanamientos=response.data;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    loadInstituciones(){
+        axios
+        .get('http://localhost:8000/consulta/instituciones')
+        .then(response => {
+          this.instituciones=response.data;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    loadMotivos(){
+        axios
+        .get('http://localhost:8000/consulta/motivos')
+        .then(response => {
+          this.motivos=response.data;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    loadTratamientos(){
+        axios
+        .get('http://localhost:8000/consulta/tratamientos')
+        .then(response => {
+          this.tratamientos=response.data;
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     
     },

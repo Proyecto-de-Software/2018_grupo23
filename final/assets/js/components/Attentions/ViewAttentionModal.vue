@@ -16,15 +16,15 @@
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Acompañamiento</h4>
-                <p class="subtitle is-6">{{attention.acompanamiento.nombre }}</p>
+                <p class="subtitle is-6">{{attention.acompanamiento ? attention.acompanamiento.nombre : 'Sin acompañamiento' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Derivación</h4>
-                <p class="subtitle is-6">{{attention.derivacion.nombre }}</p>
+                <p class="subtitle is-6">{{attention.derivacion ? attention.derivacion.nombre : 'Sin derivación'}}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Articulación con otras instituciones</h4>
-                <p class="subtitle is-6">{{attention.articulacion_con_insituciones }}</p>
+                <p class="subtitle is-6">{{attention.articulacion_con_insituciones ? attention.articulacion_con_insituciones : ' ' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Internación</h4>
@@ -32,19 +32,15 @@
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Diagnóstico</h4>
-                <p class="subtitle is-6">{{attention.diagnostico }}</p>
+                <p class="subtitle is-6">{{attention.diagnostico ? attention.diagnostico : ' ' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Observaciones</h4>
-                <p class="subtitle is-6">{{attention.observaciones }}</p>
+                <p class="subtitle is-6">{{attention.observaciones ? attention.observaciones : ' ' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Tratamiento Farmacológico</h4>
-                <p class="subtitle is-6">{{attention.tratamiento_farmacologico.nombre }}</p>
-              </div>
-              <div class="text-box">
-                <h4 class="title is-5">Derivación</h4>
-                <p class="subtitle is-6">{{attention.derivacion.nombre }}</p>
+                <p class="subtitle is-6">{{attention.tratamiento_farmacologico ? attention.tratamiento_farmacologico.nombre : 'Sin tratamiento' }}</p>
               </div>
               
               
