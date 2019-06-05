@@ -29,6 +29,9 @@
                }"
               :search-options="{ enabled: true, placeholder: 'Buscar' }"
                styleClass="vgt-table bordered">
+              <div slot="emptystate" class="has-text-centered">
+                 <h3 class="h3">No hay atenciones cargadas en el sistema</h3>
+               </div>
               <div slot="table-actions">
                 <button type="button" class="button is-info" @click="showAddAttentionModal(null, 'Agregar Atencion')">Agregar Atención</button>
               </div>
@@ -118,7 +121,11 @@ export default {
       return (attention.internacion? 'Sí' : 'No')
     },
     attentionDerivation(attention){
-      return attention.derivacion['nombre']
+      if(attention.derivacion != undefined){
+        return attention.derivacion['nombre'] 
+      }
+      else
+        return 'no derivado'
     },
     showViewAttentionModal(attentionData) {
       var ComponentClass = Vue.extend(ViewAttentionModal);
@@ -141,6 +148,7 @@ export default {
           instituciones: this.instituciones,
           motivos: this.motivos,
           tratamientos: this.tratamientos,
+          idPaciente: this.$route.params.idPaciente,
           }
       })
       instance.$mount()

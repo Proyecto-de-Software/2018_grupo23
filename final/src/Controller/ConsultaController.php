@@ -9,6 +9,8 @@ use App\Entity\Acompanamiento;
 use App\Entity\Institucion;
 use App\Entity\MotivoConsulta;
 use App\Entity\TratamientoFarmacologico;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
@@ -47,6 +49,49 @@ class ConsultaController extends FOSRestController
           $querys = $this->getDoctrine()->getRepository(Consulta::class)->findBy(['paciente' => $id]);
           return new Response($serializer->serialize($querys, "json"));
         }
+    }
+
+    /**
+     * @Route("/new/{idPaciente}", name="consulta_new", methods={"POST"})
+     * @SWG\Response(response=200, description="Patient was created successfully")
+     * @SWG\Tag(name="Consulta")
+     * @RequestParam(name="fecha", strict=true, nullable=false, allowBlank=false, description="Fecha.")
+     * @RequestParam(name="motivo", strict=true, nullable=false, allowBlank=false, description="Motivo.")
+     * @RequestParam(name="acompanamiento", allowBlank=true, description="Acompañamiento.")
+     * @RequestParam(name="derivacion", allowBlank=true, description="Derivacion.")
+     * @RequestParam(name="diagnostico", strict=true, nullable=false, allowBlank=false, description="Diagnostico.")
+     * @RequestParam(name="internacion", strict=true, nullable=false, allowBlank=false, description="Internacion.")
+     * @RequestParam(name="observaciones", allowBlank=true, description="Observaciones generales.")
+     * @RequestParam(name="tratamiento", allowBlank=true, description="Tratamiento Farmacológico.")
+     * @RequestParam(name="articulacion", allowBlank=true, description="Articulación.")
+     * 
+     * @param ParamFetcher $pf
+     */
+    public function new(Request $request, ParamFetcher $pf, $idPaciente): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'atencion_new']))) {
+        $motivo=$entityManager->getRepository(MotivoConsulta::class)->findOneBy(['id'=>$pf->get('motivo')]);
+        $acompanamiento=$entityManager->getRepository(Acompanamiento::class)->findOneBy(['id'=>$pf->get('acompanamiento')]);
+        $derivacion=$entityManager->getRepository(Institucion::class)->findOneBy(['id'=>$pf->get('derivacion')]);
+        $tratamiento=$entityManager->getRepository(TratamientoFarmacologico::class)->findOneBy(['id'=>$pf->get('tratamiento')]);
+        $paciente=$entityManager->getRepository(Paciente::class)->findOneBy(['id'=>$idPaciente]);
+        $consulta= new Consulta();
+        $consulta->setFecha(new \DateTime('@'.strtotime($pf->get('fecha'))));
+        $consulta->setMotivoId($motivo);
+        $consulta->setAcompanamientoId($acompanamiento);
+        $consulta->setDerivacionId($derivacion);
+        $consulta->setDiagnostico($pf->get('diagnostico'));
+        $consulta->setInternacion($pf->get('internacion'));
+        $consulta->setObservaciones($pf->get('observaciones'));
+        $consulta->setTratamientoFarmacologicoId($tratamiento);
+        $consulta->setPacienteId($paciente);
+        $entityManager->persist($consulta);
+        $entityManager->flush();
+        return new Response('Atención agregada', 200);
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
     }
 
 

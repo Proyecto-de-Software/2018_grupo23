@@ -114,6 +114,7 @@ export default {
     instituciones: Array,
     motivos: Array,
     tratamientos: Array,
+    idPaciente: String,
     
   },
   data() {
@@ -160,7 +161,7 @@ export default {
         // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
       } else { //new
         axios
-        .post('http://localhost:8000/consulta/new', this.attentionForm)
+        .post('http://localhost:8000/consulta/new/' + this.idPaciente, this.attentionForm)
         // .then(response => console.log(response) )
         // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
       }
