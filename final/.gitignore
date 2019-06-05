@@ -4,9 +4,7 @@
 /.env.local.php
 /.env.*.local
 /public/bundles/
-/var/cache/dev/*
-/var/cache/prod/
-/var/log
+/var/
 /vendor/
 /config/packages/doctrine.yaml
 ###< symfony/framework-bundle ###
