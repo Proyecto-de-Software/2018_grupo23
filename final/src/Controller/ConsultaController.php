@@ -53,7 +53,7 @@ class ConsultaController extends FOSRestController
 
     /**
      * @Route("/new/{idPaciente}", name="consulta_new", methods={"POST"})
-     * @SWG\Response(response=200, description="Patient was created successfully")
+     * @SWG\Response(response=200, description="Consulta was created successfully")
      * @SWG\Tag(name="Consulta")
      * @RequestParam(name="fecha", strict=true, nullable=false, allowBlank=false, description="Fecha.")
      * @RequestParam(name="motivo", strict=true, nullable=false, allowBlank=false, description="Motivo.")
@@ -86,6 +86,47 @@ class ConsultaController extends FOSRestController
         $consulta->setObservaciones($pf->get('observaciones'));
         $consulta->setTratamientoFarmacologicoId($tratamiento);
         $consulta->setPacienteId($paciente);
+        $entityManager->persist($consulta);
+        $entityManager->flush();
+        return new Response('Atención agregada', 200);
+      } else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
+    }
+
+    /**
+     * @Route("/{id}/edit", name="consulta_edit", methods={"POST"})
+     * @SWG\Response(response=200, description="Consulta was edited succesfully")
+     * @SWG\Tag(name="Consulta")
+     * @RequestParam(name="fecha", strict=true, nullable=false, allowBlank=false, description="Fecha.")
+     * @RequestParam(name="motivo", strict=true, nullable=false, allowBlank=false, description="Motivo.")
+     * @RequestParam(name="acompanamiento", allowBlank=true, description="Acompañamiento.")
+     * @RequestParam(name="derivacion", allowBlank=true, description="Derivacion.")
+     * @RequestParam(name="diagnostico", strict=true, nullable=false, allowBlank=false, description="Diagnostico.")
+     * @RequestParam(name="internacion", strict=true, nullable=false, allowBlank=false, description="Internacion.")
+     * @RequestParam(name="observaciones", allowBlank=true, description="Observaciones generales.")
+     * @RequestParam(name="tratamiento", allowBlank=true, description="Tratamiento Farmacológico.")
+     * @RequestParam(name="articulacion", allowBlank=true, description="Articulación.")
+     * 
+     * @param ParamFetcher $pf
+     */
+    public function edit(Request $request, ParamFetcher $pf, $id): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'atencion_update']))) {
+        $motivo=$entityManager->getRepository(MotivoConsulta::class)->findOneBy(['id'=>$pf->get('motivo')]);
+        $acompanamiento=$entityManager->getRepository(Acompanamiento::class)->findOneBy(['id'=>$pf->get('acompanamiento')]);
+        $derivacion=$entityManager->getRepository(Institucion::class)->findOneBy(['id'=>$pf->get('derivacion')]);
+        $tratamiento=$entityManager->getRepository(TratamientoFarmacologico::class)->findOneBy(['id'=>$pf->get('tratamiento')]);
+        $consulta=$entityManager->getRepository(Consulta::class)->findOneBy(['id'=>$id]);
+        $consulta->setFecha(new \DateTime('@'.strtotime($pf->get('fecha'))));
+        $consulta->setMotivoId($motivo);
+        $consulta->setAcompanamientoId($acompanamiento);
+        $consulta->setDerivacionId($derivacion);
+        $consulta->setDiagnostico($pf->get('diagnostico'));
+        $consulta->setInternacion($pf->get('internacion'));
+        $consulta->setObservaciones($pf->get('observaciones'));
+        $consulta->setTratamientoFarmacologicoId($tratamiento);
         $entityManager->persist($consulta);
         $entityManager->flush();
         return new Response('Atención agregada', 200);
