@@ -105,7 +105,7 @@ class PacienteController extends FOSRestController
         $paciente->setObraSocialId((int)$pf->get('obraSocialId'));
         $entityManager->persist($paciente);
         $entityManager->flush();
-        return new Response('Usuario agregado', 200);
+        return new Response('Paciente agregado', 200);
         }
         else {
             return new Response("No se ha podido verificar que toda la información sea correcta", 400);

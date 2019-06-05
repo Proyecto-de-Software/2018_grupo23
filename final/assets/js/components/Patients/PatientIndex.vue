@@ -230,8 +230,9 @@ export default {
     getPartido(patient){
       if(this.partidosLoading==false){
       var index = this.partidos.findIndex(obj => obj.id==patient.partido_id)
+      console.log(index)
       }
-      if(index==undefined){
+      if(index==undefined || index==-1){
         return 'partido no asignado'
       }
       else{
@@ -253,7 +254,7 @@ export default {
       if(this.regionesLoading==false){
         var index = this.regionesSanitarias.findIndex(obj => obj.id==patient.region_sanitaria_id)
       }
-      if(index==undefined){
+      if(index==undefined || index== -1){
         return 'región no asignada'
       }
       else{
@@ -275,7 +276,7 @@ export default {
       if(this.localidadesLoading==false){
         var index = this.localidades.findIndex(obj => obj.id==patient.localidad_id)
       }
-      if(index==undefined){
+      if(index==undefined || index== -1){
         return 'localidad no asignada'
       }
       else{
@@ -317,7 +318,7 @@ export default {
     },
     getObraSocial(patient){
       if (this.obrasSocialesLoading==false) var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
-      return (index == undefined) ? 'obra social no asignada' : this.obrasSociales[index].nombre
+      return (index == undefined || index == -1) ? 'obra social no asignada' : this.obrasSociales[index].nombre
     },
     getFormattedDate(date) {
       return [date.getDate(), date.getMonth()+1, date.getFullYear()]

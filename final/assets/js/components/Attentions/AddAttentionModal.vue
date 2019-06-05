@@ -52,11 +52,12 @@
                 <div class="field">
                   <label class="label">Internación*</label>
                   <div class="control">
-                    <input type="radio"  value="1" v-model="attentionForm.internacion" :selected="attentionForm.internacion==true">
-                    <label>Sí</label>
+                    <label for="No">Sí</label>
+                    <input type="radio" id="Sí" :value="true" v-model="attentionForm.internacion" :checked="attentionForm.internacion == true">
+
                     <br>
-                    <input type="radio" value="0" v-model="attentionForm.internacion" :selected="attentionForm.internacion==false">
-                    <label>No</label>
+                    <label for="Sí">No</label>
+                    <input type="radio" id="No" :value="false" v-model="attentionForm.internacion" :checked="attentionForm.internacion== false">
                     <br>
                   </div>
                 </div>
@@ -114,7 +115,7 @@ export default {
     instituciones: Array,
     motivos: Array,
     tratamientos: Array,
-    idPaciente: String,
+    idPaciente: Number,
     
   },
   data() {
@@ -154,25 +155,29 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
+      this.attentionForm.internacion = this.attentionForm.internacion == true ? 1 : 0
       if (this.attention) { //edit
         axios
         .post('http://localhost:8000/consulta/' + this.attention.id + '/edit', this.attentionForm)
         .then(response => {
+            if (response.status == 200){
               Vue.swal(
                 'La atención fue editada',
                 '',
                 'success'
-              )
+              )}
             })
       } else { //new
         axios
         .post('http://localhost:8000/consulta/new/' + this.idPaciente, this.attentionForm)
         .then(response => {
+             if (response.status == 200){
               Vue.swal(
                 'La atención fue agregada',
                 '',
                 'success'
               )
+             }
             })
       }
       this.loadAttentions()
