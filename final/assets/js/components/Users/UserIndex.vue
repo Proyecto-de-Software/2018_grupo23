@@ -28,6 +28,9 @@
                }"
               :search-options="{ enabled: true, placeholder: 'Buscar' }"
                styleClass="vgt-table bordered">
+              <div slot="emptystate" class="has-text-centered">
+                <h3 class="h3">No hay usuarios cargados en el sistema</h3>
+              </div>
               <div slot="table-actions">
                 <button v-if="loggedUser.permisos.includes('usuario_new')" type="button" class="button is-info" @click="showAddUserModal('Agregar Usuario')">Agregar Usuario</button>
               </div>

@@ -232,13 +232,11 @@ export default {
       if (this.patient) { //edit
         axios
         .post('http://localhost:8000/paciente/' + this.patient.id + '/edit', this.patientForm)
-        // .then(response => Vue.swal('El paciente fue actualizado', '', 'success'))
-        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+        .then(response => { if (response.status == 200) Vue.swal('El paciente fue actualizado', '', 'success') })
       } else { //new
         axios
         .post('http://localhost:8000/paciente/new', this.patientForm)
-        // .then(response => console.log(response) )
-        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+        .then(response =>  { if (response.status == 200) Vue.swal('El paciente fue creado', '', 'success') })
       }
       this.loadPatients()
       this.close()

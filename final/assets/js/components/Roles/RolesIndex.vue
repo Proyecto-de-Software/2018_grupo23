@@ -13,6 +13,9 @@
               :lineNumbers="true"
               :defaultSortBy="{field: 'nombre', type: 'asec'}"
                styleClass="vgt-table bordered">
+               <div slot="emptystate" class="has-text-centered">
+                 <h3 class="h3">No hay roles cargados en el sistema</h3>
+               </div>
               <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'acciones'">
                   <button v-if="loggedUser.permisos.includes('rol_update')" type="button" class="button is-info is-small is-spaced" title="Editar" @click="showEditAndViewRoleModal(props.row, 'Editar')">Editar</button>
@@ -33,8 +36,8 @@ export default {
   components: { EditAndViewRoleModal },
   data() {
     return {
-      appRoles: [],
-      appPerms: [],
+      appRoles: null,
+      appPerms: null,
       columns: [
         {
           label: 'Nombre',
@@ -77,7 +80,7 @@ export default {
   },
   computed: {
     isAllContentLoaded() {
-      return (this.appRoles.length > 0) && (this.appPerms.length > 0) && (this.loggedUser !== 'undefined')
+      return (this.appRoles) && (this.appPerms) && (this.loggedUser !== 'undefined')
     }
   }
 }

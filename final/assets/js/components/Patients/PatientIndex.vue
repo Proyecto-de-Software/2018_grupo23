@@ -3,12 +3,12 @@
       <div class="box">
       <section class="section">
       <div class="container" ref="container">
-          <div v-if="isLoading" class="has-text-centered">
-            <a class="button is-loading page-loading-button "></a>
+          <div v-if="!isAllContentLoaded" class="has-text-centered">
+            <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
-              v-if="patients && patients.length"
+              v-if="isAllContentLoaded"
               :columns="columns"
               :rows="patients"
               :lineNumbers="true"
@@ -29,25 +29,27 @@
                }"
               :search-options="{ enabled: true, placeholder: 'Buscar' }"
                styleClass="vgt-table bordered">
-              <div slot="table-actions">
-                <button type="button" class="button is-info" @click="showAddPatientModal(null, 'Agregar Paciente')">Agregar Paciente</button>
-              </div>
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'acciones'">
-                  <button v-if="loggedUser.permisos.includes('paciente_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddPatientModal(props.row, 'Editar Paciente')">Editar</button>
-                  <button v-if="loggedUser.permisos.includes('paciente_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewPatientModal(props.row)">Ver</button>
-                  <button v-if="loggedUser.permisos.includes('paciente_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deletePatient(props.row.id)">Eliminar</button>
-                  <router-link 
-                  v-if="loggedUser.permisos.includes('atencion_index')" 
-                  class="button is-info is-small button-is-spaced" 
-                  :to="{ name: 'consulta', params: { idPaciente: props.row.id}}"  
-                  title="Atenciones" 
-                  replace>
-                    Atenciones
-                  </router-link>
-                  
-                </span>
-              </template>
+               <div slot="emptystate" class="has-text-centered">
+                 <h3 class="h3">No hay pacientes cargados en el sistema</h3>
+               </div>
+                <div slot="table-actions">
+                  <button type="button" class="button is-info" @click="showAddPatientModal(null, 'Agregar Paciente')">Agregar Paciente</button>
+                </div>
+                <template slot="table-row" slot-scope="props">
+                  <span v-if="props.column.field == 'acciones'">
+                    <button v-if="loggedUser.permisos.includes('paciente_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddPatientModal(props.row, 'Editar Paciente')">Editar</button>
+                    <button v-if="loggedUser.permisos.includes('paciente_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewPatientModal(props.row)">Ver</button>
+                    <button v-if="loggedUser.permisos.includes('paciente_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deletePatient(props.row.id)">Eliminar</button>
+                    <router-link
+                    v-if="loggedUser.permisos.includes('atencion_index')"
+                    class="button is-info is-small button-is-spaced"
+                    :to="{ name: 'consulta', params: { idPaciente: props.row.id}}"
+                    title="Atenciones"
+                    replace>
+                      Atenciones
+                    </router-link>
+                  </span>
+                </template>
             </vue-good-table>
           </div>
       </div>
@@ -115,7 +117,6 @@ export default {
     this.loadLocalidades();
     this.loadDocTypes();
     this.loadObrasSociales();
-
   },
   methods: {
     loadPatients: function() {
@@ -230,14 +231,14 @@ export default {
       if(this.partidosLoading==false){
       var index = this.partidos.findIndex(obj => obj.id==patient.partido_id)
       }
-    if(index==undefined){
-      return 'partido no asignado'
-    }
-    else{
-      return this.partidos[index].nombre
-    }
+      if(index==undefined){
+        return 'partido no asignado'
+      }
+      else{
+        return this.partidos[index].nombre
+      }
     },
-loadRegionesSanitarias(){
+    loadRegionesSanitarias(){
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria')
         .then(response => {
@@ -248,18 +249,18 @@ loadRegionesSanitarias(){
           console.log(error)
         })
     },
-  getRegionSanitaria(patient){
+    getRegionSanitaria(patient){
       if(this.regionesLoading==false){
-      var index = this.regionesSanitarias.findIndex(obj => obj.id==patient.region_sanitaria_id)
+        var index = this.regionesSanitarias.findIndex(obj => obj.id==patient.region_sanitaria_id)
       }
-    if(index==undefined){
-      return 'región no asignada'
-    }
-    else{
-      return this.regionesSanitarias[index].nombre
-    }
+      if(index==undefined){
+        return 'región no asignada'
+      }
+      else{
+        return this.regionesSanitarias[index].nombre
+      }
     },
- loadLocalidades(){
+    loadLocalidades(){
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad')
         .then(response => {
@@ -272,16 +273,16 @@ loadRegionesSanitarias(){
     },
     getLocalidad(patient){
       if(this.localidadesLoading==false){
-      var index = this.localidades.findIndex(obj => obj.id==patient.localidad_id)
+        var index = this.localidades.findIndex(obj => obj.id==patient.localidad_id)
       }
-    if(index==undefined){
-      return 'localidad no asignada'
-    }
-    else{
-      return this.localidades[index].nombre
-    }
+      if(index==undefined){
+        return 'localidad no asignada'
+      }
+      else{
+        return this.localidades[index].nombre
+      }
     },
-   loadDocTypes(){
+    loadDocTypes(){
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento')
         .then(response => {
@@ -292,16 +293,16 @@ loadRegionesSanitarias(){
           console.log(error)
         })
     },
-     getDocType(patient){
+    getDocType(patient){
       if(this.docTypesLoading==false){
-      var index = this.docTypes.findIndex(obj => obj.id==patient.tipo_doc_id)
+        var index = this.docTypes.findIndex(obj => obj.id==patient.tipo_doc_id)
       }
-    if(index==undefined){
-      return 'no asignado'
-    }
-    else{
-      return this.docTypes[index].nombre
-    }
+      if(index==undefined){
+        return 'no asignado'
+      }
+      else{
+        return this.docTypes[index].nombre
+      }
     },
   loadObrasSociales(){
       this
@@ -315,25 +316,20 @@ loadRegionesSanitarias(){
         })
     },
     getObraSocial(patient){
-      if(this.obrasSocialesLoading==false){
-      var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
-      }
-    if(index==undefined){
-      return 'obra social no asignada'
-    }
-    else{
-      console.log(this.obrasSociales[index])
-      return this.obrasSociales[index].nombre
-    }
+      if (this.obrasSocialesLoading==false) var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
+      return (index == undefined) ? 'obra social no asignada' : this.obrasSociales[index].nombre
     },
-  getFormattedDate(date) {
-    return [date.getDate(), date.getMonth()+1, date.getFullYear()]
+    getFormattedDate(date) {
+      return [date.getDate(), date.getMonth()+1, date.getFullYear()]
       .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
-},
+    },
   },
   computed: {
     rowsPerPage() {
       return this.$root.config.paginado
+    },
+    isAllContentLoaded() {
+      return (this.patients)
     }
   }
 };
