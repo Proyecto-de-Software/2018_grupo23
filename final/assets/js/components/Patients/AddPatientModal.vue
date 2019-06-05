@@ -86,11 +86,14 @@
                 <div class="field">
                   <label class="label">¿Tiene en su poder un documento?*</label>
                   <div class="control">
-                    <input type="radio"  value="1" v-model="patientForm.tieneDocumento" :selected="patientForm.tieneDocumento==true">
-                    <label>Sí</label>
+
+                    <label for="No">Sí</label>
+                    <input type="radio" id="Sí" :value="true" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == true">
+
                     <br>
-                    <input type="radio" value="0" v-model="patientForm.tieneDocumento" :selected="patientForm.tieneDocumento==false">
-                    <label>No</label>
+                    <label for="Sí">No</label>
+                    <input type="radio" id="No" :value="false" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == false">
+
                     <br>
                   </div>
                 </div>
@@ -229,6 +232,7 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
+      this.patientForm.tieneDocumento = this.patientForm.tieneDocumento == true ? 1 : 0
       if (this.patient) { //edit
         axios
         .post('http://localhost:8000/paciente/' + this.patient.id + '/edit', this.patientForm)

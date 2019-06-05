@@ -328,7 +328,7 @@ export default {
     rowsPerPage() {
       return this.$root.config.paginado
     },
-    isAllContentLoaded() {
+    isAllContentLoaded() { //habría que agregarle todos los chequeos de variables
       return (this.patients)
     }
   }
