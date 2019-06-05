@@ -149,9 +149,12 @@ export default {
         .post('http://localhost:8000/role/' + this.role.id + '/edit', this.roleForm.perms)
         .then(response => {
           if (response.status === 200) {
-            location.reload()
             events.$emit('alert:success', 'El rol fue actualizado')
-          } else {
+            this.close()
+            setTimeout(function () {
+                  location.reload();
+                }, 2000);
+            } else {
             events.$emit('alert:error', 'No fue posible realizar esa acción')
           }
         })

@@ -3,12 +3,11 @@
       <div class="box">
       <section class="section">
       <div class="container" ref="container">
-          <div v-if="!isAllContentLoaded" class="has-text-centered">
+          <div v-if="!contentIsReady" class="has-text-centered">
             <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
-              v-if="isAllContentLoaded"
               :columns="columns"
               :rows="patients"
               :lineNumbers="true"
@@ -69,21 +68,13 @@ export default {
     return {
       patients: null,
       docTypes: null,
-      docTypesLoading: true,
-      isLoading: true,
       partidos: Array,
-      partidosLoading: true,
       regionesSanitarias: Array,
-      regionesLoading: true,
       localidades: Array,
-      localidadesLoading: true,
       docTypes: Array,
-      docTypesLoading: true,
       obrasSociales: Array,
-      obrasSocialesLoading: true,
       appRoles: [],
       generos: Array,
-      generosLoading: true,
       columns: [
         {
           label: 'Nombre completo',
@@ -124,8 +115,6 @@ export default {
         .get('http://localhost:8000/paciente/index')
         .then(response => {
           this.patients = response.data;
-          console.log(this.patients)
-          this.isLoading = false
         })
         .catch(error => {
           console.log(error)
@@ -136,7 +125,6 @@ export default {
         .get('http://localhost:8000/paciente/generos')
         .then(response =>{
           this.generos= response.data
-          this.generosLoading = false
         })
     },
     deletePatient(patientId) {
@@ -221,7 +209,6 @@ export default {
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido')
         .then(response => {
           this.partidos=response;
-          this.partidosLoading=false;
         })
         .catch(error => {
           console.log(error)
@@ -244,7 +231,6 @@ export default {
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria')
         .then(response => {
           this.regionesSanitarias=response;
-          this.regionesLoading=false;
         })
         .catch(error => {
           console.log(error)
@@ -266,7 +252,6 @@ export default {
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad')
         .then(response => {
           this.localidades=response;
-          this.localidadesLoading=false;
         })
         .catch(error => {
           console.log(error)
@@ -288,7 +273,6 @@ export default {
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento')
         .then(response => {
           this.docTypes= response;
-          this.docTypesLoading=false;
         })
         .catch(error => {
           console.log(error)
@@ -310,7 +294,6 @@ export default {
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social')
         .then(response => {
           this.obrasSociales=response;
-          this.obrasSocialesLoading=false;
         })
         .catch(error => {
           console.log(error)
@@ -329,8 +312,8 @@ export default {
     rowsPerPage() {
       return this.$root.config.paginado
     },
-    isAllContentLoaded() { //habría que agregarle todos los chequeos de variables
-      return (this.patients)
+    contentIsReady() {
+      return (this.patients && this.partidos && this.generos && this.regionesSanitarias && this.localidades && this.docTypes && this.obrasSociales)
     }
   }
 };

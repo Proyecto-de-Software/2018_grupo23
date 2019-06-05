@@ -2,12 +2,11 @@
   <div class="box">
     <section class="section">
       <div class="container" ref="container">
-          <div v-if="!isAllContentLoaded" class="has-text-centered">
+          <div v-if="!contentIsReady" class="has-text-centered">
             <a class="button is-loading page-loading-button"></a>
           </div>
           <div v-else>
             <vue-good-table
-              v-if="isAllContentLoaded"
               :columns="columns"
               :rows="users"
               :lineNumbers="true"
@@ -189,7 +188,7 @@ export default {
     rowsPerPage() {
       return this.$root.config.paginado
     },
-    isAllContentLoaded() {
+    contentIsReady() {
       return (this.users && this.appRoles)
     }
   }
