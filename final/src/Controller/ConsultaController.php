@@ -77,7 +77,7 @@ class ConsultaController extends FOSRestController
         $tratamiento=$entityManager->getRepository(TratamientoFarmacologico::class)->findOneBy(['id'=>$pf->get('tratamiento')]);
         $paciente=$entityManager->getRepository(Paciente::class)->findOneBy(['id'=>$idPaciente]);
         $consulta= new Consulta();
-        $consulta->setFecha(new \DateTime('@'.strtotime($pf->get('fecha'))));
+        $consulta->setFecha(date_create($pf->get('fecha')));
         $consulta->setMotivoId($motivo);
         $consulta->setAcompanamientoId($acompanamiento);
         $consulta->setDerivacionId($derivacion);
@@ -119,7 +119,7 @@ class ConsultaController extends FOSRestController
         $derivacion=$entityManager->getRepository(Institucion::class)->findOneBy(['id'=>$pf->get('derivacion')]);
         $tratamiento=$entityManager->getRepository(TratamientoFarmacologico::class)->findOneBy(['id'=>$pf->get('tratamiento')]);
         $consulta=$entityManager->getRepository(Consulta::class)->findOneBy(['id'=>$id]);
-        $consulta->setFecha(new \DateTime('@'.strtotime($pf->get('fecha'))));
+        $consulta->setFecha(date_create($pf->get('fecha')));
         $consulta->setMotivoId($motivo);
         $consulta->setAcompanamientoId($acompanamiento);
         $consulta->setDerivacionId($derivacion);
@@ -133,6 +133,24 @@ class ConsultaController extends FOSRestController
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
       }
+    }
+
+    /**
+     *@Route("/{id}", name="consulta_delete", methods={"DELETE"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Consulta")
+     */
+    public function delete(Request $request, Consulta $consulta): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'atencion_destroy']))) {
+          $entityManager->remove($consulta);
+          $entityManager->flush();
+        }
+      else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
+      return new Response('Consulta eliminada', 200);
     }
 
 

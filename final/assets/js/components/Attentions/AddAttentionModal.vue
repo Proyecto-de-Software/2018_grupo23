@@ -157,13 +157,23 @@ export default {
       if (this.attention) { //edit
         axios
         .post('http://localhost:8000/consulta/' + this.attention.id + '/edit', this.attentionForm)
-        // .then(response => Vue.swal('El paciente fue actualizado', '', 'success'))
-        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+        .then(response => {
+              Vue.swal(
+                'La atención fue editada',
+                '',
+                'success'
+              )
+            })
       } else { //new
         axios
         .post('http://localhost:8000/consulta/new/' + this.idPaciente, this.attentionForm)
-        // .then(response => console.log(response) )
-        // .catch(error => Vue.swal('Se produjo un error', '', 'error'))
+        .then(response => {
+              Vue.swal(
+                'La atención fue agregada',
+                '',
+                'success'
+              )
+            })
       }
       this.loadAttentions()
       this.close()

@@ -104,7 +104,6 @@ export default {
         .get('http://localhost:8000/consulta/index/'+this.$route.params.idPaciente)
         .then(response => {
           this.attentions = response.data;
-          console.log(this.attentions) //borrar después
           this.isLoading = false
         })
         .catch(error => {
@@ -127,6 +126,34 @@ export default {
       else
         return 'no derivado'
     },
+    deleteAttention(attentionId) {
+      Vue.swal({
+        title: 'Está seguro?',
+        text: "No podrá revertirlo!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete('http://localhost:8000/consulta/' + attentionId)
+            .then(response => {
+              Vue.swal(
+                'La atención fue eliminada',
+                '',
+                'success'
+              )
+              this.loadAttentions()
+            })
+            .catch(error => {
+              console.log(error)
+          });
+        }
+      })
+    },
     showViewAttentionModal(attentionData) {
       var ComponentClass = Vue.extend(ViewAttentionModal);
       var instance = new ComponentClass({
@@ -143,6 +170,7 @@ export default {
       var instance = new ComponentClass({
         propsData: {
           attention: attentionData,
+          loadAttentions: this.loadAttentions,
           getFormattedDate: this.getFormattedDate,
           acompanamientos: this.acompanamientos,
           instituciones: this.instituciones,

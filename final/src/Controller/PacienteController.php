@@ -89,7 +89,7 @@ class PacienteController extends FOSRestController
         $paciente= new Paciente();
         $paciente->setApellido($pf->get('apellido'));
         $paciente->setNombre($pf->get('nombre'));
-        $paciente->setFechaNac(new \DateTime('@'.strtotime($pf->get('fechaNac'))));
+        $paciente->setFechaNac(date_create($pf->get('fechaNac')));
         $paciente->setLugarNac($pf->get('lugarNac'));
         $paciente->setPartidoId((int)$pf->get('partidoId'));
         $paciente->setRegionSanitariaId((int)$pf->get('regionSanitariaId'));
@@ -153,7 +153,7 @@ class PacienteController extends FOSRestController
             $paciente=$entityManager->getRepository(Paciente::class)->findOneBy(['id'=>$pf->get('historiaClinica')]);
             $paciente->setApellido($pf->get('apellido'));
             $paciente->setNombre($pf->get('nombre'));
-            $paciente->setFechaNac(new \DateTime('@'.strtotime($pf->get('fechaNac'))));
+            $paciente->setFechaNac(date_create($pf->get('fechaNac')));
             $paciente->setLugarNac($pf->get('lugarNac'));
             $paciente->setPartidoId((int)$pf->get('partidoId'));
             $paciente->setRegionSanitariaId((int)$pf->get('regionSanitariaId'));
