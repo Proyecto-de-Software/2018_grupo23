@@ -5,6 +5,7 @@ import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es.js';
 
 require('../css/bulma.css');
 require('../css/style.css');
+require('../css/leaflet.css');
 
 import Vue from 'vue';
 import axios from 'axios';
