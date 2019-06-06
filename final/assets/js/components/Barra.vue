@@ -16,18 +16,18 @@
                 <!-- navbar items izquierda -->
                 <p class="is-hidden-touch navbar-item"></p>
 
-                    <router-link class="navbar-item" :to="{ path: '/app/paciente'}" replace v-if="authenticated_user">Pacientes</router-link>
+                    <router-link v-if="authenticated_user && loggedUser.permisos.includes('paciente_index')" class="navbar-item" :to="{ path: '/app/paciente'}" replace>Pacientes</router-link>
 
                     <div class="navbar-item has-dropdown is-hoverable" v-if="authenticated_user">
                         <!-- navbar-link, navbar-dropdown etc. -->
 
                         <a class="navbar-link">Administración</a>
                         <div class="navbar-dropdown">
-                            <router-link class="navbar-item" :to="{ path: '/app/usuario'}" replace>Usuarios</router-link>
+                            <router-link v-if="loggedUser.permisos.includes('usuario_index')" class="navbar-item" :to="{ path: '/app/usuario'}" replace>Usuarios</router-link>
                             <router-link class="navbar-item" :to="{ path: '/app/reportes'}" replace>Reportes</router-link>
                             <hr class="navbar-divider">
-                            <router-link class="navbar-item" :to="{ path: '/app/roles'}" replace>Roles y permisos</router-link>
-                            <router-link class="navbar-item" :to="{ path: '/app/config'}" replace>Configuración</router-link>
+                            <router-link v-if="loggedUser.permisos.includes('rol_index')" class="navbar-item" :to="{ path: '/app/roles'}" replace>Roles y permisos</router-link>
+                            <router-link v-if="loggedUser.permisos.includes('configuracion_index')" class="navbar-item" :to="{ path: '/app/config'}" replace>Configuración</router-link>
                         </div>
 
                     </div>

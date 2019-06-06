@@ -146,15 +146,12 @@ export default {
     submit() {
       if ( this.title === 'Editar' ) {
         axios
-        .post('http://localhost:8000/role/' + this.role.id + '/edit', this.roleForm.perms)
+        .post(this.url('/role/' + this.role.id + '/edit'), this.roleForm.perms)
         .then(response => {
           if (response.status === 200) {
-            events.$emit('alert:success', 'El rol fue actualizado')
             this.close()
-            setTimeout(function () {
-                  location.reload();
-                }, 2000);
-            } else {
+            Vue.swal('El rol fue actualizado', 'Deberá iniciar sesión nuevamente si quiere que algunos cambios surjan efecto', 'success')
+          } else {
             events.$emit('alert:error', 'No fue posible realizar esa acción')
           }
         })

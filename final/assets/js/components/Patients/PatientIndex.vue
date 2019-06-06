@@ -68,13 +68,13 @@ export default {
     return {
       patients: null,
       docTypes: null,
-      partidos: Array,
-      regionesSanitarias: Array,
-      localidades: Array,
-      docTypes: Array,
-      obrasSociales: Array,
+      partidos: null,
+      regionesSanitarias: null,
+      localidades: null,
+      docTypes: null,
+      obrasSociales: null,
       appRoles: [],
-      generos: Array,
+      generos: null,
       columns: [
         {
           label: 'Nombre completo',
@@ -112,7 +112,7 @@ export default {
   methods: {
     loadPatients: function() {
       axios
-        .get('http://localhost:8000/paciente/index')
+        .get(this.url('/paciente/index'))
         .then(response => {
           this.patients = response.data;
         })
@@ -122,7 +122,7 @@ export default {
     },
     loadGeneros: function(){
       axios
-        .get('http://localhost:8000/paciente/generos')
+        .get(this.url('/paciente/generos'))
         .then(response =>{
           this.generos= response.data
         })
@@ -140,7 +140,7 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .delete('http://localhost:8000/paciente/' + patientId)
+            .delete(this.url('/paciente/' + patientId))
             .then(response => {
               Vue.swal(
                 'El paciente fue eliminado',
@@ -208,21 +208,18 @@ export default {
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido')
         .then(response => {
-          this.partidos=response;
+          this.partidos = response;
         })
         .catch(error => {
           console.log(error)
         })
     },
     getPartido(patient){
-      if(this.partidosLoading==false){
       var index = this.partidos.findIndex(obj => obj.id==patient.partido_id)
-      console.log(index)
+      if (index == undefined || index == -1) {
+        return 'Partido no asignado'
       }
-      if(index==undefined || index==-1){
-        return 'partido no asignado'
-      }
-      else{
+      else {
         return this.partidos[index].nombre
       }
     },
@@ -230,20 +227,18 @@ export default {
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria')
         .then(response => {
-          this.regionesSanitarias=response;
+          this.regionesSanitarias = response;
         })
         .catch(error => {
           console.log(error)
         })
     },
     getRegionSanitaria(patient){
-      if(this.regionesLoading==false){
-        var index = this.regionesSanitarias.findIndex(obj => obj.id==patient.region_sanitaria_id)
+      var index = this.regionesSanitarias.findIndex(obj => obj.id==patient.region_sanitaria_id)
+      if ( index == undefined || index == -1 ) {
+        return 'Región no asignada'
       }
-      if(index==undefined || index== -1){
-        return 'región no asignada'
-      }
-      else{
+      else {
         return this.regionesSanitarias[index].nombre
       }
     },
@@ -251,18 +246,16 @@ export default {
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad')
         .then(response => {
-          this.localidades=response;
+          this.localidades = response;
         })
         .catch(error => {
           console.log(error)
         })
     },
     getLocalidad(patient){
-      if(this.localidadesLoading==false){
-        var index = this.localidades.findIndex(obj => obj.id==patient.localidad_id)
-      }
-      if(index==undefined || index== -1){
-        return 'localidad no asignada'
+      var index = this.localidades.findIndex(obj => obj.id==patient.localidad_id)
+      if ( index == undefined || index == -1 ) {
+        return 'Localidad no asignada'
       }
       else{
         return this.localidades[index].nombre
@@ -279,29 +272,27 @@ export default {
         })
     },
     getDocType(patient){
-      if(this.docTypesLoading==false){
-        var index = this.docTypes.findIndex(obj => obj.id==patient.tipo_doc_id)
-      }
-      if(index==undefined){
-        return 'no asignado'
+      var index = this.docTypes.findIndex(obj => obj.id==patient.tipo_doc_id)
+      if ( index == undefined ) {
+        return 'No asignado'
       }
       else{
         return this.docTypes[index].nombre
       }
     },
-  loadObrasSociales(){
+    loadObrasSociales(){
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social')
         .then(response => {
-          this.obrasSociales=response;
+          this.obrasSociales = response;
         })
         .catch(error => {
           console.log(error)
         })
     },
     getObraSocial(patient){
-      if (this.obrasSocialesLoading==false) var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
-      return (index == undefined || index == -1) ? 'obra social no asignada' : this.obrasSociales[index].nombre
+      var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
+      return (index == undefined || index == -1) ? 'Obra social no asignada' : this.obrasSociales[index].nombre
     },
     getFormattedDate(date) {
       return [date.getDate(), date.getMonth()+1, date.getFullYear()]
@@ -317,5 +308,4 @@ export default {
     }
   }
 };
-</script>
 </script>

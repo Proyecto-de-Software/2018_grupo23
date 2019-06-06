@@ -95,7 +95,7 @@ export default {
   methods: {
     loadUsers: function() {
        axios
-        .get('http://localhost:8000/user/index/')
+        .get(this.url('/user/index/'))
         .then(response => {
           if (response.status === 200) {
             this.users = response.data
@@ -107,7 +107,7 @@ export default {
     },
     loadAppRoles() {
        axios
-        .post('http://localhost:8000/role/index')
+        .post(this.url('/role/index'))
         .then(response => {
           if (response.status === 200) {
             this.appRoles = response.data
@@ -119,7 +119,7 @@ export default {
     },
     toggleUserState(id, state) {
       axios
-        .post('http://localhost:8000/user/' + id + '/edit_state')
+        .post(this.url('/user/' + id + '/edit_state'))
         .then(response => {
               if (response.status == 200) {
                 if (state == 1)
@@ -143,7 +143,7 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .delete('http://localhost:8000/user/' + userId)
+            .delete(this.url('/user/' + userId))
             .then(response => {
               if (response.status === 200) {
                 Vue.swal('El usuario fue eliminado', '', 'success')

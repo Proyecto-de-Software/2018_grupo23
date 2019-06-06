@@ -57,12 +57,12 @@ export default {
   methods: {
     loadAppRoles: function() {
        axios
-      .post('http://localhost:8000/role/index')
+      .post(this.url('/role/index'))
       .then(response => this.appRoles = response.data)
     },
     loadAppPermissions() {
        axios
-      .get('http://localhost:8000/role/permissions_all')
+      .get(this.url('/role/permissions_all'))
       .then(response => this.appPerms = response.data)
     },
     showEditAndViewRoleModal(row, modalTitle) {
@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     contentIsReady() {
-      return (this.appRoles) && (this.appPerms) && (this.loggedUser !== 'undefined')
+      return (this.appRoles) && (this.appPerms) && (this.loggedUser !== undefined)
     }
   }
 }

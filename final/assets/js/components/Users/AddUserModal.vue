@@ -192,7 +192,7 @@ export default {
         } else {
           if (this.user) { //edit
             axios
-            .post('http://localhost:8000/user/' + this.user.id + '/edit', this.userForm)
+            .post(this.url('/user/' + this.user.id + '/edit'), this.userForm)
             .then(response => {
               if (response.status == 200) {
                 Vue.swal('El usuario fue actualizado', '', 'success')
@@ -200,7 +200,7 @@ export default {
             })
           } else { //new
             axios
-            .post('http://localhost:8000/user/new', this.userForm)
+            .post(this.url('/user/new'), this.userForm)
             .then(response => {
               if (response.status == 200) {
                 Vue.swal('El usuario fue creado', '', 'success')

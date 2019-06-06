@@ -100,7 +100,7 @@ export default {
     getAttentionsBy(criteriaStr) {
       this.loaded = false;
       axios.
-       get('http://localhost:8000/consulta/reportes/' + criteriaStr)
+       get(this.url('/consulta/reportes/' + criteriaStr))
        .then(response => {
                            var result = response.data;
                            if (result.length > 0) {
