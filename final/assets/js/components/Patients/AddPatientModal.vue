@@ -32,7 +32,7 @@
                      :value="patientForm.fechaNac && patientForm.fechaNac.toISOString().split('T')[0]"
                      @input="patientForm.fechaNac = $event.target.valueAsDate">
                   </div>
-                  <span v-show="errors.has('fecha de nacimiento')" class="help is-danger">{{ errors.first('fecha de nacimiento') }}</span>
+                  <!-- <span v-show="errors.has('fecha de nacimiento')" class="help is-danger">{{ errors.first('fecha de nacimiento') }}</span> -->
                 </div>
                 <div class="field">
                   <label class="label">Lugar de nacimiento</label>
@@ -42,32 +42,38 @@
                 </div>
                 <div class="field">
                   <label class="label">Partido</label>
-                  <div class="select">
-                    <select v-model="patientForm.partidoId" @change="onPartidoSelect($event)">
-                      <option v-for="partido in partidos" :value="partido.id" :selected="patientForm.partidoId == partido.id">
-                        {{ partido.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.partidoId" @change="onPartidoSelect($event)">
+                        <option v-for="partido in partidos" :value="partido.id" :selected="patientForm.partidoId == partido.id">
+                          {{ partido.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Region sanitaria</label>
-                  <div class="select">
-                    <select v-model="patientForm.regionSanitariaId">
-                      <option v-for="region in regionesSanitarias" :value="region.id" :selected="patientForm.regionSanitariaId == region.id" :disabled="true">
-                        {{ region.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.regionSanitariaId">
+                        <option v-for="region in regionesSanitarias" :value="region.id" :selected="patientForm.regionSanitariaId == region.id" :disabled="true">
+                          {{ region.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Localidad</label>
-                  <div class="select">
-                    <select v-model="patientForm.localidadId">
-                      <option v-for="localidad in localidades" :value="localidad.id" :selected="patientForm.localidadId == localidad.id">
-                        {{ localidad.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.localidadId">
+                        <option v-for="localidad in localidades" :value="localidad.id" :selected="patientForm.localidadId == localidad.id">
+                          {{ localidad.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
@@ -79,12 +85,14 @@
                 </div>
                 <div class="field">
                   <label class="label">Género*</label>
-                  <div class="select">
-                    <select name="genero" v-model="patientForm.genero" v-validate="'required'">
-                      <option v-for="genero in generos" :value="genero.id" :selected="patientForm.genero == genero.id">
-                        {{ genero.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select name="genero" v-model="patientForm.genero" v-validate="'required'">
+                        <option v-for="genero in generos" :value="genero.id" :selected="patientForm.genero == genero.id">
+                          {{ genero.nombre }}
+                        </option>
+                      </select>
+                    </div>
                     <span v-show="errors.has('genero')" class="help is-danger">{{ errors.first('genero') }}</span>
                   </div>
                 </div>
@@ -96,27 +104,20 @@
                         <option id="Sí" :value="true" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == true">Sí</option>
                         <option id="No" :value="false" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == false">No</option>
                       </select>
-                      <span v-show="errors.has('tiene documento')" class="help is-danger">{{ errors.first('tiene documento') }}</span>
                     </div>
-
-                    <!-- <label for="No">Sí</label>
-                    <input type="radio" id="Sí" :value="true" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == true">
-
-                    <br>
-                    <label for="Sí">No</label>
-                    <input type="radio" id="No" :value="false" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == false">
-
-                    <br> -->
+                    <span v-show="errors.has('tiene documento')" class="help is-danger">{{ errors.first('tiene documento') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Tipo de documento*</label>
-                  <div class="select">
-                    <select name="tipo de documento" v-model="patientForm.tipoDocId" v-validate="'required'">
-                      <option v-for="docType in docTypes" :value="docType.id" :selected="patientForm.tipoDocId == docType.id">
-                        {{ docType.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select name="tipo de documento" v-model="patientForm.tipoDocId" v-validate="'required'">
+                        <option v-for="docType in docTypes" :value="docType.id" :selected="patientForm.tipoDocId == docType.id">
+                          {{ docType.nombre }}
+                        </option>
+                      </select>
+                    </div>
                     <span v-show="errors.has('tipo de documento')" class="help is-danger">{{ errors.first('tipo de documento') }}</span>
                   </div>
                 </div>
@@ -141,12 +142,14 @@
                 </div>
                 <div class="field">
                   <label class="label">Obra social</label>
-                  <div class="select">
-                    <select v-model="patientForm.obraSocialId">
-                      <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
-                        {{ obraSocial.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.obraSocialId">
+                        <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
+                          {{ obraSocial.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
