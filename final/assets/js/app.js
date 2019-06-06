@@ -12,7 +12,16 @@ import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
 import VeeValidate from 'vee-validate';
-import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+import { Icon } from "leaflet";
+
+
+delete Icon.Default.prototype._getIconUrl;
+
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
 
 window.axios = axios;
 window.events = new Vue();
@@ -204,7 +213,7 @@ new Vue({
 
   methods: {
     async fetchPageConfig(){
-      await axios.get(this.url('/configuracion/')).then((response) => {
+      await axios.get(this.burl('/configuracion/')).then((response) => {
         this.config = response.data;
         if(this.config.estado === "deshabilitado"){
           events.$emit('mantenimiento:active')
@@ -213,7 +222,7 @@ new Vue({
     },
 
     async fetchLoggedUser(){
-      await axios.get(this.url('/api/session')).then((response) => {
+      await axios.get(this.burl('/api/session')).then((response) => {
         this.loggedUser = response.data
       }).catch((error) => { });
     },
@@ -261,5 +270,5 @@ watch: {
     }
   }
 },
-  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex, AttentionIndex, InstitutionIndex, LMap, LTileLayer, LMarker }
+  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex, AttentionIndex, InstitutionIndex }
 });

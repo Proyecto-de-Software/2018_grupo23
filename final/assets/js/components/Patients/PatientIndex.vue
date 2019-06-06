@@ -112,7 +112,7 @@ export default {
   methods: {
     loadPatients: function() {
       axios
-        .get(this.url('/paciente/index'))
+        .get(this.burl('/paciente/index'))
         .then(response => {
           this.patients = response.data;
         })
@@ -122,7 +122,7 @@ export default {
     },
     loadGeneros: function(){
       axios
-        .get(this.url('/paciente/generos'))
+        .get(this.burl('/paciente/generos'))
         .then(response =>{
           this.generos= response.data
         })
@@ -140,7 +140,7 @@ export default {
       }).then((result) => {
         if (result.value) {
           axios
-            .delete(this.url('/paciente/' + patientId))
+            .delete(this.burl('/paciente/' + patientId))
             .then(response => {
               Vue.swal(
                 'El paciente fue eliminado',

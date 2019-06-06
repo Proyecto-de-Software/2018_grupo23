@@ -4,7 +4,7 @@
       <div class="box">
       <section class="section">
       <div class="container" ref="container">
-          <div id="app">
+          <div id="soyelmapa"  class="container">
             <l-map :zoom="zoom" :center="center">
              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
               <l-marker :lat-lng="marker"></l-marker>
@@ -56,21 +56,15 @@
   </div>
 </template>
 
-<style scoped>
-  #app {
-  height: 100%;
-  margin: 0;
-  }
-</style>
-
 <script>
 
 import Vue from 'vue'
 import ViewAttentionModal from './ViewAttentionModal.vue';
 import AddAttentionModal from './AddAttentionModal.vue';
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 
 export default {
-    components: { ViewAttentionModal, AddAttentionModal},
+    components: { ViewAttentionModal, AddAttentionModal, LMap, LTileLayer, LMarker},
     data(){
         return {
           attentions: null,
@@ -97,7 +91,7 @@ export default {
             field: 'acciones',
           },
         ],
-        zoom:13,
+        zoom:18,
         center: L.latLng(47.413220, -1.219482),
         url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -281,3 +275,10 @@ export default {
   }
 
 </script>
+<style scoped>
+  #soyelmapa {
+  width: 40%;
+  height: 200px;
+  }
+
+</style>
