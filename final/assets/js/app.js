@@ -5,7 +5,6 @@ import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es.js';
 
 require('../css/bulma.css');
 require('../css/style.css');
-require('../css/leaflet.css');
 
 import Vue from 'vue';
 import axios from 'axios';
@@ -13,6 +12,7 @@ import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
 import VeeValidate from 'vee-validate';
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 
 window.axios = axios;
 window.events = new Vue();
@@ -42,6 +42,7 @@ import ReportsIndex from './components/Reports/ReportsIndex.vue'
 import RolesIndex from './components/Roles/RolesIndex.vue'
 import PatientIndex from './components/Patients/PatientIndex.vue'
 import AttentionIndex from './components/Attentions/AttentionIndex.vue'
+import InstitutionIndex from './components/Institutions/InstitutionIndex.vue'
 
 /****************Ruteo *************************************** */
 /** no olvidar registrar el componente abajo del todo en VUE */
@@ -57,6 +58,7 @@ const routes = [
   { path: '/app/roles', component: RolesIndex },
   { path: '/app/paciente', component: PatientIndex},
   { path: '/app/consulta/index/:idPaciente', name:'consulta', component: AttentionIndex},
+  { path: '/app/institucion', component: InstitutionIndex},
   { path: '*', redirect: '/' }
 ]
 
@@ -145,7 +147,7 @@ Vue.mixin({
          return info;
       },
 
-      url(path) {
+      burl(path) {
         let url = new URL(window.location)
 
         if (process.env.APLICATION_ENV === 'production') {
@@ -259,5 +261,5 @@ watch: {
     }
   }
 },
-  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex, AttentionIndex }
+  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex, AttentionIndex, InstitutionIndex, LMap, LTileLayer, LMarker }
 });

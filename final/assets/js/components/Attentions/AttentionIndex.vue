@@ -4,7 +4,12 @@
       <div class="box">
       <section class="section">
       <div class="container" ref="container">
-          <div id="mapid" class="map"></div>
+          <div id="app">
+            <l-map :zoom="zoom" :center="center">
+             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+              <l-marker :lat-lng="marker"></l-marker>
+          </l-map>
+        </div>
           <div v-if="!contentIsReady" class="has-text-centered">
             <a class="button is-loading page-loading-button "></a>
           </div>
@@ -52,13 +57,15 @@
 </template>
 
 <style scoped>
-  #mapid { height: 180px; width: 100%;}
+  #app {
+  height: 100%;
+  margin: 0;
+  }
 </style>
 
 <script>
 
 import Vue from 'vue'
-import L from 'leaflet'
 import ViewAttentionModal from './ViewAttentionModal.vue';
 import AddAttentionModal from './AddAttentionModal.vue';
 
@@ -90,6 +97,11 @@ export default {
             field: 'acciones',
           },
         ],
+        zoom:13,
+        center: L.latLng(47.413220, -1.219482),
+        url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        marker: L.latLng(47.413220, -1.219482),
         acompanamientos: null,
         instituciones: null,
         motivos: null,
@@ -106,7 +118,7 @@ export default {
       
     },
     mounted(){
-       this.loadMap();
+       //this.loadMap();
 
     },
     methods: {
@@ -115,8 +127,7 @@ export default {
           .get('http://localhost:8000/consulta/index/'+this.$route.params.idPaciente)
           .then(response => {
             this.attentions = response.data;
-            this.loadMapPoints();
-            console.log(this.attentions);
+            //this.loadMapPoints();
           })
           .catch(error => {
             console.log(error)
@@ -241,16 +252,17 @@ export default {
           })
       },
       loadMap(){
-        this.map = L.map('mapid',{ zoomControl:false }).setView([-34.9213561,-57.9545116],11);
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(this.map);
+        this.map = LMap.map('mapid',{ zoomControl:false }).setView([-34.9213561,-57.9545116],11);
+        LMap.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(this.map);
         //L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
         L.Icon.Default.imagePath = 'assets/img/images'
       },
       loadMapPoints(){
         this.attentions.forEach(atencion => {
-          L.marker(JSON.parse(atencion.derivacion.coordenadas),
+          var aux=LMarker.marker(JSON.parse(atencion.derivacion.coordenadas),
           {draggable: false, title: atencion.derivacion.nombre, title: atencion.derivacion.nombre})
           .addTo(this.map);
+          console.log(aux)
         });
         //$.each(a,function(i,v){
             //L.marker(JSON.parse(v.coordenadas),{draggable: false, title: v.nombre, title: v.nombre}).addTo(map);
