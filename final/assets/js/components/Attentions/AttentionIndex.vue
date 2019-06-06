@@ -1,8 +1,10 @@
 <template>
+
   <div>
       <div class="box">
       <section class="section">
       <div class="container" ref="container">
+          <div id="mapid" class="map"></div>
           <div v-if="!contentIsReady" class="has-text-centered">
             <a class="button is-loading page-loading-button "></a>
           </div>
@@ -49,10 +51,17 @@
   </div>
 </template>
 
+<style scoped>
+  #mapid { height: 180px; width: 100%;}
+</style>
+
 <script>
+
 import Vue from 'vue'
+import L from 'leaflet'
 import ViewAttentionModal from './ViewAttentionModal.vue';
 import AddAttentionModal from './AddAttentionModal.vue';
+
 export default {
     components: { ViewAttentionModal, AddAttentionModal},
     data(){
@@ -85,6 +94,7 @@ export default {
         instituciones: null,
         motivos: null,
         tratamientos: null,
+        map: null,
       };
     },
     created(){
@@ -93,6 +103,11 @@ export default {
       this.loadInstituciones();
       this.loadMotivos();
       this.loadTratamientos();
+      
+    },
+    mounted(){
+       this.loadMap();
+
     },
     methods: {
       loadAttentions: function() {
@@ -100,6 +115,8 @@ export default {
           .get('http://localhost:8000/consulta/index/'+this.$route.params.idPaciente)
           .then(response => {
             this.attentions = response.data;
+            this.loadMapPoints();
+            console.log(this.attentions);
           })
           .catch(error => {
             console.log(error)
@@ -223,6 +240,23 @@ export default {
             console.log(error)
           })
       },
+      loadMap(){
+        this.map = L.map('mapid',{ zoomControl:false }).setView([-34.9213561,-57.9545116],11);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(this.map);
+        //L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
+        L.Icon.Default.imagePath = 'assets/img/images'
+      },
+      loadMapPoints(){
+        this.attentions.forEach(atencion => {
+          L.marker(JSON.parse(atencion.derivacion.coordenadas),
+          {draggable: false, title: atencion.derivacion.nombre, title: atencion.derivacion.nombre})
+          .addTo(this.map);
+        });
+        //$.each(a,function(i,v){
+            //L.marker(JSON.parse(v.coordenadas),{draggable: false, title: v.nombre, title: v.nombre}).addTo(map);
+          //});
+      },
+
     },
     computed: {
       rowsPerPage() {
