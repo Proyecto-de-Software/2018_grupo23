@@ -14,7 +14,7 @@
                 <div class="field">
                   <label class="label">Fecha de Atención*</label>
                   <div class="control">
-                    <input id="fecha" type="date" class="input" 
+                    <input id="fecha" type="date" class="input"
                     :value="attentionForm.fecha && attentionForm.fecha.toISOString().split('T')[0]"
                      @input="attentionForm.fecha = $event.target.valueAsDate">
                   </div>
@@ -89,7 +89,7 @@
                     </select>
                   </div>
                 </div>
-                
+
 
                 <p>* campos obligatorios</p>
               </form>
@@ -108,6 +108,7 @@
 import Vue from 'vue'
 export default {
   props: {
+    modalTitle: String,
     loadAttentions: Function,
     attention: Object,
     title: String,
@@ -116,7 +117,7 @@ export default {
     motivos: Array,
     tratamientos: Array,
     idPaciente: Number,
-    
+
   },
   data() {
     return {
@@ -146,7 +147,7 @@ export default {
       this.attentionForm.diagnostico= this.attention.diagnostico
       this.attentionForm.observaciones= this.attention.observaciones
       this.attentionForm.tratamiento=this.attention.tratamiento_farmacologico.id
-      
+
     }
   },
   methods: {

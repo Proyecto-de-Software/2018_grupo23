@@ -8,3 +8,8 @@
 .button-is-spaced {
   margin: 5px;
 }
+
+.margin-global {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}

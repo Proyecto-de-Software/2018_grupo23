@@ -146,7 +146,7 @@ export default {
     submit() {
       if ( this.title === 'Editar' ) {
         axios
-        .post(this.url('/role/' + this.role.id + '/edit'), this.roleForm.perms)
+        .post(this.burl('/role/' + this.role.id + '/edit'), this.roleForm.perms)
         .then(response => {
           if (response.status === 200) {
             this.close()
