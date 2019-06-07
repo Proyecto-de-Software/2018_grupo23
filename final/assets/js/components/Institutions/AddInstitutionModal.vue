@@ -28,12 +28,12 @@
                 <div class="field">
                   <label class="label">Telefono*</label>
                   <div class="control">
-                    <input id="nombre" name="telefono" type="text" class="input" v-model="institutionsForm.telefono" v-validate="'required|alpha_spaces'">
+                    <input id="nombre" name="telefono" type="number" class="input" v-model="institutionsForm.telefono" >
                     <span v-show="errors.has('telefono')" class="help is-danger">{{ errors.first('telefono') }}</span>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Region sanitaria</label>
+                  <label class="label">Region sanitaria*</label>
                   <div class="control">
                     <div class="select">
                       <select v-model="institutionsForm.regionSanitariaId">
@@ -45,7 +45,7 @@
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Tipo de Institución</label>
+                  <label class="label">Tipo de Institución*</label>
                   <div class="control">
                     <div class="select">
                       <select v-model="institutionsForm.tipoInstitucionId">
@@ -57,7 +57,7 @@
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Coordenadas</label>
+                  <label class="label">Coordenadas*</label>
                   <div class="control">
                     <input type="text" name="coordenadas" class="input" v-model="institutionsForm.coordenadas" v-validate="'required'">
                     <span v-show="errors.has('coordenadas')" class="help is-danger">{{ errors.first('coordenadas') }}</span>
