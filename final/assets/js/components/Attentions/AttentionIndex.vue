@@ -4,10 +4,10 @@
       <div class="box">
       <section class="section">
       <div class="container" ref="container">
-          <div id="soyelmapa"  class="container">
-            <l-map :zoom="zoom" :center="center">
-             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-marker :lat-lng="marker"></l-marker>
+          <div id="soyelmapa" >
+            <l-map :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
+             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
+              <l-marker :lat-lng="marker"></l-marker> <!-- este es un marcador en el mapa -->
           </l-map>
         </div>
           <div v-if="!contentIsReady" class="has-text-centered">
@@ -91,11 +91,11 @@ export default {
             field: 'acciones',
           },
         ],
-        zoom:18,
-        center: L.latLng(47.413220, -1.219482),
+        zoom:11,
+        center: L.latLng(-34.9213561,-57.9545116),
         url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        marker: L.latLng(47.413220, -1.219482),
+        marker: L.latLng(-34.93621,-57.97242),
         acompanamientos: null,
         instituciones: null,
         motivos: null,
@@ -113,6 +113,7 @@ export default {
     },
     mounted(){
        //this.loadMap();
+       setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
 
     },
     methods: {
@@ -249,7 +250,7 @@ export default {
         this.map = LMap.map('mapid',{ zoomControl:false }).setView([-34.9213561,-57.9545116],11);
         LMap.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(this.map);
         //L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
-        L.Icon.Default.imagePath = 'assets/img/images'
+        //L.Icon.Default.imagePath = 'assets/img/images'
       },
       loadMapPoints(){
         this.attentions.forEach(atencion => {
@@ -276,9 +277,10 @@ export default {
 
 </script>
 <style scoped>
-  #soyelmapa {
-  width: 40%;
-  height: 200px;
-  }
+
+#soyelmapa {
+width: 100%;
+height: 300px;
+} 
 
 </style>

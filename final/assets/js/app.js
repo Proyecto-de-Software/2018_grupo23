@@ -13,6 +13,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
 import VeeValidate from 'vee-validate';
 import { Icon } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 
 delete Icon.Default.prototype._getIconUrl;
@@ -229,18 +230,18 @@ new Vue({
 
     expireJWTcheck(error) {
       if (window.location.pathname !='/app/login' && 401 === error.response.status) {
-        Vue.swal({
-              title: "La sesión expiró",
-              text:  "Su sesión ha expirado. Será redirigido a la página de login",
-              type:  "warning",
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "Ok",
-          }).then( () => {
-              localStorage.removeItem('token');
-              this.store_token = '';
-              axios.defaults.headers.common['Authorization'] = null;
-              this.$router.replace({ name: 'login' });
-          });
+          Vue.swal({
+                title: "La sesión expiró",
+                text:  "Su sesión ha expirado. Será redirigido a la página de login",
+                type:  "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok",
+            }).then( () => {
+                localStorage.removeItem('token');
+                this.store_token = '';
+                axios.defaults.headers.common['Authorization'] = null;
+                this.$router.replace({ name: 'login' });
+            });
       } else {
           if( 400 === error.response.status ||
               403 === error.response.status ||
