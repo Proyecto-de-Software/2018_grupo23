@@ -57,13 +57,13 @@ class ConsultaController extends FOSRestController
      * @SWG\Tag(name="Consulta")
      * @RequestParam(name="fecha", strict=true, nullable=false, allowBlank=false, description="Fecha.")
      * @RequestParam(name="motivo", strict=true, nullable=false, allowBlank=false, description="Motivo.")
-     * @RequestParam(name="acompanamiento", allowBlank=true, description="Acompañamiento.")
-     * @RequestParam(name="derivacion", allowBlank=true, description="Derivacion.")
+     * @RequestParam(name="acompanamiento", strict=false, nullable=true, allowBlank=true, description="Acompañamiento.")
+     * @RequestParam(name="derivacion",strict=false, nullable=true, allowBlank=true, description="Derivacion.")
      * @RequestParam(name="diagnostico", strict=true, nullable=false, allowBlank=false, description="Diagnostico.")
      * @RequestParam(name="internacion", strict=true, nullable=false, allowBlank=false, description="Internacion.")
-     * @RequestParam(name="observaciones", allowBlank=true, description="Observaciones generales.")
-     * @RequestParam(name="tratamiento", allowBlank=true, description="Tratamiento Farmacológico.")
-     * @RequestParam(name="articulacion", allowBlank=true, description="Articulación.")
+     * @RequestParam(name="observaciones", strict=false, nullable=true,allowBlank=true, description="Observaciones generales.")
+     * @RequestParam(name="tratamiento",strict=false, nullable=true, allowBlank=true, description="Tratamiento Farmacológico.")
+     * @RequestParam(name="articulacion",strict=false, nullable=true, allowBlank=true, description="Articulación.")
      * 
      * @param ParamFetcher $pf
      */

@@ -6,7 +6,7 @@
     <div v-else>
 
       <div class="container" id="mapcontainer" ref="container">
-          <l-map id="map" :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }" @click="addMarker"> <!-- el mapa -->
+          <l-map id="map" :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
             <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content"></l-marker> <!-- este es un marcador en el mapa -->
           </l-map>
