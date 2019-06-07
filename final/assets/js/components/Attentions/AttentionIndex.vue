@@ -7,7 +7,7 @@
           <div id="soyelmapa" >
             <l-map :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
-              <l-marker :lat-lng="marker"></l-marker> <!-- este es un marcador en el mapa -->
+              <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" ></l-marker> <!-- este es un marcador en el mapa -->
           </l-map>
         </div>
           <div v-if="!contentIsReady" class="has-text-centered">
@@ -95,7 +95,23 @@ export default {
         center: L.latLng(-34.9213561,-57.9545116),
         url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        marker: L.latLng(-34.93621,-57.97242),
+        marker: L.latLng(-34.93621,-57.97242), //esto es viejo
+        /* EN ESTE ARRAY SE METEN TODOS LOS MARCADORES */
+        // habria que hacer un metodo que a medida que carga los marcadores le haga push al array con los datos
+        markers: [
+            {
+              id: 1,
+              latlng: L.latLng(-34.93621, -57.97242),
+              content: 'aca deberia ir algun mensaje que despues hacemos popup'
+            },
+
+            {
+              id: 2,
+              latlng: L.latLng(-34.93248, -57.94304),
+              content: 'aca deberia ir algun mensaje que despues hacemos popup'
+            }
+        ],
+        /********************************** */
         acompanamientos: null,
         instituciones: null,
         motivos: null,

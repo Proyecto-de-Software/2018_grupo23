@@ -12,6 +12,7 @@ import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
 import VeeValidate from 'vee-validate';
+import VTooltip from 'v-tooltip'
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -28,6 +29,7 @@ window.axios = axios;
 window.events = new Vue();
 Vue.use(VueSweetalert2);
 Vue.use(VueGoodTable);
+Vue.use(VTooltip);
 Vue.use(VeeValidate, {
   locale: 'es',
   dictionary: {
