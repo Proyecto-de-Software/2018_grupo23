@@ -91,8 +91,6 @@ export default {
   },
   created() {
     this.loadInstitutions()
-    this.loadRegionesSanitarias()
-    this.loadTiposInstitucion()
   },
   methods: {
     loadInstitutions: function() {
@@ -100,6 +98,7 @@ export default {
         .get('http://localhost:8000/institucion/')
         .then(response => {
           this.institutions = response.data;
+          this.loadTiposInstitucion()
         })
         .catch(error => {
           console.log(error)
@@ -126,9 +125,10 @@ export default {
     },
     loadTiposInstitucion(){
       axios
-            .post(this.burl('/institucion/tipos'))
+            .get(this.burl('/institucion/tipos'))
             .then( response => {
               this.tiposInstitucion= response.data
+              this.loadRegionesSanitarias()
             }
 
             )

@@ -59,9 +59,15 @@
                 <div class="field">
                   <label class="label">Coordenadas*</label>
                   <div class="control">
-                    <input type="text" name="coordenadas" class="input" v-model="institutionsForm.coordenadas" v-validate="'required'">
+                    <input type="text" name="coordenadas" class="input" v-model="institutionsForm.coordenadas" v-validate="'required'" >
                     <span v-show="errors.has('coordenadas')" class="help is-danger">{{ errors.first('coordenadas') }}</span>
                   </div>
+                </div>
+                <div class="container" id="mapcontainer" ref="container">
+                <l-map id="map" :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }" @click="addMarker"> <!-- el mapa -->
+                  <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
+                  <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content"></l-marker> <!-- este es un marcador en el mapa -->
+                </l-map>
                 </div>
 
                 <p>* campos obligatorios</p>
@@ -79,7 +85,9 @@
 
 <script>
 import Vue from 'vue'
+import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 export default {
+  components: {LMap, LTileLayer, LMarker},
   props: {
     loadInstitutions: Function,
     institution: Object,
@@ -99,7 +107,14 @@ export default {
         tipoInstitucionId: '',
         coordenadas: '',
 
-      }
+      },
+      zoom:11,
+        center: L.latLng(-34.9213561,-57.9545116),
+        url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        /* EN ESTE ARRAY SE METEN TODOS LOS MARCADORES */
+        // habria que hacer un metodo que a medida que carga los marcadores le haga push al array con los datos
+        markers: [],
     }
   },
   created() {
@@ -109,6 +124,9 @@ export default {
       this.institutionsForm.telefono = this.institution.telefono
       this.institutionsForm.regionSanitariaId = this.institution.region_sanitaria_id
       this.institutionsForm.tipoInstitucionId = this.institution.tipo_institucion.id
+      this.institutionsForm.coordenadas=this.institution.coordenadas
+      var coords=JSON.parse(this.institution.coordenadas)
+      this.markers.push({ latlng: L.latLng(coords[0],coords[1])})
     }
   },
   methods: {
@@ -136,6 +154,25 @@ export default {
         }
       })
     },
+    addMarker(event) {
+        this.markers=[];
+        var coords=event.latlng;
+        console.log(coords.lat,coords.lng)
+        this.markers.push({
+            latlng: L.latLng(coords.lat,coords.lng),
+          });
+        this.institutionsForm.coordenadas="["+coords.lat + "," + coords.lng + "]"  
+    },
   }
 }
 </script>
+
+<style scoped>
+
+#mapcontainer {
+  height: 250px;
+  width: 100%;
+  display: block;
+}
+
+</style>
