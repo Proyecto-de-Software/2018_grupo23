@@ -55,7 +55,7 @@ class InstitucionController extends FOSRestController
         $ins->setDirector($pf->get('director'));
         $ins->setTelefono($pf->get('telefono'));
         $ins->setRegionSanitariaId($pf->get('regionSanitariaId'));
-        $tipo=$entityManager->getDoctrine()->getRepository(TipoInstitucion::class)->findOneBy(['id' => $pf->get('tipoInstitucionId')]);
+        $tipo=$entityManager->getRepository(TipoInstitucion::class)->findOneBy(['id' => $pf->get('tipoInstitucionId')]);
         $ins->setTipoInstitucion($tipo);
         $ins->setCoordenadas($pf->get('coordenadas'));
         $entityManager->persist($ins);

@@ -28,7 +28,7 @@
                 <div class="field">
                   <label class="label">Telefono*</label>
                   <div class="control">
-                    <input id="nombre" name="telefono" type="number" class="input" v-model="institutionsForm.telefono" >
+                    <input id="nombre" name="telefono" type="number" class="input" v-model="institutionsForm.telefono" v-validate="'required|numeric'">
                     <span v-show="errors.has('telefono')" class="help is-danger">{{ errors.first('telefono') }}</span>
                   </div>
                 </div>
