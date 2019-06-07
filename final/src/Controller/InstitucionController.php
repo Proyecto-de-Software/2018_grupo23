@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Institucion;
+use App\Entity\TipoInstitucion;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -21,7 +22,7 @@ class InstitucionController extends FOSRestController
     /**
      * @Route("/", name="institucion_index", methods={"GET"})
      * @SWG\Response(response=200, description="")
-     * @SWG\Tag(name="Configuracion")
+     * @SWG\Tag(name="Institucion")
      */
     public function index()
     {
@@ -29,6 +30,20 @@ class InstitucionController extends FOSRestController
       $serializer = $this->get('jms_serializer');
       $ins = $this->getDoctrine()->getRepository(Institucion::class)->findAll();
       return new Response($serializer->serialize($ins, "json"), 200);
+    }
+
+    
+    /**
+     * @Route("/tipos", name="institucion_tipos", methods={"POST"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Institucion")
+     */
+    public function tiposInstitucion()
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      $serializer = $this->get('jms_serializer');
+      $tipos = $this->getDoctrine()->getRepository(TipoInstitucion::class)->findAll();
+      return new Response($serializer->serialize($tipos, "json"), 200);
     }
 
 
