@@ -3,13 +3,13 @@
   <div>
       <div class="box">
       <section class="section">
-      <div class="container" ref="container">
+      <div class="container" id="mapcontainter" ref="container">
           <div id="soyelmapa" >
             <l-map :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
-              <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" ></l-marker> <!-- este es un marcador en el mapa -->
+              <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content"></l-marker> <!-- este es un marcador en el mapa -->
           </l-map>
-        </div>
+          </div>
           <div v-if="!contentIsReady" class="has-text-centered">
             <a class="button is-loading page-loading-button "></a>
           </div>
@@ -56,6 +56,14 @@
   </div>
 </template>
 
+<style scoped>
+  #mapcontainter{
+  height: 180px;
+  margin: 0;
+  z-index:1;
+}
+</style>
+
 <script>
 
 import Vue from 'vue'
@@ -98,19 +106,7 @@ export default {
         marker: L.latLng(-34.93621,-57.97242), //esto es viejo
         /* EN ESTE ARRAY SE METEN TODOS LOS MARCADORES */
         // habria que hacer un metodo que a medida que carga los marcadores le haga push al array con los datos
-        markers: [
-            {
-              id: 1,
-              latlng: L.latLng(-34.93621, -57.97242),
-              content: 'aca deberia ir algun mensaje que despues hacemos popup'
-            },
-
-            {
-              id: 2,
-              latlng: L.latLng(-34.93248, -57.94304),
-              content: 'aca deberia ir algun mensaje que despues hacemos popup'
-            }
-        ],
+        markers: [],
         /********************************** */
         acompanamientos: null,
         instituciones: null,
@@ -128,7 +124,6 @@ export default {
       
     },
     mounted(){
-       //this.loadMap();
        setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
 
     },
@@ -138,7 +133,7 @@ export default {
           .get('http://localhost:8000/consulta/index/'+this.$route.params.idPaciente)
           .then(response => {
             this.attentions = response.data;
-            //this.loadMapPoints();
+            this.loadMapPoints();
           })
           .catch(error => {
             console.log(error)
@@ -262,22 +257,14 @@ export default {
             console.log(error)
           })
       },
-      loadMap(){
-        this.map = LMap.map('mapid',{ zoomControl:false }).setView([-34.9213561,-57.9545116],11);
-        LMap.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(this.map);
-        //L.marker([-34.93621,-57.97242],{draggable: false}).addTo(map);
-        //L.Icon.Default.imagePath = 'assets/img/images'
-      },
       loadMapPoints(){
         this.attentions.forEach(atencion => {
-          var aux=LMarker.marker(JSON.parse(atencion.derivacion.coordenadas),
-          {draggable: false, title: atencion.derivacion.nombre, title: atencion.derivacion.nombre})
-          .addTo(this.map);
-          console.log(aux)
+          var coords=JSON.parse(atencion.derivacion.coordenadas)
+          this.markers.push({
+            latlng: L.latLng(coords[0],coords[1]),
+            content: atencion.derivacion.nombre
+          })
         });
-        //$.each(a,function(i,v){
-            //L.marker(JSON.parse(v.coordenadas),{draggable: false, title: v.nombre, title: v.nombre}).addTo(map);
-          //});
       },
 
     },
