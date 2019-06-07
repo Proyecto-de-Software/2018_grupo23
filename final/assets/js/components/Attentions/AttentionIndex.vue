@@ -1,68 +1,57 @@
 <template>
+  <div class="container margin-global">
+    <div v-if="!contentIsReady" class="has-text-centered">
+      <a class="button is-loading page-loading-button"></a>
+    </div>
+    <div v-else>
 
-  <div>
-      <div class="box">
-      <section class="section">
-      <div class="container" id="mapcontainter" ref="container">
-          <div id="soyelmapa" >
-            <l-map :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
-             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
-              <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content"></l-marker> <!-- este es un marcador en el mapa -->
+      <div class="container" id="mapcontainer" ref="container">
+          <l-map id="map" :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
+            <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content"></l-marker> <!-- este es un marcador en el mapa -->
           </l-map>
-          </div>
-          <div v-if="!contentIsReady" class="has-text-centered">
-            <a class="button is-loading page-loading-button "></a>
-          </div>
-          <div v-else>
-            <vue-good-table
-              :columns="columns"
-              :rows="attentions"
-              :lineNumbers="true"
-              :defaultSortBy="{field: 'motivo', type: 'asec'}"
-              :globalSearch="false"
-              :pagination-options="{
-                 enabled: true,
-                 mode: 'records',
-                 perPage: rowsPerPage,
-                 perPageDropdown: [ rowsPerPage ],
-                 position: 'bottom',
-                 dropdownAllowAll: false,
-                 setCurrentPage: 1,
-                 nextLabel: 'siguiente',
-                 prevLabel: 'anterior',
-                 rowsPerPageLabel: 'Atenciones por tabla',
-                 ofLabel: 'de',
-               }"
-              :search-options="{ enabled: true, placeholder: 'Buscar' }"
-               styleClass="vgt-table bordered">
-              <div slot="emptystate" class="has-text-centered">
-                 <h3 class="h3">No hay atenciones cargadas en el sistema</h3>
-               </div>
-              <div slot="table-actions">
-                <button type="button" class="button is-info" @click="showAddAttentionModal(null, 'Agregar Atencion')">Agregar Atención</button>
-              </div>
-              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'acciones'">
-                  <button v-if="loggedUser.permisos.includes('atencion_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddAttentionModal(props.row, 'Editar atencion')">Editar</button>
-                  <button v-if="loggedUser.permisos.includes('atencion_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewAttentionModal(props.row)">Ver</button>
-                  <button v-if="loggedUser.permisos.includes('atencion_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deleteAttention(props.row.id)">Eliminar</button>
-                </span>
-              </template>
-            </vue-good-table>
-          </div>
       </div>
-    </section>
-  </div>
+
+      <div>
+        <vue-good-table
+          :columns="columns"
+          :rows="attentions"
+          :lineNumbers="true"
+          :defaultSortBy="{field: 'motivo', type: 'asec'}"
+          :globalSearch="false"
+          :pagination-options="{
+             enabled: true,
+             mode: 'records',
+             perPage: rowsPerPage,
+             perPageDropdown: [ rowsPerPage ],
+             position: 'bottom',
+             dropdownAllowAll: false,
+             setCurrentPage: 1,
+             nextLabel: 'siguiente',
+             prevLabel: 'anterior',
+             rowsPerPageLabel: 'Atenciones por tabla',
+             ofLabel: 'de',
+           }"
+          :search-options="{ enabled: true, placeholder: 'Buscar' }"
+           styleClass="vgt-table bordered">
+          <div slot="emptystate" class="has-text-centered">
+            <h3 class="h3">No hay atenciones cargadas en el sistema</h3>
+          </div>
+          <div slot="table-actions">
+            <button type="button" class="button is-info" @click="showAddAttentionModal(null, 'Agregar Atencion')">Agregar Atención</button>
+          </div>
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field == 'acciones'">
+              <button v-if="loggedUser.permisos.includes('atencion_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddAttentionModal(props.row, 'Editar atencion')">Editar</button>
+              <button v-if="loggedUser.permisos.includes('atencion_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewAttentionModal(props.row)">Ver</button>
+              <button v-if="loggedUser.permisos.includes('atencion_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deleteAttention(props.row.id)">Eliminar</button>
+            </span>
+          </template>
+        </vue-good-table>
+      </div>
+    </div>
   </div>
 </template>
-
-<style scoped>
-  #mapcontainter{
-  height: 180px;
-  margin: 0;
-  z-index:1;
-}
-</style>
 
 <script>
 
@@ -121,11 +110,10 @@ export default {
       this.loadInstituciones();
       this.loadMotivos();
       this.loadTratamientos();
-      
+
     },
     mounted(){
        setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
-
     },
     methods: {
       loadAttentions: function() {
@@ -194,10 +182,11 @@ export default {
         instance.$mount()
         this.$refs.container.appendChild(instance.$el)
       },
-      showAddAttentionModal(attentionData) {
+      showAddAttentionModal(attentionData, modalTitle) {
         var ComponentClass = Vue.extend(AddAttentionModal);
         var instance = new ComponentClass({
           propsData: {
+            title: modalTitle,
             attention: attentionData,
             loadAttentions: this.loadAttentions,
             getFormattedDate: this.getFormattedDate,
@@ -279,11 +268,17 @@ export default {
   }
 
 </script>
+
 <style scoped>
 
-#soyelmapa {
-width: 100%;
-height: 300px;
-} 
+#map {
+  z-index: 1;
+}
+
+#mapcontainer {
+  height: 250px;
+  width: 100%;
+  display: block;
+}
 
 </style>
