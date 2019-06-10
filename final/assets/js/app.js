@@ -99,7 +99,6 @@ Vue.mixin({
                 return this.$root.$data.store_config;
             }
           },
-
           jwtToken : {
             set: function(token) {
               this.$root.$data.store_token = token;
@@ -113,7 +112,6 @@ Vue.mixin({
               this.$root.$data.store_token = '';
             }
           },
-
           loggedUser : {
             set: function(data){
               this.$root.$data.store_user['id'] = data.id;
@@ -142,9 +140,7 @@ Vue.mixin({
             }
           },
     },
-
     methods: {
-
       //para utilizar este metodo en su componente se pone this.makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento').then((respuesta) => { console.log(respuesta)})
       async makeCorsRequest(url){
         var info = '';
@@ -158,7 +154,6 @@ Vue.mixin({
          });
          return info;
       },
-
       burl(path) {
         let url = new URL(window.location)
 
@@ -171,20 +166,18 @@ Vue.mixin({
 
         return `${baseUrl}${path}`
       },
-
       asset(name) {
-
         let url = new URL(window.location)
-
         if (process.env.NODE_ENV === 'production') {
             //return `/Proyecto/grupo23/final/deploy/public${name}`
             return `/final/deploy/public${name}`
         }
-
         return `${url.origin}/${name}`
-    },
-
-
+      },
+      getFormattedDate(date) {
+        return [date.getDate(), date.getMonth()+1, date.getFullYear()]
+        .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+      },
     }
 })
 

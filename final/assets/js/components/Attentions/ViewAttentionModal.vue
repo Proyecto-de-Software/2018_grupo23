@@ -10,9 +10,9 @@
                 <h4 class="title is-5">Nombre y apellido del paciente</h4>
                 <p class="subtitle is-6">{{attention.paciente.nombre +' '+ attention.paciente.apellido }}</p>
               </div>
-              <div class="date-box">
+              <div class="text-box">
                 <h4 class="title is-5">Fecha de Atención</h4>
-                <p class="subtitle is-6">{{this.getFormattedDate(new Date(attention.fecha)) }}</p>
+                <p class="subtitle is-6">{{ this.getFormattedDate(new Date(attention.fecha)) }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Acompañamiento</h4>
@@ -24,7 +24,7 @@
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Articulación con otras instituciones</h4>
-                <p class="subtitle is-6">{{attention.articulacion_con_insituciones ? attention.articulacion_con_insituciones : ' ' }}</p>
+                <p class="subtitle is-6">{{attention.articulacion_con_insituciones ? attention.articulacion_con_insituciones : 'No tiene' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Internación</h4>
@@ -32,18 +32,18 @@
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Diagnóstico</h4>
-                <p class="subtitle is-6">{{attention.diagnostico ? attention.diagnostico : ' ' }}</p>
+                <p class="subtitle is-6">{{attention.diagnostico ? attention.diagnostico : 'Sin diagnóstico' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Observaciones</h4>
-                <p class="subtitle is-6">{{attention.observaciones ? attention.observaciones : ' ' }}</p>
+                <p class="subtitle is-6">{{attention.observaciones ? attention.observaciones : 'Sin observaciones' }}</p>
               </div>
               <div class="text-box">
                 <h4 class="title is-5">Tratamiento Farmacológico</h4>
                 <p class="subtitle is-6">{{attention.tratamiento_farmacologico ? attention.tratamiento_farmacologico.nombre : 'Sin tratamiento' }}</p>
               </div>
-              
-              
+
+
           </section>
         <footer class="modal-card-foot">
           <button type="button" class="button is-success" @click="close">Cerrar</button>
@@ -58,24 +58,20 @@
 export default {
   props: {
     attention: Object,
-    getFormattedDate: Function,
-    
-  },
-  created(){
   },
   methods: {
     close() {
       this.$destroy();
       this.$el.parentNode.removeChild(this.$el);
     },
-  
-    
   }
 }
 </script>
 
 <style scoped>
-  .text-box {
-    margin-bottom: 15px;
-  }
+
+.text-box {
+  margin-bottom: 15px;
+}
+
 </style>

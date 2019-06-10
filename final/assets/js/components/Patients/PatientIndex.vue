@@ -162,7 +162,6 @@ export default {
           localidades: this.localidades,
           docTypes: this.docTypes,
           obrasSociales: this.obrasSociales,
-          getFormattedDate: this.getFormattedDate,
           getPartido: this.getPartido,
           getRegionSanitaria: this.getRegionSanitaria,
           getLocalidad: this.getLocalidad,
@@ -178,7 +177,6 @@ export default {
       var instance = new ComponentClass({
         propsData: {
           patient: patientData,
-          getFormattedDate: this.getFormattedDate,
           getPartido: this.getPartido,
           getRegionSanitaria: this.getRegionSanitaria,
           getLocalidad: this.getLocalidad,
@@ -287,10 +285,6 @@ export default {
     getObraSocial(patient){
       var index = this.obrasSociales.findIndex(obj => obj.id==patient.obra_social_id)
       return (index == undefined || index == -1) ? 'Obra social no asignada' : this.obrasSociales[index].nombre
-    },
-    getFormattedDate(date) {
-      return [date.getDate(), date.getMonth()+1, date.getFullYear()]
-      .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
     },
   },
   computed: {

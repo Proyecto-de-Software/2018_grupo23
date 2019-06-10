@@ -36,33 +36,38 @@
                   <label class="label">Region sanitaria*</label>
                   <div class="control">
                     <div class="select">
-                      <select v-model="institutionsForm.regionSanitariaId">
+                      <select name="región sanitaria" v-model="institutionsForm.regionSanitariaId" v-validate="'required'">
                         <option v-for="region in regionesSanitarias" :value="region.id" :selected="institutionsForm.regionSanitariaId == region.id">
                           {{ region.nombre }}
                         </option>
                       </select>
                     </div>
+                    <span v-show="errors.has('región sanitaria')" class="help is-danger">{{ errors.first('región sanitaria') }}</span>
                   </div>
                 </div>
+
                 <div class="field">
                   <label class="label">Tipo de Institución*</label>
                   <div class="control">
                     <div class="select">
-                      <select v-model="institutionsForm.tipoInstitucionId">
+                      <select name="tipo de institución" v-model="institutionsForm.tipoInstitucionId" v-validate="'required'">
                         <option v-for="tipo in tiposInstitucion" :value="tipo.id" :selected="institutionsForm.tipoInstitucionId == tipo.id">
                           {{ tipo.nombre }}
                         </option>
                       </select>
                     </div>
+                    <span v-show="errors.has('tipo de institución')" class="help is-danger">{{ errors.first('tipo de institución') }}</span>
                   </div>
                 </div>
+
                 <div class="field">
                   <label class="label">Coordenadas*</label>
                   <div class="control">
-                    <input type="text" name="coordenadas" class="input" v-model="institutionsForm.coordenadas" v-validate="'required'" >
+                    <input type="text" name="coordenadas" class="input" v-model="institutionsForm.coordenadas" v-validate="'required'" :readonly="true">
                     <span v-show="errors.has('coordenadas')" class="help is-danger">{{ errors.first('coordenadas') }}</span>
                   </div>
                 </div>
+
                 <div class="container" id="mapcontainer" ref="container">
                 <l-map :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }" @click="addMarker" ref="minimap"> <!-- el mapa -->
                   <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
@@ -164,7 +169,7 @@ export default {
         this.markers.push({
             latlng: L.latLng(coords.lat,coords.lng),
           });
-        this.institutionsForm.coordenadas="["+coords.lat + "," + coords.lng + "]"  
+        this.institutionsForm.coordenadas="["+coords.lat + "," + coords.lng + "]"
     },
   }
 }
@@ -175,7 +180,7 @@ export default {
 #mapcontainer {
   height: 250px;
   width: 100%;
-  display: block; 
+  display: block;
 }
 
 </style>

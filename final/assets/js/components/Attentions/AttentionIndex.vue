@@ -8,7 +8,9 @@
       <div class="container" id="mapcontainer" ref="container">
           <l-map id="map" :zoom="zoom" :center="center" :options="{ zoomControl: false, minZoom: 10 }"> <!-- el mapa -->
             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> <!-- estos son las imagenes del mapa -->
-            <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content"></l-marker> <!-- este es un marcador en el mapa -->
+            <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.latlng" :content="item.content">
+              <l-popup :content="item.content"></l-popup>
+            </l-marker> <!-- este es un marcador en el mapa -->
           </l-map>
       </div>
 
@@ -58,10 +60,10 @@
 import Vue from 'vue'
 import ViewAttentionModal from './ViewAttentionModal.vue';
 import AddAttentionModal from './AddAttentionModal.vue';
-import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
+import {LMap, LTileLayer, LMarker, LPopup} from 'vue2-leaflet';
 
 export default {
-    components: { ViewAttentionModal, AddAttentionModal, LMap, LTileLayer, LMarker},
+    components: { ViewAttentionModal, AddAttentionModal, LMap, LTileLayer, LMarker, LPopup },
     data(){
         return {
           attentions: null,
@@ -91,7 +93,7 @@ export default {
         zoom:11,
         center: L.latLng(-34.9213561,-57.9545116),
         url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        attribution:'Lugares a los que fue derivado el paciente',
         marker: L.latLng(-34.93621,-57.97242), //esto es viejo
         /* EN ESTE ARRAY SE METEN TODOS LOS MARCADORES */
         // habria que hacer un metodo que a medida que carga los marcadores le haga push al array con los datos
@@ -110,7 +112,6 @@ export default {
       this.loadInstituciones();
       this.loadMotivos();
       this.loadTratamientos();
-
     },
     mounted(){
        setTimeout(function() { window.dispatchEvent(new Event('resize')) }, 250);
@@ -128,7 +129,7 @@ export default {
           })
       },
       attentionDate(attention){
-        return new Date(attention.fecha).toString()
+        return this.getFormattedDate(new Date(attention.fecha))
       },
       attentionMotive(attention){
         return attention.motivo['nombre']
@@ -176,8 +177,7 @@ export default {
         var instance = new ComponentClass({
           propsData: {
             attention: attentionData,
-            getFormattedDate: this.getFormattedDate,
-            }
+          }
         })
         instance.$mount()
         this.$refs.container.appendChild(instance.$el)
@@ -189,23 +189,16 @@ export default {
             title: modalTitle,
             attention: attentionData,
             loadAttentions: this.loadAttentions,
-            getFormattedDate: this.getFormattedDate,
             acompanamientos: this.acompanamientos,
             instituciones: this.instituciones,
             motivos: this.motivos,
             tratamientos: this.tratamientos,
             idPaciente: this.$route.params.idPaciente,
-            }
+          }
         })
         instance.$mount()
         this.$refs.container.appendChild(instance.$el)
       },
-
-      getFormattedDate(date) {
-      return [date.getDate(), date.getMonth()+1, date.getFullYear()]
-        .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
-      },
-
       loadAcompanamientos(){
           axios
           .get('http://localhost:8000/consulta/acompanamientos')
@@ -255,7 +248,6 @@ export default {
           })
         });
       },
-
     },
     computed: {
       rowsPerPage() {

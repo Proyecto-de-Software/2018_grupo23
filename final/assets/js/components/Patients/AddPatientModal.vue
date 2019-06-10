@@ -185,7 +185,6 @@ export default {
     localidades: Array,
     docTypes: Array,
     obrasSociales: Array,
-    getFormattedDate: Function,
     getPartido: Function,
     getRegionSanitaria: Function,
     getLocalidad: Function,
