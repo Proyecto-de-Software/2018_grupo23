@@ -22,7 +22,7 @@ class ConsultaRepository extends ServiceEntityRepository
     public function findByReason()
     {
       $sql = '
-              SELECT mc.nombre as nombre, COUNT(consulta.motivo_id) as cant, (SELECT COUNT(*) FROM consulta) as total_atenciones
+              SELECT mc.nombre as nombre, COUNT(consulta.motivo_id) as cant
               FROM consulta INNER JOIN motivo_consulta mc ON consulta.motivo_id=mc.id
               GROUP BY consulta.motivo_id
              ';
@@ -32,7 +32,7 @@ class ConsultaRepository extends ServiceEntityRepository
     public function findByGenre()
     {
       $sql = '
-              SELECT g.nombre as nombre, COUNT(p.genero_id) as cant, (SELECT COUNT(*) FROM consulta) as total_atenciones
+              SELECT g.nombre as nombre, COUNT(p.genero_id) as cant
               FROM consulta INNER JOIN paciente p ON consulta.paciente_id=p.id INNER JOIN genero g ON p.genero_id=g.id
               GROUP BY p.genero_id
              ';
@@ -42,7 +42,7 @@ class ConsultaRepository extends ServiceEntityRepository
     public function findByLocation()
     {
       $sql = '
-              SELECT p.localidad_id as id, COUNT(p.localidad_id) as cant, (SELECT COUNT(*) FROM consulta) as total_atenciones
+              SELECT p.localidad_id as id, COUNT(p.localidad_id) as cant
               FROM consulta INNER JOIN paciente p ON p.id=consulta.paciente_id
               GROUP BY p.localidad_id
              ';

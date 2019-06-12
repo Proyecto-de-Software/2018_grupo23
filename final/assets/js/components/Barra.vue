@@ -16,44 +16,41 @@
                 <!-- navbar items izquierda -->
                 <p class="is-hidden-touch navbar-item"></p>
 
-                    <router-link v-if="authenticated_user && loggedUser.permisos.includes('paciente_index')" class="navbar-item" :to="{ path: '/app/paciente' }" replace>Pacientes</router-link>
+                <router-link v-if="authenticated_user && loggedUser.permisos.includes('paciente_index')" class="navbar-item" :to="{ path: '/app/paciente' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Pacientes</router-link>
 
-                    <div class="navbar-item has-dropdown is-hoverable" v-if="authenticated_user">
+                <div v-if="authenticated_user" class="navbar-item has-dropdown is-hoverable">
                         <!-- navbar-link, navbar-dropdown etc. -->
-
-                        <a class="navbar-link">Administración</a>
-                        <div class="navbar-dropdown">
-                            <router-link v-if="loggedUser.permisos.includes('usuario_index')" class="navbar-item" :to="{ path: '/app/usuario' }" replace>Usuarios</router-link>
-                            <router-link class="navbar-item" :to="{ path: '/app/reportes' }" replace>Reportes</router-link>
-                            <hr class="navbar-divider">
-                            <router-link v-if="loggedUser.permisos.includes('rol_index')" class="navbar-item" :to="{ path: '/app/roles' }" replace>Roles y permisos</router-link>
-                            <router-link v-if="loggedUser.permisos.includes('configuracion_index')" class="navbar-item" :to="{ path: '/app/config' }" replace>Configuración</router-link>
-                        </div>
-
+                    <a class="navbar-link">Administración</a>
+                    <div class="navbar-dropdown">
+                        <router-link v-if="loggedUser.permisos.includes('usuario_index')" class="navbar-item" :to="{ path: '/app/usuario' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Usuarios</router-link>
+                        <router-link class="navbar-item" :to="{ path: '/app/reportes' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Reportes</router-link>
+                        <hr class="navbar-divider">
+                        <router-link v-if="loggedUser.permisos.includes('rol_index')" class="navbar-item" :to="{ path: '/app/roles' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Roles y permisos</router-link>
+                        <router-link v-if="loggedUser.permisos.includes('configuracion_index')" class="navbar-item" :to="{ path: '/app/config' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Configuración</router-link>
                     </div>
-
-                    <router-link v-if="authenticated_user" class="navbar-item" :to="{ path: '/app/institucion' }" replace>Instituciones</router-link>
-
-            </div>
-
-            <div class="navbar-end" v-if="authenticated_user">
-                <!-- navbar items derecha -->
-                    <p class="is-hidden-touch navbar-item">{{ loggedUser.first_name }} {{ loggedUser.last_name }}</p>
-                    <a class="navbar-item" title="Salir" href="" v-on:click="logout">
-                        <span class="is-hidden-desktop">Salir</span>
-                        <i class="fas fa-sign-out-alt fa-lg is-hidden-touch"></i>
-                    </a>
-            </div>
-
-                <div class="navbar-end" v-else>
-                    <router-link class="navbar-item" :to="{ path: '/app/login'}" replace>Ingresar</router-link>
                 </div>
 
+                <router-link v-if="authenticated_user" class="navbar-item" :to="{ path: '/app/institucion' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Instituciones</router-link>
+
+            </div>
+
+            <div v-if="authenticated_user" class="navbar-end">
+                <!-- navbar items derecha -->
+                <p class="is-hidden-touch navbar-item">{{ loggedUser.first_name }} {{ loggedUser.last_name }}</p>
+                <a class="navbar-item" title="Salir" @click="logout">
+                    <span class="is-hidden-desktop">Salir</span>
+                    <i class="fas fa-sign-out-alt fa-lg is-hidden-touch"></i>
+                </a>
+            </div>
+                <div v-else class="navbar-end">
+                    <router-link class="navbar-item" :to="{ path: '/app/login'}" replace>Ingresar</router-link>
+                </div>
             </div>
     </nav>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -64,19 +61,19 @@ export default {
     }
   },
   mounted() {
-      events.$on('loading_config:finish', () => this.loading_config = false)
-      events.$on('loading_user:finish', () => this.authenticated_user = true)
+    events.$on('loading_config:finish', () => this.loading_config = false)
+    events.$on('loading_user:finish', () => this.authenticated_user = true)
   },
   methods: {
-      logout(){
-          this.authenticated_user = false;
-          axios.defaults.headers.common['Authorization'] = null;
-          localStorage.removeItem('token');
-          this.jwtToken.clear;
-          this.loggedUser.clear;
-          events.$emit('user:logout');
-      }
+    logout() {
+      this.authenticated_user = false;
+      axios.defaults.headers.common['Authorization'] = null;
+      localStorage.removeItem('token');
+      this.jwtToken.clear;
+      this.loggedUser.clear;
+      events.$emit('user:logout');
+    }
   }
-  }
+}
 
 </script>
