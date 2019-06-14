@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <section class="section is-hidden-touch">
-    </section>
-    <section class="section">
+  <div class="container margin-global">
       <div v-if="isLoading" class="has-text-centered">
         <a class="button is-loading page-loading-button "></a>
       </div>
@@ -34,9 +31,6 @@
           </div>
         </div>
       </div>
-      <section class="section is-hidden-touch">
-      </section>
-    </section>
   </div>
 </template>
 

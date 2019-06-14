@@ -1,6 +1,11 @@
 {
-  "build/app.css": "/final/deploy/public/build/app.css",
-  "build/app.js": "/final/deploy/public/build/app.js",
-  "build/runtime.js": "/final/deploy/public/build/runtime.js",
-  "build/images/logo.png": "/final/deploy/public/build/images/logo.png"
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/images/layers-2x.png": "/build/images/layers-2x.4f0283c6.png",
+  "build/images/layers.png": "/build/images/layers.a6137456.png",
+  "build/images/marker-icon-2x.png": "/build/images/marker-icon-2x.401d815d.png",
+  "build/images/marker-icon.png": "/build/images/marker-icon.2273e3d8.png",
+  "build/images/marker-shadow.png": "/build/images/marker-shadow.44a526ee.png",
+  "build/images/logo.png": "/build/images/logo.png"
 }

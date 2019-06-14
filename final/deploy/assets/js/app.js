@@ -6,19 +6,30 @@ import { messages as esOriginalMessages } from 'vee-validate/dist/locale/es.js';
 require('../css/bulma.css');
 require('../css/style.css');
 
-console.log(process.env.APLICATION_ENV)
-
 import Vue from 'vue';
 import axios from 'axios';
 import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueGoodTable from 'vue-good-table';
 import VeeValidate from 'vee-validate';
+import VTooltip from 'v-tooltip'
+import { Icon } from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+
+delete Icon.Default.prototype._getIconUrl;
+
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
 
 window.axios = axios;
 window.events = new Vue();
 Vue.use(VueSweetalert2);
 Vue.use(VueGoodTable);
+Vue.use(VTooltip);
 Vue.use(VeeValidate, {
   locale: 'es',
   dictionary: {
@@ -43,6 +54,7 @@ import ReportsIndex from './components/Reports/ReportsIndex.vue'
 import RolesIndex from './components/Roles/RolesIndex.vue'
 import PatientIndex from './components/Patients/PatientIndex.vue'
 import AttentionIndex from './components/Attentions/AttentionIndex.vue'
+import InstitutionIndex from './components/Institutions/InstitutionIndex.vue'
 
 /****************Ruteo *************************************** */
 /** no olvidar registrar el componente abajo del todo en VUE */
@@ -51,13 +63,14 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/', component: Home },
   { path: '/app', component: Home },
-  { path: '/app/login', component: Login},
+  { path: '/app/login', name:'login', component: Login},
   { path: '/app/config', component: Config},
   { path: '/app/usuario', component: UserIndex},
   { path: '/app/reportes', component: ReportsIndex },
   { path: '/app/roles', component: RolesIndex },
   { path: '/app/paciente', component: PatientIndex},
   { path: '/app/consulta/index/:idPaciente', name:'consulta', component: AttentionIndex},
+  { path: '/app/institucion', component: InstitutionIndex},
   { path: '*', redirect: '/' }
 ]
 
@@ -86,7 +99,6 @@ Vue.mixin({
                 return this.$root.$data.store_config;
             }
           },
-
           jwtToken : {
             set: function(token) {
               this.$root.$data.store_token = token;
@@ -100,7 +112,6 @@ Vue.mixin({
               this.$root.$data.store_token = '';
             }
           },
-
           loggedUser : {
             set: function(data){
               this.$root.$data.store_user['id'] = data.id;
@@ -129,9 +140,7 @@ Vue.mixin({
             }
           },
     },
-
     methods: {
-
       //para utilizar este metodo en su componente se pone this.makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento').then((respuesta) => { console.log(respuesta)})
       async makeCorsRequest(url){
         var info = '';
@@ -145,20 +154,30 @@ Vue.mixin({
          });
          return info;
       },
-
-      url(path) {
+      burl(path) {
         let url = new URL(window.location)
 
         if (process.env.APLICATION_ENV === 'production') {
-          var baseUrl = `${url.origin}/Proyecto/grupo23/final/deploy/public/index.php`
+          //var baseUrl = `${url.origin}/Proyecto/grupo23/final/deploy/public/index.php`
+          var baseUrl = `${url.origin}/final/deploy/public/index.php`
         } else {
           var baseUrl = url.origin
         }
 
         return `${baseUrl}${path}`
       },
-
-
+      asset(name) {
+        let url = new URL(window.location)
+        if (process.env.NODE_ENV === 'production') {
+            //return `/Proyecto/grupo23/final/deploy/public${name}`
+            return `/final/deploy/public${name}`
+        }
+        return `${url.origin}/${name}`
+      },
+      getFormattedDate(date) {
+        return [date.getDate(), date.getMonth()+1, date.getFullYear()]
+        .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+      },
     }
 })
 
@@ -184,11 +203,13 @@ new Vue({
       this.fetchLoggedUser();
     }
 
+    events.$on('change:route', (componente) => this.cambiarRuta(componente))
+
   },
 
   methods: {
     async fetchPageConfig(){
-      await axios.get(this.url('/configuracion/')).then((response) => {
+      await axios.get(this.burl('/configuracion/')).then((response) => {
         this.config = response.data;
         if(this.config.estado === "deshabilitado"){
           events.$emit('mantenimiento:active')
@@ -197,25 +218,25 @@ new Vue({
     },
 
     async fetchLoggedUser(){
-      await axios.get(this.url('/api/session')).then((response) => {
+      await axios.get(this.burl('/api/session')).then((response) => {
         this.loggedUser = response.data
       }).catch((error) => { });
     },
 
     expireJWTcheck(error) {
       if (window.location.pathname !='/app/login' && 401 === error.response.status) {
-        Vue.swal({
-              title: "La sesión expiró",
-              text:  "Su sesión ha expirado. Será redirigido a la página de login",
-              type:  "warning",
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "Ok",
-          }).then( () => {
-              localStorage.removeItem('token');
-              this.store_token = '';
-              axios.defaults.headers.common['Authorization'] = null;
-              window.location = 'app/login';
-          });
+          Vue.swal({
+                title: "La sesión expiró",
+                text:  "Su sesión ha expirado. Será redirigido a la página de login",
+                type:  "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok",
+            }).then( () => {
+                localStorage.removeItem('token');
+                this.store_token = '';
+                axios.defaults.headers.common['Authorization'] = null;
+                this.$router.replace({ name: 'login' });
+            });
       } else {
           if( 400 === error.response.status ||
               403 === error.response.status ||
@@ -230,6 +251,10 @@ new Vue({
           return Promise.reject(error);
       }
     },
+
+    cambiarRuta(componente){
+      this.$router.replace({ name: componente });
+    },
   },
 
 watch: {
@@ -241,5 +266,5 @@ watch: {
     }
   }
 },
-  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex, AttentionIndex }
+  components: { Home, Futer, Barra, Alertas, Config, Closepage, UserIndex, ReportsIndex, RolesIndex, PatientIndex, AttentionIndex, InstitutionIndex }
 });

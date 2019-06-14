@@ -14,58 +14,66 @@
                 <div class="field">
                   <label class="label">Fecha de Atención*</label>
                   <div class="control">
-                    <input id="fecha" type="date" class="input" 
+                    <input id="fecha" type="date" class="input"
                     :value="attentionForm.fecha && attentionForm.fecha.toISOString().split('T')[0]"
                      @input="attentionForm.fecha = $event.target.valueAsDate">
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Motivo*</label>
-                  <div class="select">
-                    <select v-model="attentionForm.motivo">
-                      <option v-for="motivo in motivos" :value="motivo.id" :selected="attentionForm.motivo == motivo.id">
-                        {{ motivo.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select name="motivo" v-model="attentionForm.motivo" v-validate="'required'">
+                        <option v-for="motivo in motivos" :value="motivo.id" :selected="attentionForm.motivo == motivo.id">
+                          {{ motivo.nombre }}
+                        </option>
+                      </select>
+                    </div>
+                    <span v-show="errors.has('motivo')" class="help is-danger">{{ errors.first('motivo') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Acompañamiento</label>
-                  <div class="select">
-                    <select v-model="attentionForm.acompanamiento">
-                      <option v-for="acompanamiento in acompanamientos" :value="acompanamiento.id" :selected="attentionForm.acompanamiento == acompanamiento.id">
-                        {{ acompanamiento.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="attentionForm.acompanamiento">
+                        <option v-for="acompanamiento in acompanamientos" :value="acompanamiento.id" :selected="attentionForm.acompanamiento == acompanamiento.id">
+                          {{ acompanamiento.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Derivación</label>
-                  <div class="select">
-                    <select v-model="attentionForm.derivacion">
-                      <option v-for="institucion in instituciones" :value="institucion.id" :selected="attentionForm.derivacion == institucion.id">
-                        {{ institucion.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="attentionForm.derivacion">
+                        <option v-for="institucion in instituciones" :value="institucion.id" :selected="attentionForm.derivacion == institucion.id">
+                          {{ institucion.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Internación*</label>
                   <div class="control">
-                    <label for="No">Sí</label>
-                    <input type="radio" id="Sí" :value="true" v-model="attentionForm.internacion" :checked="attentionForm.internacion == true">
-
-                    <br>
-                    <label for="Sí">No</label>
-                    <input type="radio" id="No" :value="false" v-model="attentionForm.internacion" :checked="attentionForm.internacion== false">
-                    <br>
+                    <div class="select">
+                      <select name="internación" v-model="attentionForm.internacion" v-validate="'required'">
+                        <option id="Sí" :value="true" v-model="attentionForm.internacion" :checked="attentionForm.internacion == true">Sí</option>
+                        <option id="No" :value="false" v-model="attentionForm.internacion" :checked="attentionForm.internacion == false">No</option>
+                      </select>
+                    </div>
+                    <span v-show="errors.has('internación')" class="help is-danger">{{ errors.first('internación') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Diagnóstico*</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="attentionForm.diagnostico">
+                    <input name="diagnóstico" type="text" class="input" v-model="attentionForm.diagnostico" v-validate="'required'" >
                   </div>
+                  <span v-show="errors.has('diagnóstico')" class="help is-danger">{{ errors.first('diagnóstico') }}</span>
                 </div>
                 <div class="field">
                   <label class="label">Observaciones generales</label>
@@ -81,16 +89,16 @@
                 </div>
                 <div class="field">
                   <label class="label">Tratamiento Farmacológico</label>
-                  <div class="select">
-                    <select v-model="attentionForm.tratamiento">
-                      <option v-for="tratamiento in tratamientos" :value="tratamiento.id" :selected="attentionForm.tratamiento == tratamiento.id">
-                        {{ tratamiento.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="attentionForm.tratamiento">
+                        <option v-for="tratamiento in tratamientos" :value="tratamiento.id" :selected="attentionForm.tratamiento == tratamiento.id">
+                          {{ tratamiento.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-                
-
                 <p>* campos obligatorios</p>
               </form>
             </div>
@@ -108,6 +116,7 @@
 import Vue from 'vue'
 export default {
   props: {
+    modalTitle: String,
     loadAttentions: Function,
     attention: Object,
     title: String,
@@ -116,7 +125,7 @@ export default {
     motivos: Array,
     tratamientos: Array,
     idPaciente: Number,
-    
+
   },
   data() {
     return {
@@ -146,7 +155,6 @@ export default {
       this.attentionForm.diagnostico= this.attention.diagnostico
       this.attentionForm.observaciones= this.attention.observaciones
       this.attentionForm.tratamiento=this.attention.tratamiento_farmacologico.id
-      
     }
   },
   methods: {
@@ -155,33 +163,29 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
-      this.attentionForm.internacion = this.attentionForm.internacion == true ? 1 : 0
-      if (this.attention) { //edit
-        axios
-        .post('http://localhost:8000/consulta/' + this.attention.id + '/edit', this.attentionForm)
-        .then(response => {
-            if (response.status == 200){
-              Vue.swal(
-                'La atención fue editada',
-                '',
-                'success'
-              )}
+      this.$validator.validate()
+      .then(valid => {
+        if (!valid) {
+          Vue.swal('El formulario no cumple con lo solicitado', '', 'error')
+        } else {
+          this.attentionForm.internacion = this.attentionForm.internacion == true ? 1 : 0
+          if (this.attention) { //edit
+            axios
+            .post('http://localhost:8000/consulta/' + this.attention.id + '/edit', this.attentionForm)
+            .then(response => {
+                if (response.status == 200) Vue.swal('La atención fue editada', '', 'success')
             })
-      } else { //new
-        axios
-        .post('http://localhost:8000/consulta/new/' + this.idPaciente, this.attentionForm)
-        .then(response => {
-             if (response.status == 200){
-              Vue.swal(
-                'La atención fue agregada',
-                '',
-                'success'
-              )
-             }
+          } else { //new
+            axios
+            .post('http://localhost:8000/consulta/new/' + this.idPaciente, this.attentionForm)
+            .then(response => {
+                if (response.status == 200) Vue.swal('La atención fue agregada', '', 'success')
             })
-      }
-      this.loadAttentions()
-      this.close()
+          }
+          this.loadAttentions()
+          this.close()
+        }
+      })
     }
   }
 }

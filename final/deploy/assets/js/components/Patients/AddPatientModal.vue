@@ -14,22 +14,25 @@
                 <div class="field">
                   <label class="label">Apellido*</label>
                   <div class="control">
-                    <input id="apellido" type="text" class="input" v-model="patientForm.apellido">
+                    <input id="apellido" name="apellido" type="text" class="input" v-model="patientForm.apellido" v-validate="'required|alpha_spaces'">
+                    <span v-show="errors.has('apellido')" class="help is-danger">{{ errors.first('apellido') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Nombre*</label>
                   <div class="control">
-                    <input id="nombre" type="text" class="input" v-model="patientForm.nombre">
+                    <input id="nombre" name="nombre" type="text" class="input" v-model="patientForm.nombre" v-validate="'required|alpha_spaces'">
+                    <span v-show="errors.has('nombre')" class="help is-danger">{{ errors.first('nombre') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Fecha de Nacimiento*</label>
                   <div class="control">
-                    <input type="date" class="input"
+                    <input type="date" name="fecha de nacimiento" class="input"
                      :value="patientForm.fechaNac && patientForm.fechaNac.toISOString().split('T')[0]"
                      @input="patientForm.fechaNac = $event.target.valueAsDate">
                   </div>
+                  <!-- <span v-show="errors.has('fecha de nacimiento')" class="help is-danger">{{ errors.first('fecha de nacimiento') }}</span> -->
                 </div>
                 <div class="field">
                   <label class="label">Lugar de nacimiento</label>
@@ -39,79 +42,91 @@
                 </div>
                 <div class="field">
                   <label class="label">Partido</label>
-                  <div class="select">
-                    <select v-model="patientForm.partidoId" @change="onPartidoSelect($event)">
-                      <option v-for="partido in partidos" :value="partido.id" :selected="patientForm.partidoId == partido.id">
-                        {{ partido.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.partidoId" @change="onPartidoSelect($event)">
+                        <option v-for="partido in partidos" :value="partido.id" :selected="patientForm.partidoId == partido.id">
+                          {{ partido.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Region sanitaria</label>
-                  <div class="select">
-                    <select v-model="patientForm.regionSanitariaId">
-                      <option v-for="region in regionesSanitarias" :value="region.id" :selected="patientForm.regionSanitariaId == region.id" :disabled="true">
-                        {{ region.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.regionSanitariaId">
+                        <option v-for="region in regionesSanitarias" :value="region.id" :selected="patientForm.regionSanitariaId == region.id" :disabled="true">
+                          {{ region.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Localidad</label>
-                  <div class="select">
-                    <select v-model="patientForm.localidadId">
-                      <option v-for="localidad in localidades" :value="localidad.id" :selected="patientForm.localidadId == localidad.id">
-                        {{ localidad.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.localidadId">
+                        <option v-for="localidad in localidades" :value="localidad.id" :selected="patientForm.localidadId == localidad.id">
+                          {{ localidad.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Domicilio*</label>
                   <div class="control">
-                    <input type="text" class="input" v-model="patientForm.domicilio">
+                    <input type="text" name="domicilio" class="input" v-model="patientForm.domicilio" v-validate="'required'">
+                    <span v-show="errors.has('domicilio')" class="help is-danger">{{ errors.first('domicilio') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Género*</label>
-                  <div class="select">
-                    <select v-model="patientForm.genero">
-                      <option v-for="genero in generos" :value="genero.id" :selected="patientForm.genero == genero.id">
-                        {{ genero.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select name="genero" v-model="patientForm.genero" v-validate="'required'">
+                        <option v-for="genero in generos" :value="genero.id" :selected="patientForm.genero == genero.id">
+                          {{ genero.nombre }}
+                        </option>
+                      </select>
+                    </div>
+                    <span v-show="errors.has('genero')" class="help is-danger">{{ errors.first('genero') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">¿Tiene en su poder un documento?*</label>
                   <div class="control">
-
-                    <label for="No">Sí</label>
-                    <input type="radio" id="Sí" :value="true" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == true">
-
-                    <br>
-                    <label for="Sí">No</label>
-                    <input type="radio" id="No" :value="false" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == false">
-
-                    <br>
+                    <div class="select">
+                      <select name="tiene documento" v-model="patientForm.tieneDocumento" v-validate="'required'">
+                        <option id="Sí" :value="true" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == true">Sí</option>
+                        <option id="No" :value="false" v-model="patientForm.tieneDocumento" :checked="patientForm.tieneDocumento == false">No</option>
+                      </select>
+                    </div>
+                    <span v-show="errors.has('tiene documento')" class="help is-danger">{{ errors.first('tiene documento') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Tipo de documento*</label>
-                  <div class="select">
-                    <select v-model="patientForm.tipoDocId">
-                      <option v-for="docType in docTypes" :value="docType.id" :selected="patientForm.tipoDocId == docType.id">
-                        {{ docType.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select name="tipo de documento" v-model="patientForm.tipoDocId" v-validate="'required'">
+                        <option v-for="docType in docTypes" :value="docType.id" :selected="patientForm.tipoDocId == docType.id">
+                          {{ docType.nombre }}
+                        </option>
+                      </select>
+                    </div>
+                    <span v-show="errors.has('tipo de documento')" class="help is-danger">{{ errors.first('tipo de documento') }}</span>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Número de documento*</label>
                   <div class="control">
-                    <input type="number" class="input" v-model="patientForm.numero">
+                    <input type="text" name="número de documento" class="input" v-model="patientForm.numero" v-validate="'required|numeric'">
                   </div>
+                  <span v-show="errors.has('número de documento')" class="help is-danger">{{ errors.first('número de documento') }}</span>
                 </div>
                 <div class="field">
                   <label class="label">Tel/Cel</label>
@@ -127,12 +142,14 @@
                 </div>
                 <div class="field">
                   <label class="label">Obra social</label>
-                  <div class="select">
-                    <select v-model="patientForm.obraSocialId">
-                      <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
-                        {{ obraSocial.nombre }}
-                      </option>
-                    </select>
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="patientForm.obraSocialId">
+                        <option v-for="obraSocial in obrasSociales" :value="obraSocial.id" :selected="patientForm.obraSocialId == obraSocial.id">
+                          {{ obraSocial.nombre }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="field">
@@ -168,7 +185,6 @@ export default {
     localidades: Array,
     docTypes: Array,
     obrasSociales: Array,
-    getFormattedDate: Function,
     getPartido: Function,
     getRegionSanitaria: Function,
     getLocalidad: Function,
@@ -232,18 +248,25 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
     submit() {
-      this.patientForm.tieneDocumento = this.patientForm.tieneDocumento == true ? 1 : 0
-      if (this.patient) { //edit
-        axios
-        .post('http://localhost:8000/paciente/' + this.patient.id + '/edit', this.patientForm)
-        .then(response => { if (response.status == 200) Vue.swal('El paciente fue actualizado', '', 'success') })
-      } else { //new
-        axios
-        .post('http://localhost:8000/paciente/new', this.patientForm)
-        .then(response =>  { if (response.status == 200) Vue.swal('El paciente fue creado', '', 'success') })
-      }
-      this.loadPatients()
-      this.close()
+      this.$validator.validate()
+      .then(valid => {
+        if (!valid) {
+          Vue.swal('El formulario no cumple con lo solicitado', '', 'error')
+        } else {
+          this.patientForm.tieneDocumento = this.patientForm.tieneDocumento == true ? 1 : 0
+          if (this.patient) { //edit
+            axios
+            .post(this.url('/paciente/' + this.patient.id + '/edit'), this.patientForm)
+            .then(response => { if (response.status == 200) Vue.swal('El paciente fue actualizado', '', 'success') })
+          } else { //new
+            axios
+            .post(this.url('/paciente/new'), this.patientForm)
+            .then(response =>  { if (response.status == 200) Vue.swal('El paciente fue creado', '', 'success') })
+          }
+          this.loadPatients()
+          this.close()
+        }
+      })
     }
   }
 }

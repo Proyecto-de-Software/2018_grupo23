@@ -89,7 +89,7 @@ class PacienteController extends FOSRestController
         $paciente= new Paciente();
         $paciente->setApellido($pf->get('apellido'));
         $paciente->setNombre($pf->get('nombre'));
-        $paciente->setFechaNac(new \DateTime('@'.strtotime($pf->get('fechaNac'))));
+        $paciente->setFechaNac(date_create($pf->get('fechaNac')));
         $paciente->setLugarNac($pf->get('lugarNac'));
         $paciente->setPartidoId((int)$pf->get('partidoId'));
         $paciente->setRegionSanitariaId((int)$pf->get('regionSanitariaId'));
@@ -102,13 +102,13 @@ class PacienteController extends FOSRestController
         $paciente->setNumero((int)$pf->get('numero'));
         $paciente->setTel($pf->get('tel'));
         $paciente->setNroCarpeta((int)$pf->get('nroCarpeta'));
-        $paciente->setObraSocialId((int)'obraSocialId');
+        $paciente->setObraSocialId((int)$pf->get('obraSocialId'));
         $entityManager->persist($paciente);
         $entityManager->flush();
-        return new Response('Usuario agregado', 200);
+        return new Response('Paciente agregado', 200);
         }
         else {
-            return new Response("Algo ha salido mal", 400);
+            return new Response("No se ha podido verificar que toda la información sea correcta", 400);
         }
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
@@ -147,12 +147,13 @@ class PacienteController extends FOSRestController
                 $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria",$pf->get('regionSanitariaId')) &&
                 $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad",$pf->get('localidadId')) &&
                 $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social",$pf->get('obraSocialId')) &&
-                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$pf->get('tipoDocId'))
+                $this->isValidId("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento",$pf->get('tipoDocId')) &&
+                $this->checkUniqueFieldOnEdit($pf->get('historiaClinica'), 'numero', $pf->get('numero'))
             ){
             $paciente=$entityManager->getRepository(Paciente::class)->findOneBy(['id'=>$pf->get('historiaClinica')]);
             $paciente->setApellido($pf->get('apellido'));
             $paciente->setNombre($pf->get('nombre'));
-            $paciente->setFechaNac(new \DateTime('@'.strtotime($pf->get('fechaNac'))));
+            $paciente->setFechaNac(date_create($pf->get('fechaNac')));
             $paciente->setLugarNac($pf->get('lugarNac'));
             $paciente->setPartidoId((int)$pf->get('partidoId'));
             $paciente->setRegionSanitariaId((int)$pf->get('regionSanitariaId'));
@@ -219,6 +220,11 @@ class PacienteController extends FOSRestController
         $entityManager = $this->getDoctrine()->getManager();
         return empty($entityManager->getRepository(Paciente::class)->findOneBy(['numero' => $doc]));
 
+    }
+    function checkUniqueFieldOnEdit($id, $field, $value){
+      $entityManager = $this->getDoctrine()->getManager();
+      $data= $entityManager->getRepository(Paciente::class)->findOneBy([$field => $value]);
+      return empty($data) || $data->getId()==$id;
     }
     
     

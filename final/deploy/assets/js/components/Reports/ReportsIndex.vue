@@ -1,6 +1,5 @@
 <template>
-  <div class="box">
-
+  <div class="container has-margin">
     <section class="section">
       <div class="container is-fluid">
         <div class="has-text-centered">
@@ -100,7 +99,7 @@ export default {
     getAttentionsBy(criteriaStr) {
       this.loaded = false;
       axios.
-       get('http://localhost:8000/consulta/reportes/' + criteriaStr)
+       get(this.burl('/consulta/reportes/' + criteriaStr))
        .then(response => {
                            var result = response.data;
                            if (result.length > 0) {
@@ -166,6 +165,11 @@ export default {
 
 .is-spaced {
   margin: 10px;
+}
+
+.has-margin {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 </style>

@@ -170,7 +170,7 @@ class UserController extends FOSRestController
           $entityManager->remove($user);
           $entityManager->flush();
         } else {
-          return new Response("No puedes bloquear a ese usuario", 400);
+          return new Response("No puedes eliminar a ese usuario", 400);
         }
       } else {
         return new Response("No tienes permiso para realizar esa acción", 400);
