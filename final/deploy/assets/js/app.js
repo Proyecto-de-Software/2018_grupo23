@@ -159,7 +159,7 @@ Vue.mixin({
 
         if (process.env.APLICATION_ENV === 'production') {
           //var baseUrl = `${url.origin}/Proyecto/grupo23/final/deploy/public/index.php`
-          var baseUrl = `${url.origin}/final/deploy/public/index.php`
+          var baseUrl = `${url.origin}/index.php`
         } else {
           var baseUrl = url.origin
         }
@@ -170,7 +170,7 @@ Vue.mixin({
         let url = new URL(window.location)
         if (process.env.NODE_ENV === 'production') {
             //return `/Proyecto/grupo23/final/deploy/public${name}`
-            return `/final/deploy/public${name}`
+            return `${name}`
         }
         return `${url.origin}/${name}`
       },
