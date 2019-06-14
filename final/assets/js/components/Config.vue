@@ -9,24 +9,24 @@
         <div class="columns">
             <div class="column is-6">
               <div class="field">
-                  <label class="label" for="titulo">Título:</label>
+                  <label class="label" for="titulo">* Título:</label>
                   <div class="control">
                     <input class="input" id="titulo" type="text" name="titulo" v-model="config.titulo" required>
                   </div>
-                  <p class="help">Es el nombre que se mostrará en la barra de navegación</p>
               </div>
               <div class="field">
-                <label class="label" for="email">Mail de contacto:</label>
+                <label class="label" for="email">* Mail de contacto:</label>
                 <div class="control">
                   <input class="input" id="email" type="email" name="email" value="" v-model="config.email" placeholder="e-mail" required>
                 </div>
               </div>
               <div class="field">
-                <label class="label" for="descripcion">Descripción:</label>
+                <label class="label" for="descripcion">* Descripción:</label>
                 <div class="control">
                   <textarea class="textarea" id="descripcion" name="descripcion" value="" v-model="config.descripcion" rows="4" required></textarea>
                 </div>
               </div>
+              <p class="help">(*) Se mostrarán en el pie de página</p>
             </div>
             <div class="column is-6">
               <div class="field">
@@ -41,7 +41,7 @@
                         <option>30</option>
                       </select>
                     </div>
-                      <p class="help">Define cuantos usuarios y pacientes se muestran en sus respectivos listados</p>
+                      <p class="help">Define cuantos usuarios, pacientes y atenciones se mostrarán en sus respectivos listados</p>
                   </div>
               </div>
               <div class="field">
@@ -107,8 +107,8 @@
         </div>
       </div>
       <div class="field is-grouped is-grouped-centered">
-        <button v-if="loggedUser.permisos.includes('configuracion_update')" type="submit" class="button is-success" @click="submit">Guardar cambios</button>
-        <button type="button" class="button is-light" @click="cancel">Cancelar</button>
+        <button v-if="loggedUser.permisos.includes('configuracion_update')" type="submit" class="button is-success button-is-spaced" @click="submit">Guardar cambios</button>
+        <button type="button" class="button is-light button-is-spaced" @click="cancel">Cancelar</button>
       </div>
     </div>
   </div>
@@ -130,11 +130,11 @@
                   if(this.config.estado === 'habilitado'){
                     events.$emit('mantenimiento:inactive');
                   }
-                  this.$router.push('/');
+                  this.$router.replace('/');
          })
       },
       cancel() {
-        this.$router.push('/');
+        this.$router.replace('/');
       }
     },
     mounted() {

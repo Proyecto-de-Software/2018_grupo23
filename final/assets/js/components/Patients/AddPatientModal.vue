@@ -256,11 +256,11 @@ export default {
           this.patientForm.tieneDocumento = this.patientForm.tieneDocumento == true ? 1 : 0
           if (this.patient) { //edit
             axios
-            .post(this.url('/paciente/' + this.patient.id + '/edit'), this.patientForm)
+            .post(this.burl('/paciente/' + this.patient.id + '/edit'), this.patientForm)
             .then(response => { if (response.status == 200) Vue.swal('El paciente fue actualizado', '', 'success') })
           } else { //new
             axios
-            .post(this.url('/paciente/new'), this.patientForm)
+            .post(this.burl('/paciente/new'), this.patientForm)
             .then(response =>  { if (response.status == 200) Vue.swal('El paciente fue creado', '', 'success') })
           }
           this.loadPatients()
