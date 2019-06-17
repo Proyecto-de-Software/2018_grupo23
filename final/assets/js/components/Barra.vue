@@ -66,13 +66,14 @@ export default {
   },
   methods: {
     logout() {
+      events.$emit('user:logout')
       this.burgerIsOpen = false
       this.authenticated_user = false
       axios.defaults.headers.common['Authorization'] = null
       localStorage.removeItem('token')
       this.jwtToken.clear
       this.loggedUser.clear
-      events.$emit('user:logout')
+      this.$router.replace("/")
     }
   }
 }

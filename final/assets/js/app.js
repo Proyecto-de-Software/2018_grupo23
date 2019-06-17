@@ -204,6 +204,7 @@ new Vue({
     }
 
     events.$on('change:route', (componente) => this.cambiarRuta(componente))
+    events.$on('user:logout', () => this.store_token = '')
 
   },
 
