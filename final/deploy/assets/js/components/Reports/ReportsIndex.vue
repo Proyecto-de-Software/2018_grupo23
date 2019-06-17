@@ -16,10 +16,7 @@
       <h5 class="title is-5">No hay consultas en el sistema</h5>
     </div>
 
-    <div v-if="!loaded" class="has-text-centered">
-      <a class="button is-loading page-loading-button"></a>
-    </div>
-    <div v-else>
+    <div>
       <div v-if="loaded" class="container" ref="content">
         <div ref="chart-container">
           <pie-chart
