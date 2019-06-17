@@ -173,16 +173,21 @@ export default {
             axios
             .post(this.burl('/consulta/' + this.attention.id + '/edit'), this.attentionForm)
             .then(response => {
-                if (response.status == 200) Vue.swal('La atención fue editada', '', 'success')
+                if (response.status == 200) {
+                  Vue.swal('La atención fue editada', '', 'success')
+                  this.loadAttentions()
+                }
             })
           } else { //new
             axios
             .post(this.burl('/consulta/new/' + this.idPaciente), this.attentionForm)
             .then(response => {
-                if (response.status == 200) Vue.swal('La atención fue agregada', '', 'success')
+                if (response.status == 200) {
+                  Vue.swal('La atención fue agregada', '', 'success')
+                  this.loadAttentions()
+                }
             })
           }
-          this.loadAttentions()
           this.close()
         }
       })

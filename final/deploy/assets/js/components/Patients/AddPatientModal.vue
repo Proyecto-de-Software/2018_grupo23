@@ -257,13 +257,22 @@ export default {
           if (this.patient) { //edit
             axios
             .post(this.burl('/paciente/' + this.patient.id + '/edit'), this.patientForm)
-            .then(response => { if (response.status == 200) Vue.swal('El paciente fue actualizado', '', 'success') })
+            .then(response => {
+                if (response.status == 200) {
+                  Vue.swal('El paciente fue actualizado', '', 'success')
+                  this.loadPatients()
+                }
+            })
           } else { //new
             axios
             .post(this.burl('/paciente/new'), this.patientForm)
-            .then(response =>  { if (response.status == 200) Vue.swal('El paciente fue creado', '', 'success') })
+            .then(response =>  {
+                if (response.status == 200) {
+                  Vue.swal('El paciente fue creado', '', 'success')
+                  this.loadPatients()
+                }
+            })
           }
-          this.loadPatients()
           this.close()
         }
       })
