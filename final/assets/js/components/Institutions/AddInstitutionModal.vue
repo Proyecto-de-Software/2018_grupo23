@@ -151,13 +151,22 @@ export default {
           if (this.institution) { //edit
             axios
             .post(this.burl('/institucion/' + this.institution.id + '/edit'), this.institutionsForm)
-            .then(response => { if (response.status == 200) Vue.swal('La institución fue actualizada', '', 'success') })
+            .then(response => {
+                if (response.status == 200) {
+                  Vue.swal('La institución fue actualizada', '', 'success')
+                  this.loadInstitutions()
+                }
+            })
           } else { //new
             axios
             .post(this.burl('/institucion/new'), this.institutionsForm)
-            .then(response =>  { if (response.status == 200) Vue.swal('La institución fue creada', '', 'success') })
+            .then(response =>  {
+                if (response.status == 200) {
+                  Vue.swal('La institución fue creada', '', 'success')
+                  this.loadInstitutions()
+                }
+            })
           }
-          this.loadInstitutions()
           this.close()
         }
       })

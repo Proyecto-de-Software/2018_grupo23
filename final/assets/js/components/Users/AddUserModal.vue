@@ -196,6 +196,7 @@ export default {
             .then(response => {
               if (response.status == 200) {
                 Vue.swal('El usuario fue actualizado', '', 'success')
+                this.loadUsers()
               }
             })
           } else { //new
@@ -204,10 +205,10 @@ export default {
             .then(response => {
               if (response.status == 200) {
                 Vue.swal('El usuario fue creado', '', 'success')
+                this.loadUsers()
               }
             })
           }
-          this.loadUsers()
           this.close()
         }
       })
