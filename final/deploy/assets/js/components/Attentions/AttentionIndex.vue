@@ -119,7 +119,7 @@ export default {
     methods: {
       loadAttentions: function() {
         axios
-          .get('http://localhost:8000/consulta/index/'+this.$route.params.idPaciente)
+          .get(this.burl('/consulta/index/' + this.$route.params.idPaciente))
           .then(response => {
             this.attentions = response.data;
             this.loadMapPoints();
@@ -157,7 +157,7 @@ export default {
         }).then((result) => {
           if (result.value) {
             axios
-              .delete('http://localhost:8000/consulta/' + attentionId)
+              .delete(this.burl('/consulta/' + attentionId))
               .then(response => {
                 Vue.swal(
                   'La atención fue eliminada',
@@ -201,7 +201,7 @@ export default {
       },
       loadAcompanamientos(){
           axios
-          .get('http://localhost:8000/consulta/acompanamientos')
+          .get(this.burl('/consulta/acompanamientos'))
           .then(response => {
             this.acompanamientos=response.data;
           })
@@ -211,7 +211,7 @@ export default {
       },
       loadInstituciones(){
           axios
-          .get('http://localhost:8000/consulta/instituciones')
+          .get(this.burl('/consulta/instituciones'))
           .then(response => {
             this.instituciones=response.data;
           })
@@ -221,7 +221,7 @@ export default {
       },
       loadMotivos(){
           axios
-          .get('http://localhost:8000/consulta/motivos')
+          .get(this.burl('/consulta/motivos'))
           .then(response => {
             this.motivos=response.data;
           })
@@ -231,7 +231,7 @@ export default {
       },
       loadTratamientos(){
           axios
-          .get('http://localhost:8000/consulta/tratamientos')
+          .get(this.burl('/consulta/tratamientos'))
           .then(response => {
             this.tratamientos=response.data;
           })

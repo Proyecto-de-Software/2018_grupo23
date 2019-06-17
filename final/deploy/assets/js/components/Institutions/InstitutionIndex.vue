@@ -95,7 +95,7 @@ export default {
   methods: {
     loadInstitutions: function() {
       axios
-        .get('http://localhost:8000/institucion/')
+        .get(this.burl('/institucion/'))
         .then(response => {
           this.institutions = response.data;
           this.loadTiposInstitucion()
@@ -111,7 +111,7 @@ export default {
         return institution.director
     },
     telefono(institution){
-        return institution.telefono 
+        return institution.telefono
     },
     loadRegionesSanitarias(){
       this
@@ -125,13 +125,11 @@ export default {
     },
     loadTiposInstitucion(){
       axios
-            .get(this.burl('/institucion/tipos'))
-            .then( response => {
-              this.tiposInstitucion= response.data
-              this.loadRegionesSanitarias()
-            }
-
-            )
+      .get(this.burl('/institucion/tipos'))
+      .then( response => {
+        this.tiposInstitucion= response.data
+        this.loadRegionesSanitarias()
+      })
     },
     getRegionSanitaria(id){
       var index = this.regionesSanitarias.findIndex(obj => obj.id==id)

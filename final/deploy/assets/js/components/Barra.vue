@@ -43,7 +43,7 @@
                 </a>
             </div>
                 <div v-else class="navbar-end">
-                    <router-link class="navbar-item" :to="{ path: '/app/login'}" replace>Ingresar</router-link>
+                    <router-link class="navbar-item" :to="{ path: '/app/login' }" @click.native="burgerIsOpen = false" replace>Ingresar</router-link>
                 </div>
             </div>
     </nav>
@@ -57,7 +57,7 @@ export default {
       burgerIsOpen: false,
       loading_config: true,
       authenticated_user: false,
-      base_url: window.location.host,
+      base_url: window.location.host
     }
   },
   mounted() {
@@ -66,12 +66,13 @@ export default {
   },
   methods: {
     logout() {
-      this.authenticated_user = false;
-      axios.defaults.headers.common['Authorization'] = null;
-      localStorage.removeItem('token');
-      this.jwtToken.clear;
-      this.loggedUser.clear;
-      events.$emit('user:logout');
+      this.burgerIsOpen = false
+      this.authenticated_user = false
+      axios.defaults.headers.common['Authorization'] = null
+      localStorage.removeItem('token')
+      this.jwtToken.clear
+      this.loggedUser.clear
+      events.$emit('user:logout')
     }
   }
 }

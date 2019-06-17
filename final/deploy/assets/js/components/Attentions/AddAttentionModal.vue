@@ -171,13 +171,13 @@ export default {
           this.attentionForm.internacion = this.attentionForm.internacion == true ? 1 : 0
           if (this.attention) { //edit
             axios
-            .post('http://localhost:8000/consulta/' + this.attention.id + '/edit', this.attentionForm)
+            .post(this.burl('/consulta/' + this.attention.id + '/edit'), this.attentionForm)
             .then(response => {
                 if (response.status == 200) Vue.swal('La atención fue editada', '', 'success')
             })
           } else { //new
             axios
-            .post('http://localhost:8000/consulta/new/' + this.idPaciente, this.attentionForm)
+            .post(this.burl('/consulta/new/' + this.idPaciente), this.attentionForm)
             .then(response => {
                 if (response.status == 200) Vue.swal('La atención fue agregada', '', 'success')
             })
