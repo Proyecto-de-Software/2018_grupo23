@@ -115,5 +115,22 @@ class InstitucionController extends FOSRestController
       return new Response($serializer->serialize($tipos, "json"), 200);
     }
 
+     /**
+     *@Route("/{id}", name="institucion_delete", methods={"DELETE"})
+     * @SWG\Response(response=200, description="")
+     * @SWG\Tag(name="Institucion")
+     */
+    public function delete(Request $request, Institucion $institucion): Response
+    {
+      $entityManager = $this->getDoctrine()->getManager();
+      if ($this->getUser()->hasPermit($entityManager->getRepository(Permiso::class)->findOneBy(['nombre' => 'atencion_destroy']))) {
+          $entityManager->remove($institucion);
+          $entityManager->flush();
+        }
+      else {
+        return new Response("No tienes permiso para realizar esa acción", 400);
+      }
+      return new Response('Institucion eliminada', 200);
+    }
 
 }
