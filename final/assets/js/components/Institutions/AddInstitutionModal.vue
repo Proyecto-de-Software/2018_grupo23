@@ -61,9 +61,10 @@
                 </div>
 
                 <div class="field">
-                  <label class="label">Coordenadas*</label>
+                  <label class="label">Coordenadas* </label>
                   <div class="control">
                     <input type="text" name="coordenadas" class="input" v-model="institutionsForm.coordenadas" v-validate="'required'" :readonly="true">
+                    <p class="help">( haga click en un punto del mapa para agregar la ubicación )</p>
                     <span v-show="errors.has('coordenadas')" class="help is-danger">{{ errors.first('coordenadas') }}</span>
                   </div>
                 </div>

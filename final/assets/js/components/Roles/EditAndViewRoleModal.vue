@@ -149,8 +149,9 @@ export default {
         .post(this.burl('/role/' + this.role.id + '/edit'), this.roleForm.perms)
         .then(response => {
           if (response.status === 200) {
-            this.close()
             Vue.swal('El rol fue actualizado', 'Deberá iniciar sesión nuevamente si quiere que algunos cambios surjan efecto', 'success')
+            this.loadAppRoles()
+            this.close()
           } else {
             events.$emit('alert:error', 'No fue posible realizar esa acción')
           }
