@@ -12,7 +12,7 @@
         </div>
 
         <div class="navbar-menu" :class="{'is-active': burgerIsOpen}">
-            <div class="navbar-start">
+            <div v-if="!mantenimiento || ( mantenimiento && loggedUser.roles.includes('ROLE_ADMINISTRADOR') )" class="navbar-start">
                 <!-- navbar items izquierda -->
                 <p class="is-hidden-touch navbar-item"></p>
 
@@ -55,6 +55,7 @@ export default {
   data() {
     return {
       burgerIsOpen: false,
+      mantenimiento: false,
       loading_config: true,
       authenticated_user: false,
       base_url: window.location.host
@@ -63,6 +64,8 @@ export default {
   mounted() {
     events.$on('loading_config:finish', () => this.loading_config = false)
     events.$on('loading_user:finish', () => this.authenticated_user = true)
+    events.$on('mantenimiento:active',() => this.mantenimiento = true)
+    events.$on('mantenimiento:inactive',() => this.mantenimiento = false)
   },
   methods: {
     logout() {
