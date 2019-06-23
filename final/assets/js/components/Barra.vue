@@ -12,7 +12,7 @@
         </div>
 
         <div class="navbar-menu" :class="{'is-active': burgerIsOpen}">
-            <div v-if="!mantenimiento || ( mantenimiento && loggedUser.roles.includes('ROLE_ADMINISTRADOR') )" class="navbar-start">
+            <span v-if="authenticated_user && ( ( !mantenimiento && loggedUser.roles.length > 0 ) || ( mantenimiento && loggedUser.roles.includes('ROLE_ADMINISTRADOR') ) )" class="navbar-start">
                 <!-- navbar items izquierda -->
                 <p class="is-hidden-touch navbar-item"></p>
 
@@ -32,7 +32,7 @@
 
                 <router-link v-if="authenticated_user" class="navbar-item" :to="{ path: '/app/institucion' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Instituciones</router-link>
 
-            </div>
+            </span>
 
             <div v-if="authenticated_user" class="navbar-end">
                 <!-- navbar items derecha -->
