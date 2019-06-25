@@ -64,8 +64,8 @@ security:
         - { path: ^/api/register,       roles: ROLE_ADMINISTRADOR }
         - { path: ^/user,               roles: ROLE_ADMINISTRADOR }
         - { path: ^/role,               roles: ROLE_ADMINISTRADOR }
-        - { path: ^/consulta,           roles: ROLE_ADMINISTRADOR }
+        - { path: ^/consulta,           roles: [ ROLE_ADMINISTRADOR, ROLE_EQUIPO_DE_GUARDIA ] }
         - { path: ^/configuracion,      roles: ROLE_ADMINISTRADOR }
-        - { path: ^/institucion,        roles: ROLE_ADMINISTRADOR }
+        - { path: ^/institucion,        roles: [ ROLE_ADMINISTRADOR, ROLE_EQUIPO_DE_GUARDIA ] }
         - { path: ^/paciente,           roles: [ ROLE_ADMINISTRADOR, ROLE_EQUIPO_DE_GUARDIA ] }
         - { path: ^/app,                roles: IS_AUTHENTICATED_ANONYMOUSLY }

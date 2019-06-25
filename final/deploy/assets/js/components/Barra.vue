@@ -12,7 +12,7 @@
         </div>
 
         <div class="navbar-menu" :class="{'is-active': burgerIsOpen}">
-            <div class="navbar-start">
+            <span v-if="authenticated_user && ( ( !mantenimiento && loggedUser.roles.length > 0 ) || ( mantenimiento && loggedUser.roles.includes('ROLE_ADMINISTRADOR') ) )" class="navbar-start">
                 <!-- navbar items izquierda -->
                 <p class="is-hidden-touch navbar-item"></p>
 
@@ -32,7 +32,7 @@
 
                 <router-link v-if="authenticated_user" class="navbar-item" :to="{ path: '/app/institucion' }" @click.native="burgerIsOpen = !burgerIsOpen" replace>Instituciones</router-link>
 
-            </div>
+            </span>
 
             <div v-if="authenticated_user" class="navbar-end">
                 <!-- navbar items derecha -->
@@ -55,6 +55,7 @@ export default {
   data() {
     return {
       burgerIsOpen: false,
+      mantenimiento: false,
       loading_config: true,
       authenticated_user: false,
       base_url: window.location.host
@@ -63,16 +64,23 @@ export default {
   mounted() {
     events.$on('loading_config:finish', () => this.loading_config = false)
     events.$on('loading_user:finish', () => this.authenticated_user = true)
+    events.$on('mantenimiento:active',() => this.mantenimiento = true)
+    events.$on('mantenimiento:inactive',() => this.mantenimiento = false)
+    events.$on('user:logout', () => this.logout(true))
   },
   methods: {
-    logout() {
-      this.burgerIsOpen = false
-      this.authenticated_user = false
-      axios.defaults.headers.common['Authorization'] = null
-      localStorage.removeItem('token')
-      this.jwtToken.clear
-      this.loggedUser.clear
-      events.$emit('user:logout')
+    logout(recursive = false) {
+      if(!recursive){
+        events.$emit('user:logout')
+      }
+        this.burgerIsOpen = false
+        this.authenticated_user = false
+        axios.defaults.headers.common['Authorization'] = null
+        localStorage.removeItem('token')
+        this.$root.$data.store_token = ''
+        this.jwtToken.clear
+        this.loggedUser.clear
+        this.$router.replace("/")
     }
   }
 }

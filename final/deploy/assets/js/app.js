@@ -62,7 +62,7 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/app', component: Home },
+  { path: '/app', name:'home', component: Home },
   { path: '/app/login', name:'login', component: Login},
   { path: '/app/config', component: Config},
   { path: '/app/usuario', component: UserIndex},
@@ -204,6 +204,8 @@ new Vue({
     }
 
     events.$on('change:route', (componente) => this.cambiarRuta(componente))
+    events.$on('user:logout', () => this.store_token = '')
+    events.$on('loading_user:finish', () => this.checkBlockUser())
 
   },
 
@@ -255,6 +257,27 @@ new Vue({
     cambiarRuta(componente){
       this.$router.replace({ name: componente });
     },
+
+    checkBlockUser(){
+      if(!this.loggedUser.activo){
+        Vue.swal({
+          title: "Cuenta bloqueada",
+          text:  "Su cuenta esta bloqueada. Pongase en contacto con la administracion.",
+          type:  "warning",
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Ok",
+          }).then( () => {
+              localStorage.removeItem('token');
+              this.store_token = '';
+              axios.defaults.headers.common['Authorization'] = null;
+              this.store_user = {};
+              this.loggedUser.clear;
+              events.$emit('user:logout')
+              this.$router.replace({ name: 'login' });
+          });
+      }
+    }
+
   },
 
 watch: {

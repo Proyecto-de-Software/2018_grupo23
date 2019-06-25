@@ -19,7 +19,7 @@
           </div>
           <div class="field is-grouped is-grouped-centered">
             <div class="control">
-              <button class="button is-info" type="submit" @click="login">Ingresar</button>
+              <button class="button is-info" type="submit" @keyup.enter.native="login" @click="login">Ingresar</button>
             </div>
           </div>
         </div>

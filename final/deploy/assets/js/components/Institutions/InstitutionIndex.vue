@@ -32,21 +32,13 @@
                  <h3 class="h3">No hay pacientes cargados en el sistema</h3>
                </div>
                 <div slot="table-actions">
-                  <button type="button" class="button is-info" @click="showAddInstitutionModal(null, 'Agregar Institución')">Agregar Institución</button>
+                  <button class="button is-info" @click="showAddInstitutionModal(null, 'Agregar Institución')">Agregar Institución</button>
                 </div>
                 <template slot="table-row" slot-scope="props">
                   <span v-if="props.column.field == 'acciones'">
-                    <button v-if="loggedUser.permisos.includes('atencion_update')" type="button" class="button is-info is-small button-is-spaced" title="Editar" @click="showAddInstitutionModal(props.row, 'Editar Institución')">Editar</button>
-                    <button v-if="loggedUser.permisos.includes('atencion_show')" type="button" class="button is-info is-small button-is-spaced" title="Ver" @click="showViewInstitutionModal(props.row)">Ver</button>
-                    <button v-if="loggedUser.permisos.includes('atencion_destroy')" class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deleteInstitution(props.row.id)">Eliminar</button>
-                    <router-link
-                    v-if="loggedUser.permisos.includes('atencion_index')"
-                    class="button is-info is-small button-is-spaced"
-                    :to="{ name: 'consulta', params: { idPaciente: props.row.id}}"
-                    title="Atenciones"
-                    replace>
-                      Atenciones
-                    </router-link>
+                    <button class="button is-info is-small button-is-spaced" title="Editar" @click="showAddInstitutionModal(props.row, 'Editar Institución')">Editar</button>
+                    <button class="button is-info is-small button-is-spaced" title="Ver" @click="showViewInstitutionModal(props.row)">Ver</button>
+                    <button class="button_delete button is-danger is-small button-is-spaced" title="Eliminar" @click="deleteInstitution(props.row.id)">Eliminar</button>
                   </span>
                 </template>
             </vue-good-table>
@@ -104,7 +96,7 @@ export default {
           console.log(error)
         })
     },
-    nombre(institution){
+    nombre(institution) {
         return institution.nombre
     },
     director(institution){
@@ -113,7 +105,7 @@ export default {
     telefono(institution){
         return institution.telefono
     },
-    loadRegionesSanitarias(){
+    loadRegionesSanitarias() {
       this
         .makeCorsRequest('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria')
         .then(response => {

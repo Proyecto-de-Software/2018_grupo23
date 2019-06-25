@@ -66,17 +66,21 @@ export default {
     events.$on('loading_user:finish', () => this.authenticated_user = true)
     events.$on('mantenimiento:active',() => this.mantenimiento = true)
     events.$on('mantenimiento:inactive',() => this.mantenimiento = false)
+    events.$on('user:logout', () => this.logout(true))
   },
   methods: {
-    logout() {
-      events.$emit('user:logout')
-      this.burgerIsOpen = false
-      this.authenticated_user = false
-      axios.defaults.headers.common['Authorization'] = null
-      localStorage.removeItem('token')
-      this.jwtToken.clear
-      this.loggedUser.clear
-      this.$router.replace("/")
+    logout(recursive = false) {
+      if(!recursive){
+        events.$emit('user:logout')
+      }
+        this.burgerIsOpen = false
+        this.authenticated_user = false
+        axios.defaults.headers.common['Authorization'] = null
+        localStorage.removeItem('token')
+        this.$root.$data.store_token = ''
+        this.jwtToken.clear
+        this.loggedUser.clear
+        this.$router.replace("/")
     }
   }
 }
