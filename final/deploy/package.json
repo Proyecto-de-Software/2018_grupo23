@@ -26,7 +26,7 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^8.0.1",
     "html2canvas": "^1.0.0-rc.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "system": "^2.0.1",
     "vee-validate": "^2.2.7",
     "vue-chartjs": "^3.4.2",
